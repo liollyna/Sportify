@@ -1,3 +1,14 @@
+
+
+h1{
+
+color: rgb(51, 0, 255);
+    font-size:30px;
+    text-align: center;
+    background-image:url("image/épis_de_blé.jpg");
+    padding:50px;
+}
+
 .occasion-button {
 
     text-decoration: none; 
@@ -24,4 +35,41 @@ nav ul {
 
 li {
     cursor: pointer;
+}
+
+
+.header { 
+    background-image: url('wamp64/saut.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
+} 
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: left;
+}
+.page-footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+.page-footer .infos {
+    margin-bottom: 20px;
+}
+.page-footer .A {
+    display: block;
+    margin-bottom: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-footer p {
+    margin: 0;
+}
+.page-footer .text-left {
+    text-align: left;
+}
+.page-footer .infos {
+    padding-right: 20px;
 }
