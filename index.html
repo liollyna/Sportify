@@ -1,28 +1,74 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <title>sportify</title>
     <meta charset="UTF-8">
     <link href="pack.css" rel="stylesheet" type="text/css" /> 
     <link rel="stylesheet"
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.pack.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.text.js"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.text.js"></script>
- 
-    <title>sportify</title>
- 
-   
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
     <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
-</head>
-
 <script type="text/javascript"> 
-    $(document).ready(function(){ 
-         $('.header').height($(window).height()); 
-    }); 
-</script>
+   
+   $(document).ready(function(){  
+   var $carrousel = $('#carrousel') ; // on cible le bloc du carrousel  
+   $img = $('#carrousel img') ; // on cible les images contenues dans le carrousel  
+   indexImg = $img.length - 1 ; // on définit l'index du dernier élément  
+   i = 0 ;// on initialise un compteur  
+   $currentImg = $img.eq(i); // enfin, on cible l'image courante, qui possède l'index i (0 pour l'instant)  
+   $img.css('display', 'none'); // on cache les images  
+   $currentImg.css('display', 'block'); // on affiche seulement l'image courante  
+   $carrousel.append('<div class="controls"> <span class="prev">Precedent</span>   <span class="next">Suivant</span></div>');
+   
+  $('.next').click(function(){ // image suivante  
+     i++; // on incrémente le compteur 
+     if (i <= indexImg){  
+         $img.css('display', 'none'); // on cache les images  
+         $currentImg = $img.eq(i); // on définit la nouvelle image  
+         $currentImg.css('display', 'block'); // puis on l'affiche  
+      }  
+      else{  
+         i = indexImg;  
+      }  
+   });  
+ 
+   $('.prev').click(function(){ // image précédente  
+      i--; // on décrémente le compteur, puis on réalise la même chose que pour la fonction "suivante"  
+      if (i >= 0){  
+         $img.css('display', 'none');  
+         $currentImg = $img.eq(i);  
+         $currentImg.css('display', 'block');  
+      }  
+      else{  
+         i = 0;  
+      }  
+   });  
+ 
+   function slideImg(){  
+      setTimeout(function(){ // on utilise une fonction anonyme  
+         if (i < indexImg){ // si le compteur est inférieur au dernier index  
+            i++; // on l'incrémente  
+         }  
+         else { // sinon, on le remet à 0 (première image)  
+            i = 0;  
+         }  
+         $img.css('display', 'none');  
+         $currentImg = $img.eq(i);  
+         $currentImg.css('display', 'block');  
+         slideImg(); // on oublie pas de relancer la fonction à la fin  
+      }, 4000); // on définit l'intervalle à 4000 millisecondes (4s)  
+   }  slideImg(); // enfin, on lance la fonction une première fois  
+}); 
 
+
+</script>
+</head>
    
 <body>
-    <header class="page-header header container-fluid">
+  
+        
         <h1>Sportify - Consultation sportive en ligne</h1>
         <!-- Barre de navigation -->
         <nav>
@@ -34,7 +80,22 @@
                 <li><a href="votre-compte.html"class="occasion-button">Votre Compte</a></li>
             </ul>
         </nav>
-    </header>
+        <br><br>
+      
+        
+        <header class="page-header header container-fluid">
+            <div class="carousel-container">
+                <div id="carrousel">
+                    <ul> 
+                        <li><img class="image" src="image/B.jpeg" width="1300" height="400.jpg"/></li>
+                        <li><img class="image" src="image/N.jpeg"width="1300" height="400.jpg" /></li> 
+                        <li><img class="image" src="image/EEE.jpeg"width="1300" height="400.jpg" /></li> 
+                        <li><img class="image" src="image/saut.jpg"width="1300" height="400.jpg" /></li> 
+                    </ul> 
+                </div>
+            </div>
+        </header>
+    
     
     <main>
         <!-- Contenu principal de la page -->

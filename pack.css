@@ -1,12 +1,43 @@
 
-
-h1{
-
-color: rgb(51, 0, 255);
-    font-size:30px;
+h1 {
+    color: rgb(51, 0, 255);
+    font-size: 30px;
     text-align: center;
-    background-image:url("image/épis_de_blé.jpg");
-    padding:50px;
+    background-image: url("image/épis_de_blé.jpg");
+    padding: 50px;
+}
+
+.carousel-container {
+    position: relative;
+    height: 400px; /* Ajustez la hauteur selon vos besoins */
+}
+
+#carrousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Place le carrousel en arrière-plan */
+}
+
+#carrousel ul {
+    padding: 0;
+    margin: 0;
+    list-style: none; 
+}
+
+#carrousel ul li { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+}
+
+.page-header {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1; /* Assure que le contenu est affiché au-dessus du carrousel */
 }
 
 .occasion-button {
@@ -21,29 +52,15 @@ color: rgb(51, 0, 255);
     width: 100px; 
     text-align: center;
 }
+
 nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: space-around;
-    background-color: white;
-    padding:10px
-   
 }
 
-
-li {
-    cursor: pointer;
-}
-
-
-.header { 
-    background-image: url('wamp64/saut.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    position: relative; 
-} 
 .row{
     display: flex;
     flex-wrap: wrap;
