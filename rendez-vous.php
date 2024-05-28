@@ -1,8 +1,10 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['date'];
     $heure = $_POST['heure'];
     $activite = $_POST['activite'];
+    $utilisateur_id = 1; // Supposons que l'utilisateur est connecté et son id est 1
 
     // Validation des données
     if (!empty($date) && !empty($heure) && !empty($activite)) {
@@ -18,12 +20,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Connexion échouée: " . $conn->connect_error);
         }
 
-        $sql = "INSERT INTO rendez_vous (date, heure, activite) VALUES ('$date', '$heure', '$activite')";
+        // Vérifier la disponibilité des coachs pour le créneau choisi
+        $sql = "SELECT coachs.id, coachs.nom, disponibilites.heure_debut, disponibilites.heure_fin 
+                FROM coachs 
+                JOIN disponibilites ON coachs.id = disponibilites.coach_id 
+                WHERE disponibilites.date = '$date' AND 
+                      disponibilites.heure_debut <= '$heure' AND 
+                      disponibilites.heure_fin > '$heure'";
 
-        if ($conn->query($sql) === TRUE) {
-            echo "Nouveau rendez-vous créé avec succès";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Un coach est disponible
+            $row = $result->fetch_assoc();
+            $coach_id = $row['id'];
+
+            // Insérer le rendez-vous
+            $sql_insert = "INSERT INTO rendez_vous (utilisateur_id, date, heure, activite, coach_id) 
+                           VALUES ('$utilisateur_id', '$date', '$heure', '$activite', '$coach_id')";
+
+            if ($conn->query($sql_insert) === TRUE) {
+                echo "Nouveau rendez-vous créé avec succès avec le coach " . $row['nom'];
+            } else {
+                echo "Erreur: " . $sql_insert . "<br>" . $conn->error;
+            }
         } else {
-            echo "Erreur: " . $sql . "<br>" . $conn->error;
+            echo "Aucun coach n'est disponible pour ce créneau.";
         }
 
         $conn->close();
