@@ -3,7 +3,7 @@ h1 {
     color: rgb(51, 0, 255);
     font-size: 30px;
     text-align: center;
-    background-image: url("image/épis_de_blé.jpg");
+ 
     padding: 50px;
 }
 
@@ -52,7 +52,13 @@ h1 {
     width: 100px; 
     text-align: center;
 }
-
+.improved-text {
+    font-family: 'Arial', sans-serif; /* Change to your desired font */
+    font-size: 12px; /* Adjust the size as needed */
+    font-weight: normal; /* You can use 'bold' or 'lighter' if you want */
+    text-decoration: none; /* This removes any underlining */
+    color: #333; /* Change to your desired text color */
+}
 nav ul {
     list-style-type: none;
     margin: 0;
