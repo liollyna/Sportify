@@ -7,6 +7,7 @@
     <title>Tout Parcourir - Sportify</title>
     <link rel="stylesheet" href="pack.css"/>
     <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -26,17 +27,65 @@
         <!-- Contenu principal de la page -->
         <section>
             <h1>Tout Parcourir</h1>
-            <p>Découvrez toutes les catégories de sports compétitifs disponibles sur Sportify.</p>
-            
-            <h2>Les Sports de Compétition</h2>
-            <ul>
-                <li>Basketball</li>
-                <li>Football</li>
-                <li>Rugby</li>
-                <li>Tennis</li>
-                <li>Natation</li>
-                <li>Plongeon</li>
-            </ul>
+
+            <div class="caption"> 
+                <p>Catégories des services disponibles chez Sportify :</p>
+                <ul>
+                    <li><button class="button" onclick="showDetails('activites-sportives')">Activités sportives</button></li>
+                    <li><button class="button" onclick="showDetails('sports-competition')">Les Sports de compétition</button></li>
+                    <li><button class="button" onclick="showDetails('salle-sport')">Salle de sport Omnes</button></li>
+                </ul>
+                
+                <div id="activites-sportives" class="details">
+                    <h3>Activités sportives</h3>
+                    <ul>
+                        <li>Musculation</button></li>
+                        <li>Fitness</li>
+                        <li>Biking</li>
+                        <li>Cardio-Training</li>
+                        <li>Cours Collectifs</li>
+                    </ul>
+                </div>
+                <div id="musculation" class="details">
+                    <h3>Musculation</h3>
+                    <p>En sélectionnant une activité spécifique, on peut trouver un responsable de cette activité, normalement un coach. En cliquant sur ce coach, on trouve son nom, sa photo, son bureau, et son calendrier (c-à-d sa disponibilité) de la semaine. On peut également apercevoir son CV. Si ce coach est disponible, vous pouvez également lui envoyer un message texte, vocal, ou communiquer avec lui sur place.</p>
+                </div>
+                <div id="sports-competition" class="details">
+                    <h3>Les Sports de compétition</h3>
+                    <ul>
+                        <li><button class="button" onclick="showDetails('basketball')">Basketball</button></li>
+                        <li><button class="button" onclick="showDetails('football')">Football</button></li>
+                        <li><button class="button" onclick="showDetails('rugby')">Rugby</button></li>
+                        <li><button class="button" onclick="showDetails('tennis')">Tennis</button></li>
+                        <li><button class="button" onclick="showDetails('natation')">Natation</button></li>
+                        <li><button class="button" onclick="showDetails('plongeon')">Plongeon</button></li>
+                    </ul>
+                </div>
+                <div id="basketball" class="details">
+                    <h3>Basketball</h3>
+                    <p>Description de l'activité Basketball...</p>
+                </div>
+                <div id="football" class="details">
+                    <h3>Football</h3>
+                    <p>Description de l'activité Football...</p>
+                </div>
+                <div id="rugby" class="details">
+                    <h3>Rugby</h3>
+                    <p>Description de l'activité Rugby...</p>
+                </div>
+                <div id="tennis" class="details">
+                    <h3>Tennis</h3>
+                    <p>Description de l'activité Tennis...</p>
+                </div>
+                <div id="natation" class="details">
+                    <h3>Natation</h3>
+                    <p>Description de l'activité Natation...</p>
+                </div>
+                <div id="plongeon" class="details">
+                    <h3>Plongeon</h3>
+                    <p>Description de l'activité Plongeon...</p>
+                </div>
+
         </section>
     </main>
     
@@ -45,5 +94,12 @@
         <p>Contactez-nous par mail, téléphone ou à notre adresse physique.</p>
         <!-- Inclure éventuellement une carte Google Maps -->
     </footer>
+
+    <script>
+        function showDetails(id) {
+            $('.details').hide(); // Cache toutes les sections de détails
+            $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
+        }
+    </script>
 </body>
 </html>
