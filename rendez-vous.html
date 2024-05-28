@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rendez-vous - Sportify</title>
-    <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
+    <title>Votre Compte - Sportify</title>
+    <!-- Lien vers les fichiers CSS et JavaScript -->
+    <link rel="stylesheet" href="rendez-vous.css">
+    <script defer src="rendez-vous.js"></script>
 </head>
 <body>
     <header>
@@ -24,31 +26,42 @@
     <main>
         <!-- Contenu principal de la page -->
         <section>
-            <h1>Prendre un Rendez-vous</h1>
-            <p>Planifiez votre prochain rendez-vous sportif avec un coach ou une salle de sport sur Sportify.</p>
+            <h1>Votre Compte</h1>
+            <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
             
-            <form>
-                <label for="date">Date du rendez-vous :</label>
-                <input type="date" id="date" name="date">
+            <h2>Informations Personnelles</h2>
+            <ul>
+                <li>Nom : John Doe</li>
+                <li>Email : johndoe@example.com</li>
+                <li>Adresse : 123 Rue Sport, Ville Sportive</li>
+                <li>Téléphone : 123-456-7890</li>
+            </ul>
+            
+            <h2>Votre Emploi du Temps</h2>
+            <ul>
+                <li>Lundi - 10h-12h : Séance de Natation</li>
+                <li>Mardi - 15h-17h : Entraînement de Rugby</li>
+                <li>Mercredi - 9h-11h : Cours de Fitness</li>
+                <!-- Ajoutez d'autres créneaux horaires et activités -->
+            </ul>
+            
+            <h2>Prendre un Rendez-vous</h2>
+            <form id="rendez-vous-form" action="rendez-vous.php" method="post">
+                <label for="date">Date :</label>
+                <input type="date" id="date" name="date" required>
                 
-                <label for="heure">Heure du rendez-vous :</label>
-                <input type="time" id="heure" name="heure">
+                <label for="heure">Heure :</label>
+                <input type="time" id="heure" name="heure" required>
                 
-                <label for="coach">Sélectionnez un coach :</label>
-                <select id="coach" name="coach">
-                    <option value="coach1">Coach 1</option>
-                    <option value="coach2">Coach 2</option>
-                    <option value="coach3">Coach 3</option>
+                <label for="activite">Activité :</label>
+                <select id="activite" name="activite" required>
+                    <option value="natation">Séance de Natation</option>
+                    <option value="rugby">Entraînement de Rugby</option>
+                    <option value="fitness">Cours de Fitness</option>
+                    <!-- Ajoutez d'autres activités disponibles -->
                 </select>
                 
-                <label for="salle">Sélectionnez une salle de sport :</label>
-                <select id="salle" name="salle">
-                    <option value="salle1">Salle 1</option>
-                    <option value="salle2">Salle 2</option>
-                    <option value="salle3">Salle 3</option>
-                </select>
-                
-                <button type="submit">Confirmer le rendez-vous</button>
+                <button type="submit">Prendre un Rendez-vous</button>
             </form>
         </section>
     </main>
