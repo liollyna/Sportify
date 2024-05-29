@@ -7,10 +7,47 @@ if (!$db_handle) {
     die("Échec de la connexion : " . mysqli_connect_error());
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $action = $_POST['action'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "GET") {
+    $action = $_REQUEST['action'];
 
     switch ($action) {
+        case 'consult':
+            $activite_id = $_GET['activite'];
+
+            // Requête pour obtenir les créneaux disponibles pour une activité donnée
+            $sql_creneaux = "SELECT coachs.nom AS coach, disponibilites.date, disponibilites.heure_debut, disponibilites.heure_fin, activites.nom AS activite
+                             FROM coachs
+                             JOIN disponibilites ON coachs.id = disponibilites.coach_id
+                             JOIN activites ON activites.id = $activite_id
+                             ORDER BY disponibilites.date, disponibilites.heure_debut";
+
+            $result_creneaux = mysqli_query($db_handle, $sql_creneaux);
+
+            if (mysqli_num_rows($result_creneaux) > 0) {
+                echo "<h2>Créneaux Disponibles</h2>";
+                echo "<table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Heure Début</th>
+                            <th>Heure Fin</th>
+                            <th>Activité</th>
+                            <th>Coach</th>
+                        </tr>";
+                while ($row = mysqli_fetch_assoc($result_creneaux)) {
+                    echo "<tr>
+                            <td>" . $row['date'] . "</td>
+                            <td>" . $row['heure_debut'] . "</td>
+                            <td>" . $row['heure_fin'] . "</td>
+                            <td>" . $row['activite'] . "</td>
+                            <td>" . $row['coach'] . "</td>
+                          </tr>";
+                }
+                echo "</table>";
+            } else {
+                echo "Aucun créneau disponible trouvé.";
+            }
+            break;
+
         case 'book':
             $date = $_POST['date'];
             $heure = $_POST['heure'];

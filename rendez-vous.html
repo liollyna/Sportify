@@ -41,6 +41,26 @@
                 <!-- Ajoutez d'autres créneaux horaires et activités -->
             </ul>
             
+            <h2>Consulter les Créneaux Disponibles</h2>
+            <form action="rendez-vous.php" method="get">
+                <label for="activite">Activité :</label>
+                <select id="activite" name="activite" required>
+                    <option value="1">Séance de Natation</option>
+                    <option value="2">Entraînement de Rugby</option>
+                    <option value="3">Cours de Fitness</option>
+                    <!-- Ajoutez d'autres activités disponibles -->
+                </select>
+                
+                <button type="submit" name="action" value="consult">Consulter les Créneaux</button>
+            </form>
+
+            <hr>
+
+            <!-- Section pour afficher les créneaux disponibles -->
+            <div id="creneaux">
+                <?php include 'process-booking.php'; ?>
+            </div>
+
             <h2>Prendre un Rendez-vous</h2>
             <form action="rendez-vous.php" method="post">
                 <label for="date">Date :</label>
@@ -61,11 +81,12 @@
             </form>
 
             <hr>
-
+            
             <!-- Section pour afficher les coachs -->
             <h2>Liste des Coachs</h2>
             <div id="coachs">
                 <!-- Les coachs seront chargés ici par le PHP -->
+                <?php include 'process-booking.php'; ?>
             </div>
 
         </section>
