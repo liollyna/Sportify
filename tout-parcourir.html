@@ -14,7 +14,7 @@
         <!-- Barre de navigation -->
         <nav>
             <ul>
-                <li><a href="index.html" class="occasion-button">Accueil </a></li>
+                <li><a href="index.html" class="occasion-button">Accueil</a></li>
                 <li><a href="tout-parcourir.html" class="occasion-button">Tout Parcourir</a></li>
                 <li><a href="recherche.html" class="occasion-button">Recherche</a></li>
                 <li><a href="rendez-vous.html" class="occasion-button">Rendez-vous</a></li>
@@ -35,57 +35,60 @@
                     <li><button class="button" onclick="showDetails('sports-competition')">Les Sports de compétition</button></li>
                     <li><button class="button" onclick="showDetails('salle-sport')">Salle de sport Omnes</button></li>
                 </ul>
+                <form id="bookForm" method="POST" action="tout-parcourir.php">
+                    <div class="form-group">
+                        <label for="activites">activites:</label>
+                        <input type="text" id="activites" name="activites">
+                    </div>
+                
+                    <!-- Espace pour entrer l'auteur -->
+                    <div class="form-group">
+                        <label for="coachs">coachs:</label>
+                        <input type="text" id="coachs" name="coachs">
+                    </div>
+                
+                    <!-- Espace pour entrer l'année -->
+                    <div class="form-group">
+                        <label for="disponibilites">disponibilites:</label>
+                        <input type="text" id="disponibilites" name="disponibilites">
+                    </div>
+                
+                    <!-- Espace pour entrer l'éditeur -->
+                    <div class="form-group">
+                        <label for="messages">messages:</label>
+                        <input type="text" id="messages" name="messages">
+                    </div>
+                
+                    <!-- Espace pour entrer l'URL de la couverture -->
+                    <div class="form-group">
+                        <label for="rendez_vous">rendez_vous :</label>
+                        <input type="text" id="rendez_vous" name="redez_vous">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="utilisateurs">utilisateurs :</label>
+                        <input type="text" id="utilisateurs" name="utilisateurs">
+                    </div>
+                
+                    
+                    
+                
+                    
+                
                 
                 <div id="activites-sportives" class="details">
                     <h3>Activités sportives</h3>
                     <ul>
-                        <li>Musculation</button></li>
-                        <li>Fitness</li>
-                        <li>Biking</li>
-                        <li>Cardio-Training</li>
-                        <li>Cours Collectifs</li>
+                        <li><button class="button" onclick="showDetails('musculation')" name="action" value="A">Musculation</button></li>
+                        <li><button class="button" onclick="showDetails('fitness')" name="action" value="B">Fitness</button></li>
+                        <li><button class="button" onclick="showDetails('biking')" name="action" value="C">Biking</button></li>
+                        <li><button class="button" onclick="showDetails('cardio-training')" name="action" value="D">Cardio-Training</button></li>
+                        <li><button class="button" onclick="showDetails('cours-collectifs')" name="action" value="E">Cours Collectifs</button></li>
                     </ul>
                 </div>
-                <div id="musculation" class="details">
-                    <h3>Musculation</h3>
-                    <p>En sélectionnant une activité spécifique, on peut trouver un responsable de cette activité, normalement un coach. En cliquant sur ce coach, on trouve son nom, sa photo, son bureau, et son calendrier (c-à-d sa disponibilité) de la semaine. On peut également apercevoir son CV. Si ce coach est disponible, vous pouvez également lui envoyer un message texte, vocal, ou communiquer avec lui sur place.</p>
-                </div>
-                <div id="sports-competition" class="details">
-                    <h3>Les Sports de compétition</h3>
-                    <ul>
-                        <li><button class="button" onclick="showDetails('basketball')">Basketball</button></li>
-                        <li><button class="button" onclick="showDetails('football')">Football</button></li>
-                        <li><button class="button" onclick="showDetails('rugby')">Rugby</button></li>
-                        <li><button class="button" onclick="showDetails('tennis')">Tennis</button></li>
-                        <li><button class="button" onclick="showDetails('natation')">Natation</button></li>
-                        <li><button class="button" onclick="showDetails('plongeon')">Plongeon</button></li>
-                    </ul>
-                </div>
-                <div id="basketball" class="details">
-                    <h3>Basketball</h3>
-                    <p>Description de l'activité Basketball...</p>
-                </div>
-                <div id="football" class="details">
-                    <h3>Football</h3>
-                    <p>Description de l'activité Football...</p>
-                </div>
-                <div id="rugby" class="details">
-                    <h3>Rugby</h3>
-                    <p>Description de l'activité Rugby...</p>
-                </div>
-                <div id="tennis" class="details">
-                    <h3>Tennis</h3>
-                    <p>Description de l'activité Tennis...</p>
-                </div>
-                <div id="natation" class="details">
-                    <h3>Natation</h3>
-                    <p>Description de l'activité Natation...</p>
-                </div>
-                <div id="plongeon" class="details">
-                    <h3>Plongeon</h3>
-                    <p>Description de l'activité Plongeon...</p>
-                </div>
-
+            </form>
+                <!-- Ajoutez les autres sections comme nécessaire -->
+            </div>
         </section>
     </main>
     
@@ -96,10 +99,14 @@
     </footer>
 
     <script>
-        function showDetails(id) {
-            $('.details').hide(); // Cache toutes les sections de détails
-            $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
-        }
+     function showDetails(id) {
+    $('.details').hide(); // Cache toutes les sections de détails
+    $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
+
+  
+}
+
     </script>
+    
 </body>
 </html>

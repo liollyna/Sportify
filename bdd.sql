@@ -180,3 +180,15 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'yourpassword';
+FLUSH PRIVILEGES;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+bind-address = 127.0.0.1;
+REPAIR TABLE mysql.user;
+mysql -u root;
+SELECT user, host FROM mysql.user;
+UPDATE mysql.user SET host = '%' WHERE user = 'root' AND host = 'localhost';
+FLUSH PRIVILEGES;
+net stop mysql
+net start mysql;
