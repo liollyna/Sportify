@@ -41,28 +41,28 @@
                         <input type="text" id="activites" name="activites">
                     </div>
                 
-                    <!-- Espace pour entrer l'auteur -->
+                    <!-- Espace pour entrer le coach -->
                     <div class="form-group">
                         <label for="coachs">coachs:</label>
                         <input type="text" id="coachs" name="coachs">
                     </div>
                 
-                    <!-- Espace pour entrer l'année -->
+                    <!-- Espace pour entrer la disponibilité -->
                     <div class="form-group">
                         <label for="disponibilites">disponibilites:</label>
                         <input type="text" id="disponibilites" name="disponibilites">
                     </div>
                 
-                    <!-- Espace pour entrer l'éditeur -->
+                    <!-- Espace pour entrer les messages -->
                     <div class="form-group">
                         <label for="messages">messages:</label>
                         <input type="text" id="messages" name="messages">
                     </div>
                 
-                    <!-- Espace pour entrer l'URL de la couverture -->
+                    <!-- Espace pour entrer le rendez-vous -->
                     <div class="form-group">
                         <label for="rendez_vous">rendez_vous :</label>
-                        <input type="text" id="rendez_vous" name="redez_vous">
+                        <input type="text" id="rendez_vous" name="rendez_vous">
                     </div>
                 
                     <div class="form-group">
@@ -70,20 +70,14 @@
                         <input type="text" id="utilisateurs" name="utilisateurs">
                     </div>
                 
-                    
-                    
-                
-                    
-                
-                
                 <div id="activites-sportives" class="details">
                     <h3>Activités sportives</h3>
                     <ul>
-                        <li><button class="button" onclick="showDetails('musculation')" name="action" value="A">Musculation</button></li>
-                        <li><button class="button" onclick="showDetails('fitness')" name="action" value="B">Fitness</button></li>
-                        <li><button class="button" onclick="showDetails('biking')" name="action" value="C">Biking</button></li>
-                        <li><button class="button" onclick="showDetails('cardio-training')" name="action" value="D">Cardio-Training</button></li>
-                        <li><button class="button" onclick="showDetails('cours-collectifs')" name="action" value="E">Cours Collectifs</button></li>
+                        <li><button type="submit" class="button" name="action" value="A">Musculation</button></li>
+                        <li><button type="submit" class="button" name="action" value="B">Fitness</button></li>
+                        <li><button type="submit" class="button" name="action" value="C">Biking</button></li>
+                        <li><button type="submit" class="button" name="action" value="D">Cardio-Training</button></li>
+                        <li><button type="submit" class="button" name="action" value="E">Cours Collectifs</button></li>
                     </ul>
                 </div>
             </form>
@@ -99,13 +93,10 @@
     </footer>
 
     <script>
-     function showDetails(id) {
-    $('.details').hide(); // Cache toutes les sections de détails
-    $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
-
-  
-}
-
+    function showDetails(id) {
+        $('.details').hide(); // Cache toutes les sections de détails
+        $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
+    }
     </script>
     
 </body>
