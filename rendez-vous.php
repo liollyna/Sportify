@@ -103,19 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "GET")
     }
 }
 
-// Requête pour récupérer les coachs
-$sql_coachs = "SELECT * FROM coachs";
-$result_coachs = mysqli_query($db_handle, $sql_coachs);
-
-if ($result_coachs) {
-    echo "<ul>";
-    while ($row = mysqli_fetch_assoc($result_coachs)) {
-        echo "<li>ID: " . $row['id'] . " - Nom: " . $row['nom'] . "</li>";
-    }
-    echo "</ul>";
-} else {
-    echo "Erreur lors de la récupération des coachs : " . mysqli_error($db_handle);
-}
 
 // Fermer la connexion
 mysqli_close($db_handle);
