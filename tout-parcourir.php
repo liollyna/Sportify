@@ -43,16 +43,20 @@ if (isset($_POST['action'])) {
                 echo "Téléphone : " . $coach['Telephone'] . "<br>";
                 echo "Email : " . $coach['Email'] . "<br>";
                 // Afficher d'autres informations si nécessaire
-            } else {
-                echo "Aucun coach trouvé avec l'ID 1.";
-            }
-        } else {
-            echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
-        }
-    }
+           // Afficher les boutons
+           echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+           echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+           echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+       } else {
+           echo "Aucun coach trouvé avec l'ID 3.";
+       }
+   } else {
+       echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+   }
 
 
-
+}
+}
 if ($action == "B") {
     // Récupérer les informations du coach avec l'id 1
     $query = "SELECT * FROM coachs WHERE id = 2";
@@ -72,13 +76,23 @@ if ($action == "B") {
             echo "Téléphone : " . $coach['Telephone'] . "<br>";
             echo "Email : " . $coach['Email'] . "<br>";
             // Afficher d'autres informations si nécessaire
-        } else {
-            echo "Aucun coach trouvé avec l'ID 2.";
-        }
-    } else {
-        echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
-    }
+         // Afficher les boutons
+         echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+         echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+         echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+     } else {
+         echo "Aucun coach trouvé avec l'ID 2.";
+     }
+ } else {
+     echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+ }
+
+
 }
+
+
+
+
 if ($action == "C") {
     // Récupérer les informations du coach avec l'id 1
     $query = "SELECT * FROM coachs WHERE id = 3";
@@ -98,15 +112,20 @@ if ($action == "C") {
             echo "Téléphone : " . $coach['Telephone'] . "<br>";
             echo "Email : " . $coach['Email'] . "<br>";
             // Afficher d'autres informations si nécessaire
-        } else {
-            echo "Aucun coach trouvé avec l'ID 3.";
-        }
-    } else {
-        echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
-    }
+         // Afficher les boutons
+         echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+         echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+         echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+     } else {
+         echo "Aucun coach trouvé avec l'ID 1.";
+     }
+ } else {
+     echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+ }
 }
 
-}
+
+
 
 $query_all = "SELECT activites.nom AS activites, coachs.*, creneaux.date AS creneaux, messages.contenu AS messages, rendez_vous.date AS rendez_vous, utilisateurs.nom AS utilisateurs
               FROM activites
@@ -154,9 +173,23 @@ if ($result_all && mysqli_num_rows($result_all) > 0) {
     }
     echo "</table>";
 } else {
-    echo "0 résultats";
+    echo "";
 }
 
 // Fermez la connexion à la base de données
 mysqli_close($db_handle);
 ?>
+
+<script>
+    function prendreRendezVous(coachId) {
+        // Code pour prendre un rendez-vous avec le coach ayant l'ID coachId
+    }
+
+    function contacterCoach(coachId) {
+        // Code pour contacter le coach ayant l'ID coachId
+    }
+
+    function voirCV(coachId) {
+        // Code pour voir le CV du coach ayant l'ID coachId
+    }
+</script>
