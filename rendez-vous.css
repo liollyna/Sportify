@@ -76,3 +76,19 @@ footer {
     bottom: 0;
     width: 100%;
 }
+.creneau-disponible {
+    background-color: white;
+    cursor: pointer;
+}
+
+.creneau-reserve {
+    background-color: blue;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.reserver-btn {
+    color: blue;
+    text-decoration: none;
+}
+

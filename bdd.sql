@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 29 mai 2024 à 18:54
+-- Généré le : jeu. 30 mai 2024 à 13:31
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `activites` (
 INSERT INTO `activites` (`id`, `nom`) VALUES
 (1, 'Séance de Natation'),
 (2, 'Entraînement de Rugby'),
-(3, 'Cours de Fitness');
+(3, 'Musculation');
 
 -- --------------------------------------------------------
 
@@ -53,47 +53,58 @@ DROP TABLE IF EXISTS `coachs`;
 CREATE TABLE IF NOT EXISTS `coachs` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `photo` varchar(255) NOT NULL,
+  `CV` varchar(255) NOT NULL,
+  `bureau` varchar(255) NOT NULL,
+  `Telephone` int NOT NULL,
+  `Email` varchar(255) NOT NULL,
+  `activite_id` int NOT NULL,
+  `salle_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `activite_id` (`activite_id`),
+  KEY `salle_id` (`salle_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `coachs`
 --
 
-INSERT INTO `coachs` (`id`, `nom`) VALUES
-(1, 'Coach A'),
-(2, 'Coach B');
+INSERT INTO `coachs` (`id`, `nom`, `photo`, `CV`, `bureau`, `Telephone`, `Email`, `activite_id`, `salle_id`) VALUES
+(1, 'Jean', 'image/jean.jpg', 'image/cv_jean.jpg', '12 rue de Serray', 615859423, 'jeanmuscu@gmail.com', 3, 1),
+(2, 'Damien', 'image/damien.jpg', 'image/cv_damien.jpg', '11 rue de la Pléiade', 789653416, 'damiennatation@gmail.com', 1, 3),
+(3, 'Antoine', 'image/entoine.jpg', 'image/cv_antoine.jpg', '13 rue du stade', 618953746, 'antoinerugby@gmail.com', 2, 2);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `disponibilites`
+-- Structure de la table `creneaux`
 --
 
-DROP TABLE IF EXISTS `disponibilites`;
-CREATE TABLE IF NOT EXISTS `disponibilites` (
+DROP TABLE IF EXISTS `creneaux`;
+CREATE TABLE IF NOT EXISTS `creneaux` (
   `id` int NOT NULL AUTO_INCREMENT,
   `coach_id` int NOT NULL,
   `date` date NOT NULL,
   `heure_debut` time NOT NULL,
   `heure_fin` time NOT NULL,
+  `type` enum('disponible','reserve','conge') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `coach_id` (`coach_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `disponibilites`
+-- Déchargement des données de la table `creneaux`
 --
 
-INSERT INTO `disponibilites` (`id`, `coach_id`, `date`, `heure_debut`, `heure_fin`) VALUES
-(1, 1, '2024-06-01', '10:00:00', '12:00:00'),
-(2, 2, '2024-06-02', '15:00:00', '17:00:00'),
-(3, 1, '2024-06-03', '09:00:00', '11:00:00'),
-(4, 1, '2024-06-04', '10:00:00', '12:00:00'),
-(5, 2, '2024-06-05', '14:00:00', '16:00:00'),
-(6, 2, '2024-06-06', '15:00:00', '17:00:00'),
-(7, 1, '2024-06-07', '09:00:00', '11:00:00'),
-(8, 2, '2024-06-08', '10:00:00', '12:00:00');
+INSERT INTO `creneaux` (`id`, `coach_id`, `date`, `heure_debut`, `heure_fin`, `type`) VALUES
+(1, 1, '2024-06-01', '10:00:00', '12:00:00', 'disponible'),
+(2, 2, '2024-06-02', '15:00:00', '17:00:00', 'disponible'),
+(3, 3, '2024-06-03', '09:00:00', '11:00:00', 'reserve'),
+(4, 1, '2024-06-04', '10:00:00', '12:00:00', 'conge'),
+(5, 2, '2024-06-05', '14:00:00', '16:00:00', 'reserve'),
+(6, 3, '2024-06-06', '15:00:00', '17:00:00', 'disponible'),
+(7, 1, '2024-06-07', '09:00:00', '11:00:00', 'disponible'),
+(8, 2, '2024-06-08', '10:00:00', '12:00:00', 'reserve');
 
 -- --------------------------------------------------------
 
@@ -142,13 +153,35 @@ CREATE TABLE IF NOT EXISTS `rendez_vous` (
 INSERT INTO `rendez_vous` (`id`, `utilisateur_id`, `date`, `heure`, `activite_id`, `coach_id`) VALUES
 (1, 1, '2024-06-01', '10:00:00', 1, 1),
 (2, 2, '2024-06-02', '15:00:00', 2, 2),
-(3, 1, '2024-06-03', '09:00:00', 3, 1),
+(3, 1, '2024-06-03', '09:00:00', 3, 3),
 (4, 2, '2024-06-04', '10:00:00', 1, 1),
 (5, 1, '2024-06-05', '14:00:00', 2, 2),
 (6, 2, '2024-06-06', '15:00:00', 3, 2),
 (7, 1, '2024-06-07', '09:00:00', 1, 1),
-(8, 2, '2024-06-08', '10:00:00', 2, 2),
+(8, 2, '2024-06-08', '10:00:00', 2, 3),
 (9, 1, '2024-06-03', '10:00:00', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `salles`
+--
+
+DROP TABLE IF EXISTS `salles`;
+CREATE TABLE IF NOT EXISTS `salles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `salles`
+--
+
+INSERT INTO `salles` (`id`, `nom`) VALUES
+(1, 'Salle A-01'),
+(2, 'Stade toulousain'),
+(3, 'piscine de la foret');
 
 -- --------------------------------------------------------
 
@@ -180,15 +213,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'yourpassword';
-FLUSH PRIVILEGES;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-bind-address = 127.0.0.1;
-REPAIR TABLE mysql.user;
-mysql -u root;
-SELECT user, host FROM mysql.user;
-UPDATE mysql.user SET host = '%' WHERE user = 'root' AND host = 'localhost';
-FLUSH PRIVILEGES;
-net stop mysql
-net start mysql;
