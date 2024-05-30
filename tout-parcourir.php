@@ -5,6 +5,18 @@ $db_handle = mysqli_connect('localhost', 'root', '', $database);
 if (!$db_handle) {
     die("Échec de la connexion : " . mysqli_connect_error());
 }
+if (isset($_POST['sports'])) {
+    $query = "SELECT * FROM activites";
+    $result = mysqli_query($db_handle, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($activity = mysqli_fetch_assoc($result)) {
+            echo '<li>' . htmlspecialchars($activity['nom']) . '</li>';
+        }
+    } else {
+        echo 'Aucune activité sportive trouvée.';
+    }
+}
 
 // Vérifiez l'action à effectuer
 if (isset($_POST['action'])) {
@@ -25,6 +37,10 @@ if (isset($_POST['action'])) {
                 echo "Informations du coach A :<br>";
                 echo "ID : " . $coach['id'] . "<br>";
                 echo "Nom : " . $coach['nom'] . "<br>";
+                echo "photo :" .$coach['photo'] . "<br>";
+                echo "bureau :" .$coach['bureau'] . "<br>";
+                echo "Telephone :" .$coach['Telephone'] . "<br>";
+                echo "Email :" .$coach['Email'] . "<br>";
                 // Afficher d'autres informations si nécessaire
             } else {
                 echo "Aucun coach trouvé avec l'ID 1.";

@@ -31,9 +31,9 @@
             <div class="caption"> 
                 <p>Catégories des services disponibles chez Sportify :</p>
                 <ul>
-                    <li><button class="button" onclick="showDetails('activites-sportives')">Activités sportives</button></li>
-                    <li><button class="button" onclick="showDetails('sports-competition')">Les Sports de compétition</button></li>
-                    <li><button class="button" onclick="showDetails('salle-sport')">Salle de sport Omnes</button></li>
+                    <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="1">Activités sportives</button></li>
+                    <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="2">Les Sports de compétition</button></li>
+                    <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="3">Salle de sport Omnes</button></li>
                 </ul>
                 <form id="bookForm" method="POST" action="tout-parcourir.php">
                     <div class="form-group">
@@ -73,11 +73,10 @@
                 <div id="activites-sportives" class="details">
                     <h3>Activités sportives</h3>
                     <ul>
-                        <li><button type="submit" class="button" name="action" value="A">Musculation</button></li>
-                        <li><button type="submit" class="button" name="action" value="B">Fitness</button></li>
-                        <li><button type="submit" class="button" name="action" value="C">Biking</button></li>
-                        <li><button type="submit" class="button" name="action" value="D">Cardio-Training</button></li>
-                        <li><button type="submit" class="button" name="action" value="E">Cours Collectifs</button></li>
+                        <li><button type="submit" class="button" name="action" value="A">Cours de Fitness</button></li>
+                        <li><button type="submit" class="button" name="action" value="B">Séance de natation</button></li>
+                        <li><button type="submit" class="button" name="action" value="C">Entraînement  de Rugby</button></li>
+                      
                     </ul>
                 </div>
             </form>
