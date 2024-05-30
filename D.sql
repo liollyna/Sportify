@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 30 mai 2024 à 13:31
+-- Généré le : jeu. 30 mai 2024 à 14:23
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `spotify2`
+-- Base de données : `bdd`
 --
 
 -- --------------------------------------------------------
@@ -70,9 +70,9 @@ CREATE TABLE IF NOT EXISTS `coachs` (
 --
 
 INSERT INTO `coachs` (`id`, `nom`, `photo`, `CV`, `bureau`, `Telephone`, `Email`, `activite_id`, `salle_id`) VALUES
-(1, 'Jean', 'image/jean.jpg', 'image/cv_jean.jpg', '12 rue de Serray', 615859423, 'jeanmuscu@gmail.com', 3, 1),
-(2, 'Damien', 'image/damien.jpg', 'image/cv_damien.jpg', '11 rue de la Pléiade', 789653416, 'damiennatation@gmail.com', 1, 3),
-(3, 'Antoine', 'image/entoine.jpg', 'image/cv_antoine.jpg', '13 rue du stade', 618953746, 'antoinerugby@gmail.com', 2, 2);
+(1, 'Marie', 'image/F.jpg', 'image/cv_marie.jpg', '12 rue de Serray', 615859423, 'marie.rozo@omnessports.fr', 1, 3),
+(2, 'Antoine', 'image/RUG.jpg', 'image/cv_antoine.jpg', '13 rue du Stade', 789653416, 'antoine.dupont@omnessports.fr', 2, 2),
+(3, 'Pedro', 'image/2.jpg', 'image/cv_pedro.jpg', '11 rue de la Pléiade', 618953746, 'pedro.ramirez@omnessports.fr', 3, 1);
 
 -- --------------------------------------------------------
 

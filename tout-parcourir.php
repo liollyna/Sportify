@@ -5,6 +5,7 @@ $db_handle = mysqli_connect('localhost', 'root', '', $database);
 if (!$db_handle) {
     die("Échec de la connexion : " . mysqli_connect_error());
 }
+
 if (isset($_POST['sports'])) {
     $query = "SELECT * FROM activites";
     $result = mysqli_query($db_handle, $query);
@@ -35,13 +36,12 @@ if (isset($_POST['action'])) {
 
                 // Afficher les informations du coach
                 echo "Informations du coach A :<br>";
-                echo "ID : " . $coach['id'] . "<br>";
-                echo "Nom : " . $coach['nom'] . "<br>";
-                echo "photo :" .$coach['photo'] . "<br>";
-                echo "bureau :" .$coach['bureau'] . "<br>";
-                echo "Telephone :" .$coach['Telephone'] . "<br>";
-                echo "Email :" .$coach['Email'] . "<br>";
-                // Afficher d'autres informations si nécessaire
+                echo "ID : " . htmlspecialchars($coach['id']) . "<br>";
+                echo "Nom : " . htmlspecialchars($coach['nom']) . "<br>";
+                echo "Photo : " . htmlspecialchars($coach['photo']) . "<br>";
+                echo "Bureau : " . htmlspecialchars($coach['bureau']) . "<br>";
+                echo "Téléphone : " . htmlspecialchars($coach['Telephone']) . "<br>";
+                echo "Email : " . htmlspecialchars($coach['Email']) . "<br>";
             } else {
                 echo "Aucun coach trouvé avec l'ID 1.";
             }
@@ -51,29 +51,67 @@ if (isset($_POST['action'])) {
     }
 }
 
-$query_all = "SELECT * FROM activites, coachs, disponibilites, messages, rendez_vous, utilisateurs";
+// Récupérer toutes les données des tables
+$query_all = "
+    SELECT
+        activites.nom AS activite_nom,
+        coachs.nom AS coach_nom, coachs.photo, coachs.CV, coachs.bureau, coachs.Telephone, coachs.Email,
+        creneaux.date AS creneaux_date, creneaux.heure_debut, creneaux.heure_fin, creneaux.type AS creneaux_type,
+        messages.contenu AS message_contenu, messages.date_envoi AS message_date,
+        rendez_vous.date AS rendez_vous_date, rendez_vous.heure AS rendez_vous_heure,
+        utilisateurs.nom AS utilisateur_nom, utilisateurs.email AS utilisateur_email
+    FROM activites
+    LEFT JOIN coachs ON activites.id = coachs.activite_id
+    LEFT JOIN creneaux ON coachs.id = creneaux.coach_id
+    LEFT JOIN messages ON coachs.id = messages.coach_id OR utilisateurs.id = messages.utilisateur_id
+    LEFT JOIN rendez_vous ON coachs.id = rendez_vous.coach_id
+    LEFT JOIN utilisateurs ON rendez_vous.utilisateur_id = utilisateurs.id
+";
+
 $result_all = mysqli_query($db_handle, $query_all);
 
 if ($result_all && mysqli_num_rows($result_all) > 0) {
     echo "<h2>Liste des enregistrements</h2>";
     echo "<table border='1'>
             <tr>
-                <th>activites</th>
-                <th>coachs</th>
-                <th>disponibilites</th>
-                <th>messages</th>
-                <th>rendez_vous</th>
-                <th>utilisateurs</th>
+                <th>Activité</th>
+                <th>Coach</th>
+                <th>Photo</th>
+                <th>CV</th>
+                <th>Bureau</th>
+                <th>Téléphone</th>
+                <th>Email</th>
+                <th>Date Creneaux</th>
+                <th>Heure Début</th>
+                <th>Heure Fin</th>
+                <th>Type Creneaux</th>
+                <th>Message Contenu</th>
+                <th>Date Message</th>
+                <th>Date Rendez-vous</th>
+                <th>Heure Rendez-vous</th>
+                <th>Utilisateur</th>
+                <th>Email Utilisateur</th>
             </tr>";
 
     while ($row = mysqli_fetch_assoc($result_all)) {
         echo "<tr>
-                <td>".$row["activites"]."</td>
-                <td>".$row["coachs"]."</td>
-                <td>".$row["disponibilites"]."</td>
-                <td>".$row["messages"]."</td>
-                <td>".$row["rendez_vous"]."</td>
-                <td>".$row["utilisateurs"]."</td>
+                <td>" . htmlspecialchars($row["activite_nom"]) . "</td>
+                <td>" . htmlspecialchars($row["coach_nom"]) . "</td>
+                <td>" . htmlspecialchars($row["photo"]) . "</td>
+                <td>" . htmlspecialchars($row["CV"]) . "</td>
+                <td>" . htmlspecialchars($row["bureau"]) . "</td>
+                <td>" . htmlspecialchars($row["Telephone"]) . "</td>
+                <td>" . htmlspecialchars($row["Email"]) . "</td>
+                <td>" . htmlspecialchars($row["creneaux_date"]) . "</td>
+                <td>" . htmlspecialchars($row["heure_debut"]) . "</td>
+                <td>" . htmlspecialchars($row["heure_fin"]) . "</td>
+                <td>" . htmlspecialchars($row["creneaux_type"]) . "</td>
+                <td>" . htmlspecialchars($row["message_contenu"]) . "</td>
+                <td>" . htmlspecialchars($row["message_date"]) . "</td>
+                <td>" . htmlspecialchars($row["rendez_vous_date"]) . "</td>
+                <td>" . htmlspecialchars($row["rendez_vous_heure"]) . "</td>
+                <td>" . htmlspecialchars($row["utilisateur_nom"]) . "</td>
+                <td>" . htmlspecialchars($row["utilisateur_email"]) . "</td>
             </tr>";
     }
     echo "</table>";
