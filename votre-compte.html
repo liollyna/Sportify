@@ -13,26 +13,6 @@
 
     <title>Votre Compte - Sportify</title>    <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
 </head>
-<script>
-    function showDetails(category, userType) {
-    if (userType === 'client') {
-        var email = prompt("Veuillez saisir votre adresse e-mail :");
-        var password = prompt("Veuillez saisir votre mot de passe :");
-        
-        // Vérifier l'authentification ici
-        if (email && password) {
-            // Redirection vers la page du client ou autre action nécessaire
-            window.location.href = "page_client.html"; // Remplacez "page_client.html" par l'URL de la page du client
-        } else {
-            // Afficher un message d'erreur ou gérer autrement l'authentification invalide
-            alert("Authentification invalide");
-        }
-    } else {
-        // Logique pour les autres types d'utilisateurs (coach, administrateur, etc.)
-    }
-}
-    </script>
-    
 
 <body>
     <div class="background-wrapper">
@@ -59,13 +39,27 @@
                 <p>Catégories des services disponibles chez Sportify :</p>
                 <ul>
                     <li>
-                        <button class="button" name="sports" value="1">Clients</button>
+                        <button class="button" id="clients-button" name="sports" value="1">Clients</button>
+
+                    </li>
+                    <script>
+                        // Sélectionnez le bouton "Clients"
+                        var clientsButton = document.getElementById('clients-button');
+                    
+                        // Sélectionnez le formulaire de connexion
+                        var loginForm = document.getElementById('login-form');
+                    
+                        // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Clients"
+                        clientsButton.addEventListener('click', function() {
+                            // Affichez le formulaire de connexion
+                            loginForm.style.display = 'block';
+                        });
+                    </script>
+                    <li>
+                        <button class="button" id="clients-button" name="sports" value="2">Coachs ou personnel de sports</button>
                     </li>
                     <li>
-                        <button class="button" name="sports" value="2">Coachs ou personnel de sports</button>
-                    </li>
-                    <li>
-                        <button class="button"  name="sports" value="3">Administrateur</button>
+                        <button class="button" id="clients-button" name="sports" value="3">Administrateur</button>
                     </li>
                 </ul>
             <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
