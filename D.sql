@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 30 mai 2024 à 14:23
+-- Généré le : ven. 31 mai 2024 à 12:40
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `bdd`
+-- Base de données : `spotify2`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `activites` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `activites`
@@ -41,7 +41,10 @@ CREATE TABLE IF NOT EXISTS `activites` (
 INSERT INTO `activites` (`id`, `nom`) VALUES
 (1, 'Séance de Natation'),
 (2, 'Entraînement de Rugby'),
-(3, 'Musculation');
+(3, 'Musculation'),
+(4, 'tennis'),
+(5, 'basketball'),
+(6, 'football');
 
 -- --------------------------------------------------------
 
@@ -63,16 +66,19 @@ CREATE TABLE IF NOT EXISTS `coachs` (
   PRIMARY KEY (`id`),
   KEY `activite_id` (`activite_id`),
   KEY `salle_id` (`salle_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `coachs`
 --
 
 INSERT INTO `coachs` (`id`, `nom`, `photo`, `CV`, `bureau`, `Telephone`, `Email`, `activite_id`, `salle_id`) VALUES
-(1, 'Marie', 'image/F.jpg', 'image/cv_marie.jpg', '12 rue de Serray', 615859423, 'marie.rozo@omnessports.fr', 1, 3),
-(2, 'Antoine', 'image/RUG.jpg', 'image/cv_antoine.jpg', '13 rue du Stade', 789653416, 'antoine.dupont@omnessports.fr', 2, 2),
-(3, 'Pedro', 'image/2.jpg', 'image/cv_pedro.jpg', '11 rue de la Pléiade', 618953746, 'pedro.ramirez@omnessports.fr', 3, 1);
+(3, 'Pedro', 'image/pedro.jpg', 'cv/pedro.xml', '12 rue de Serray', 615859423, 'pedropot@omnessports.fr', 3, 3),
+(1, 'Marie', 'image/marie.jpg', 'cv/marie.xml', '11 rue de la Pléiade', 789653416, 'marierozo@omnessports.fr', 1, 1),
+(2, 'Antoine', 'image/antoine.jpg', 'cv/antoine.xml', '13 rue du stade', 618953746, 'antoinedupont@omnessports.fr', 2, 2),
+(4, 'Gaël', 'image/gael.jpg', 'cv/gael.xml', 'Roland Garros', 613598743, 'gaëlmonfils@omnessports.fr', 4, 4),
+(5, 'Tony', 'image/tony.jpg', 'cv/tony.xml', 'Accord hôtel Arena Bercy', 756325968, 'tonyparker@omnessports.fr', 5, 5),
+(6, 'Zidane', 'image/zidane.jpg', 'cv/zidane.xml', 'Parc des princes Paris', 765983214, 'zidane@omnessports.fr', 6, 6);
 
 -- --------------------------------------------------------
 
@@ -154,9 +160,9 @@ INSERT INTO `rendez_vous` (`id`, `utilisateur_id`, `date`, `heure`, `activite_id
 (1, 1, '2024-06-01', '10:00:00', 1, 1),
 (2, 2, '2024-06-02', '15:00:00', 2, 2),
 (3, 1, '2024-06-03', '09:00:00', 3, 3),
-(4, 2, '2024-06-04', '10:00:00', 1, 1),
-(5, 1, '2024-06-05', '14:00:00', 2, 2),
-(6, 2, '2024-06-06', '15:00:00', 3, 2),
+(4, 2, '2024-06-04', '10:00:00', 4, 4),
+(5, 1, '2024-06-05', '14:00:00', 5, 5),
+(6, 2, '2024-06-06', '15:00:00', 6, 6),
 (7, 1, '2024-06-07', '09:00:00', 1, 1),
 (8, 2, '2024-06-08', '10:00:00', 2, 3),
 (9, 1, '2024-06-03', '10:00:00', 1, 1);
@@ -172,16 +178,19 @@ CREATE TABLE IF NOT EXISTS `salles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `salles`
 --
 
 INSERT INTO `salles` (`id`, `nom`) VALUES
-(1, 'Salle A-01'),
+(3, 'Salle A-01'),
 (2, 'Stade toulousain'),
-(3, 'piscine de la foret');
+(1, 'piscine de la foret'),
+(4, 'court Philippe Chatrier'),
+(5, 'Arena Bercy'),
+(6, 'Parc des princes');
 
 -- --------------------------------------------------------
 
@@ -197,17 +206,20 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `adresse` varchar(255) DEFAULT NULL,
   `telephone` varchar(20) DEFAULT NULL,
   `mot_de_passe` varchar(255) NOT NULL,
+  `type` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`id`, `nom`, `email`, `adresse`, `telephone`, `mot_de_passe`) VALUES
-(1, 'John Doe', 'johndoe@example.com', '123 Rue Sport, Ville Sportive', '123-456-7890', 'password1'),
-(2, 'Jane Smith', 'janesmith@example.com', '456 Avenue Gym, Ville Active', '098-765-4321', 'password2');
+INSERT INTO `utilisateurs` (`id`, `nom`, `email`, `adresse`, `telephone`, `mot_de_passe`, `type`) VALUES
+(1, 'John Doe', 'johndoe@example.com', '123 Rue Sport, Ville Sportive', '123-456-7890', 'password1', 'client'),
+(2, 'Jane Smith', 'janesmith@example.com', '456 Avenue Gym, Ville Active', '098-765-4321', 'password2', 'client'),
+(3, 'Dupont', 'antoinedupont@omnessports.fr', 'stade Toulousain', '635986532', 'coachpassword', 'coach'),
+(4, 'admin', 'admin@omnessports.fr', 'ECE', '0635987463', 'adminpassword', 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
