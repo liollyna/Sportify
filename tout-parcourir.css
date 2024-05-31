@@ -10,8 +10,6 @@ body, html {
     background-size: cover;
 }
 
-
-
 .occasion-button {
     text-decoration: none;
     color: #333;
@@ -33,7 +31,7 @@ nav ul {
 }
 
 .texte1 {
-    color:rgb(55, 107, 128)
+    color: rgb(55, 107, 128);
 }
 
 h1 {
@@ -43,30 +41,68 @@ h1 {
     padding: 50px;
 }
 
-.page-footer {
-    background-color: #f8f9fa;
-    padding: 20px 0;
+.caption {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    margin: 20px;
 }
 
-.page-footer .infos {
-    margin-bottom: 20px;
+.button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.page-footer .A {
-    display: block;
+.button:hover {
+    background-color: #0056b3;
+}
+
+.coach-card {
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    overflow: hidden;
+}
+
+.coach-photo {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+}
+
+.coach-info {
+    padding: 20px;
+    flex: 1;
+}
+
+.coach-name {
+    font-size: 24px;
     margin-bottom: 10px;
-    color: #007bff;
-    text-decoration: none;
 }
 
-.page-footer p {
-    margin: 0;
+.coach-info p {
+    margin: 5px 0;
 }
 
-.page-footer .text-left {
-    text-align: left;
+.coach-info button {
+    margin: 5px 5px 0 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.page-footer .infos {
-    padding-right: 20px;
+.coach-info button:hover {
+    background-color: #0056b3;
 }
