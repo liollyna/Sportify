@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xml" href="#stylesheet"?>
+<!DOCTYPE doc [
+<!ATTLIST xsl:stylesheet
+  id ID #REQUIRED>
+]>
+<doc>
+	<xsl:stylesheet version="1.0" id="stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:output method="html"/>
+		<xsl:template match="xsl:stylesheet" />
+		<xsl:template match="/">
+			<html>
+				<head>
+					<title><xsl:value-of select="//cv/me/@name"/></title>
+					<style type="text/css">
+						/* printing specific CSS */
+						@media all
+						{
+							.page-break  { display:none; }
+						}
+						@media print
+						{
+							.page-break  { display:block; page-break-before:always; }
+							#hobbiesandinterests h2 { padding-top: 1cm; }
+							#references h2 { padding-top: 1cm; }
+						}
+						@page
+						{
+							size: auto;   /* auto is the initial value */
+							margin: 0mm;  /* this affects the margin in the printer settings */
+						}
+						/* regular CSS */
+						body
+						{
+							background-color: #bbb;
+							text-align: center;
+							line-height: 24px;
+							color: #555;
+							margin-top: 20px;
+							margin-bottom: 20px;
+							font-family: arial;
+							font-size: 90%;
+						}
+						#container 
+						{
+							margin: 0 auto;
+							width: 960px;
+							text-align: left;
+							background-color: #fff;
+							padding-top: 20px;
+							padding-bottom: 20px;
+						}
+						#me h1
+						{
+							background-color: #000;
+							color: #fff;
+							font-size:480%;
+							padding: 10px 5px 10px 5px;
+						}
+						#content
+						{
+							margin: 20px;
+						}
+						#statement
+						{
+							border: 1px solid #aaa;
+							text-align: justify;
+						}
+						#statement p
+						{
+							margin: 10px;
+						}
+						#sxscontainer
+						{
+							margin-top: 20px;
+						}
+						#education
+						{
+							float: left;
+							width: 250px;
+						}
+						#education div.qual p.qualcontent
+						{
+							margin-bottom: 0px;
+						}
+						#education div.qual p.qualestablishment
+						{
+							margin-top: 0px;
+							font-style:italic;
+						}
+						#employment
+						{
+							float: right;
+							width: 650px;
+						}
+						#employment p.jobdescription
+						{
+							margin-bottom: 0px;
+						}
+						#employment ul.jobachievementlist
+						{
+							margin-top: 0px;
+						}
+						#hobbiesandinterests
+						{
+							clear:both;
+							padding-top: 10px;
+						}
+					</style>
+					<link rel="stylesheet" type="text/css" href="cvedit.css" />
+					<!-- link to cvedit.js is last element in body tag -->
+				</head>
+				<body>
+					<div id="container">
+						<div id="me">
+							<h1><xsl:value-of select="//cv/me/@name"/></h1>
+							<ul id="contactdetails">
+								<li>Adresse: <xsl:value-of select="//cv/me/@address"/></li>
+								<li>Téléphone: <xsl:value-of select="//cv/me/@telephone"/></li>
+								<li>Email: <xsl:value-of select="//cv/me/@email"/></li>
+							</ul>
+						</div>
+						<div id="content">
+							<div id="statement">
+								<p><xsl:copy-of select="//cv/me"/></p>
+							</div>
+							<div id="sxscontainer">
+								<div id="education">
+									<h2>Éducation</h2>
+									<xsl:call-template name="showEducation"/>
+								</div>
+								<div id="employment">
+									<h2>Expériences professionnelles</h2>
+									<xsl:call-template name="showEmployment"/>
+								</div>
+							</div>
+							<div class="page-break"/>
+							<div id="hobbiesandinterests">
+								<h2>Passions et hobbies</h2>
+								<xsl:copy-of select="//cv/hobandint"/>
+							</div>
+							<div id="references">
+								<h2>Références</h2>
+								<xsl:call-template name="showReferences"/>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript" src="cvedit.js"></script>
+				</body>
+			</html>
+		</xsl:template>
+		<!-- useThisElseThat: if the value passed is null, return the 'That' value -->
+		<xsl:template name="useThisElseThat">
+			<xsl:param name="this"/>
+			<xsl:param name="that"/>
+			<xsl:choose>
+				<xsl:when test="$this!=''">
+					<xsl:value-of select="$this"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$that"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>
+		<!-- showDateRange: standardise the way date ranges are shown across the document -->
+		<xsl:template name="showDateRange">
+			<xsl:param name="fromDate"/>
+			<xsl:param name="toDate"/>
+			<xsl:param name="noToDate"/>
+			(<xsl:value-of select="$fromDate"/> - 
+			<xsl:call-template name="useThisElseThat">
+				<xsl:with-param name="this" select="$toDate"/>
+				<xsl:with-param name="that" select="$noToDate"/>
+			</xsl:call-template>)
+		</xsl:template>
+		<!-- niceQual: what an individual qual looks like -->
+		<xsl:template name="showQual">
+			<xsl:param name="currentQual"/>
+			<div class="qual">
+				<p class="qualcontent"><xsl:copy-of select="."/></p>
+				<p class="qualestablishment"><xsl:value-of select="@establishment"/>
+					<xsl:call-template name="showDateRange">
+						<xsl:with-param name="fromDate" select="@from"/>
+						<xsl:with-param name="toDate" select="@to"/>
+						<xsl:with-param name="noToDate" select="'Ongoing'"/>
+					</xsl:call-template>
+				</p>
+			</div>
+		</xsl:template>
+		<!-- showEducation: the education section of the document -->
+		<xsl:template name="showEducation">
+			<h3 class="qualtype"><xsl:value-of select="//cv/education/qualification[1]/@type"/></h3>
+			<xsl:for-each select="//cv/education/qualification">
+				<xsl:if test="@type != preceding-sibling::qualification[1]/@type">
+					<h3 class="qualtype"><xsl:value-of select="@type"/></h3>
+				</xsl:if>
+				<xsl:call-template name="showQual">
+					<xsl:with-param name="currentQual" select="."/>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showEmployment: the employment section of the document -->
+		<xsl:template name="showEmployment">
+			<xsl:for-each select="//cv//employment/experience">
+				<h3 class="jobtitle">
+					<strong><xsl:value-of select="@job_title"/></strong>, <xsl:value-of select="@establishment"/>
+					<span>
+						<xsl:call-template name="showDateRange">
+							<xsl:with-param name="fromDate" select="@from"/>
+							<xsl:with-param name="toDate" select="@to"/>
+							<xsl:with-param name="noToDate" select="'Ongoing'"/>
+						</xsl:call-template>
+					</span>
+				</h3>
+				<p class="jobdescription"><xsl:value-of select="./description[1]"/></p>
+				<ul class="jobachievementlist">
+					<xsl:for-each select="achievement">
+						<li class="jobachievementitem"><xsl:value-of select="."/></li>
+					</xsl:for-each>
+				</ul>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showReferences: the references section of the document -->
+		<xsl:template name="showReferences">
+			<xsl:for-each select="//cv/references/referee">
+				<h3 class="refereename"><xsl:value-of select="@name"/></h3>
+				<ul class="refereecontactdetails">
+					<li>Adresse: <xsl:value-of select="@address"/></li>
+					<li>Téléphone: <xsl:value-of select="@telephone"/></li>
+					<li>Email: <xsl:value-of select="@email"/></li>
+				</ul>
+				<p class="refereecomments"><xsl:value-of select="comments"/></p>
+			</xsl:for-each>
+		</xsl:template>
+	</xsl:stylesheet>
+	<cv>
+		<me name="Tony Parker" address="1234 Rue des Légendes, 75016 Paris, France" telephone="+33 1 23 45 67 89" email="tony.parker@basketpro.fr">
+			Ancien joueur professionnel de basket-ball et coach avec une riche expérience dans l'entraînement de joueurs de compétition. Spécialisé dans le développement de compétences individuelles, la stratégie de match, et l'analyse de performance. Passionné par le basket-ball et déterminé à aider les joueurs à atteindre leur plein potentiel.
+		</me>
+		<education>
+			<qualification type="Licence en Gestion du Sport" establishment="Université de Lyon" from="1998" to="2002">
+				Licence en gestion du sport, avec une spécialisation en management d'équipes sportives.
+			</qualification>
+			<qualification type="Formation de Coach Professionnel" establishment="Institut National du Sport, de l'Expertise et de la Performance (INSEP)" from="2005" to="2006">
+				Formation avancée en coaching professionnel de basket-ball.
+			</qualification>
+		</education>
+		<employment>
+			<experience job_title="Coach principal de basket" establishment="ASVEL Lyon-Villeurbanne" from="2018" to="Maintenant">
+				<description>
+					Responsable de l'entraînement et de la stratégie pour l'équipe de basket professionnelle ASVEL Lyon-Villeurbanne.
+				</description>
+				<achievement>Conduite de l'équipe à plusieurs titres de champion de France.</achievement>
+				<achievement>Développement de programmes d'entraînement innovants intégrant les dernières avancées en science du sport.</achievement>
+			</experience>
+			<experience job_title="Consultant en performance" establishment="Équipe de France de Basket" from="2014" to="2018">
+				<description>
+					Consultant en performance pour l'équipe nationale de France, fournissant des analyses et des stratégies pour améliorer les performances des joueurs.
+				</description>
+				<achievement>Contribution à la victoire de la France à l'EuroBasket 2015.</achievement>
+				<achievement>Introduction de nouvelles méthodes d'entraînement basées sur la technologie et l'analyse des données.</achievement>
+			</experience>
+		</employment>
+		<hobandint>
+			Je suis passionné par le basket-ball et le coaching de joueurs de haut niveau. J'aime également analyser les matchs pour développer des stratégies gagnantes et organiser des camps d'entraînement pour transmettre mes connaissances et mon expérience.
+		</hobandint>
+		<references>
+			<referee name="Gregg Popovich" address="San Antonio Spurs, 1 ATT Center Parkway, San Antonio, TX 78219, USA" telephone="+1 210 444 5000" email="gregg.popovich@spurs.com">
+				<comments>Tony est un coach de basket exceptionnel avec une connaissance approfondie du jeu et une capacité unique à motiver et développer ses joueurs. Il a montré un grand leadership et une passion pour le basket-ball tout au long de sa carrière.</comments>
+			</referee>
+			<referee name="Boris Diaw" address="456 Rue des Champions, 13008 Marseille, France" telephone="+33 4 91 23 45 67" email="boris.diaw@basketpro.fr">
+				<comments>Tony est un coach dévoué avec une passion pour le développement des joueurs et une expertise en stratégie de match. Il a toujours montré un grand professionnalisme et un engagement envers ses équipes.</comments>
+			</referee>
+		</references>
+	</cv>
+</doc>

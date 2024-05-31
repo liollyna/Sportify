@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xml" href="#stylesheet"?>
+<!DOCTYPE doc [
+<!ATTLIST xsl:stylesheet
+  id	ID	#REQUIRED>
+]>
+<doc>
+	<xsl:stylesheet version="1.0" id="stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:output method="html"/>
+		<xsl:template match="xsl:stylesheet" />
+		<xsl:template match="/">
+			<html>
+				<head>
+					<title><xsl:value-of select="//cv/me/@name"/></title>
+					<style type="text/css">
+						/* printing specific CSS */
+						@media all
+						{
+							.page-break  { display:none; }
+						}
+						@media print
+						{
+							.page-break  { display:block; page-break-before:always; }
+							#hobbiesandinterests h2 { padding-top: 1cm; }
+							#references h2 { padding-top: 1cm; }
+						}
+						@page
+						{
+							size: auto;   /* auto is the initial value */
+							margin: 0mm;  /* this affects the margin in the printer settings */
+						}
+						/* regular CSS */
+						body
+						{
+							background-color: #bbb;
+							text-align: center;
+							line-height: 24px;
+							color: #555;
+							margin-top: 20px;
+							margin-bottom: 20px;
+							font-family: arial;
+							font-size: 90%;
+						}
+						#container 
+						{
+							margin: 0 auto;
+							width: 960px;
+							text-align: left;
+							background-color: #fff;
+							padding-top: 20px;
+							padding-bottom: 20px;
+						}
+						#me h1
+						{
+							background-color: #000;
+							color: #fff;
+							font-size:480%;
+							padding: 10px 5px 10px 5px;
+						}
+						#content
+						{
+							margin: 20px;
+						}
+						#statement
+						{
+							border: 1px solid #aaa;
+							text-align: justify;
+						}
+						#statement p
+						{
+							margin: 10px;
+						}
+						#sxscontainer
+						{
+							margin-top: 20px;
+						}
+						#education
+						{
+							float: left;
+							width: 250px;
+						}
+						#education div.qual p.qualcontent
+						{
+							margin-bottom: 0px;
+						}
+						#education div.qual p.qualestablishment
+						{
+							margin-top: 0px;
+							font-style:italic;
+						}
+						#employment
+						{
+							float: right;
+							width: 650px;
+						}
+						#employment p.jobdescription
+						{
+							margin-bottom: 0px;
+						}
+						#employment ul.jobachievementlist
+						{
+							margin-top: 0px;
+						}
+						#hobbiesandinterests
+						{
+							clear:both;
+							padding-top: 10px;
+						}
+					</style>
+					<link rel="stylesheet" type="text/css" href="cvedit.css" />
+					<!-- link to cvedit.js is last element in body tag -->
+				</head>
+				<body>
+					<div id="container">
+						<div id="me">
+							<h1><xsl:value-of select="//cv/me/@name"/></h1>
+							<ul id="contactdetails">
+								<li>Addresse: <xsl:value-of select="//cv/me/@address"/></li>
+								<li>Téléphone: <xsl:value-of select="//cv/me/@telephone"/></li>
+								<li>Email: <xsl:value-of select="//cv/me/@email"/></li>
+							</ul>
+						</div>
+						<div id="content">
+							<div id="statement">
+								<p><xsl:copy-of select="//cv/me"/></p>
+							</div>
+							<div id="sxscontainer">
+								<div id="education">
+									<h2>Education</h2>
+									<xsl:call-template name="showEducation"/>
+								</div>
+								<div id="Expériences professionnelles">
+									<h2>Expériences professionnelles</h2>
+									<xsl:call-template name="showEmployment"/>
+								</div>
+							</div>
+							<div class="page-break"/>
+							<div id="Passions et hobbies">
+								<h2>Passions et hobbies</h2>
+								<xsl:copy-of select="//cv/hobandint"/>
+							</div>
+							<div id="Références">
+								<h2>References</h2>
+								<xsl:call-template name="showReferences"/>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript" src="cvedit.js"></script>
+				</body>
+			</html>
+		</xsl:template>
+		<!-- useThisElseThat: if the value passed is null, return the 'That' value -->
+		<xsl:template name="useThisElseThat">
+			<xsl:param name="this"/>
+			<xsl:param name="that"/>
+			<xsl:choose>
+				<xsl:when test="$this!=''">
+					<xsl:value-of select="$this"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$that"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>
+		<!-- showDateRange: standardise the way date ranges are shown across the document -->
+		<xsl:template name="showDateRange">
+			<xsl:param name="fromDate"/>
+			<xsl:param name="toDate"/>
+			<xsl:param name="noToDate"/>
+			(<xsl:value-of select="$fromDate"/> - 
+			<xsl:call-template name="useThisElseThat">
+				<xsl:with-param name="this" select="$toDate"/>
+				<xsl:with-param name="that" select="$noToDate"/>
+			</xsl:call-template>)
+		</xsl:template>
+		<!-- niceQual: what an individual qual looks like -->
+		<xsl:template name="showQual">
+			<xsl:param name="currentQual"/>
+			<div class="qual">
+				<p class="qualcontent"><xsl:copy-of select="."/></p>
+				<p class="qualestablishment"><xsl:value-of select="@establishment"/>
+					<xsl:call-template name="showDateRange">
+						<xsl:with-param name="fromDate" select="@from"/>
+						<xsl:with-param name="toDate" select="@to"/>
+						<xsl:with-param name="noToDate" select="'Ongoing'"/>
+					</xsl:call-template>
+				</p>
+			</div>
+		</xsl:template>
+		<!-- showEducation: the education section of the document -->
+		<xsl:template name="showEducation">
+			<h3 class="qualtype"><xsl:value-of select="//cv/education/qualification[1]/@type"/></h3>
+			<xsl:for-each select="//cv/education/qualification">
+				<xsl:if test="@type != preceding-sibling::qualification[1]/@type">
+					<h3 class="qualtype"><xsl:value-of select="@type"/></h3>
+				</xsl:if>
+				<xsl:call-template name="showQual">
+					<xsl:with-param name="currentQual" select="."/>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showEmployment: the employment section of the document -->
+		<xsl:template name="showEmployment">
+			<xsl:for-each select="//cv//employment/experience">
+				<h3 class="jobtitle">
+					<strong><xsl:value-of select="@job_title"/></strong>, <xsl:value-of select="@establishment"/>
+					<span>
+						<xsl:call-template name="showDateRange">
+							<xsl:with-param name="fromDate" select="@from"/>
+							<xsl:with-param name="toDate" select="@to"/>
+							<xsl:with-param name="noToDate" select="'Ongoing'"/>
+						</xsl:call-template>
+					</span>
+				</h3>
+				<p class="jobdescription"><xsl:value-of select="./description[1]"/></p>
+				<ul class="jobachievementlist">
+					<xsl:for-each select="achievement">
+						<li class="jobachievementitem"><xsl:value-of select="."/></li>
+					</xsl:for-each>
+				</ul>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showReferences: the references section of the document -->
+		<xsl:template name="showReferences">
+			<xsl:for-each select="//cv/references/referee">
+				<h3 class="refereename"><xsl:value-of select="@name"/></h3>
+				<ul class="refereecontactdetails">
+					<li>Address: <xsl:value-of select="@address"/></li>
+					<li>Telephone: <xsl:value-of select="@telephone"/></li>
+					<li>Email: <xsl:value-of select="@email"/></li>
+				</ul>
+				<p class="refereecomments"><xsl:value-of select="comments"/></p>
+			</xsl:for-each>
+		</xsl:template>
+	</xsl:stylesheet>
+	<cv>
+		<me name="Marie Rozo" address="12 rue de Serray, 75009 Paris, France" telephone="+33 6 15 85 94 23" email="marie.rozo@omnessports.fr">
+			Entraîneur de natation passionnée et dévouée avec plus de 10 ans d'expérience dans la formation de nageurs de tous niveaux, des débutants aux athlètes de compétition. Capacité avérée à développer des programmes d’entraînement personnalisés qui améliorent les performances, l’endurance et la technique. Solides compétences en communication et en motivation, avec un engagement à favoriser un environnement de formation positif et favorable.
+		</me>
+		<education>
+			<qualification type="Certification personelle" establishment="Fédération française de natation" from="2017" to="2017">
+				Coach de natation certifiée.
+			</qualification>
+			<qualification type="Licence STAPS" establishment="Université Paris Cité" from="2014" to="2017">
+				Licence de sciences techniques et d'activités 
+				sportives (STAPS), avec mention ES en L3.
+			</qualification>
+			<qualification type="Baccalauréat scientifique" establishment="Lycée Jacques Prévert" from="2011" to="2014">
+				Obtention du Baccalauréat scientifique,
+				(S) mention Bien
+			</qualification>
+		</education>
+		<employment>
+			<experience job_title="Entraîneur en chef de natation" establishment="Centre aquatique de Paris" from="2021" to="Maintenant">
+				<description>
+					Entraîneur principal responsable de la planification et de la prestation des séances d’entraînement pour les nageurs de compétition.
+				</description>
+				<achievement>Développement de programmes d'entraînement sur mesure qui ont amélioré la performance des athlètes et ont conduit à de nombreuses médailles régionales et nationales.</achievement>
+				<achievement>Organisation et animation d'ateliers de natation pour améliorer la technique et l'endurance.</achievement>
+			</experience>
+			<experience job_title="Moniteur de natation" establishment="Club natation de Paris" from="2017" to="2021">
+				<description>
+					Cours de natation dispensés à des individus et à des groupes de différents niveaux, des débutants aux nageurs avancés.
+				</description>
+				<achievement>J’ai appris avec succès à nager à plus de 500 personnes, dont beaucoup ont progressé vers des niveaux compétitifs.</achievement>
+				<achievement>Mise en œuvre de protocoles de sécurité et formation sur la sécurité aquatique à tous les participants.</achievement>
+			</experience>
+		</employment>
+		<hobandint>
+			J'aprécie la natation, ainsi que l'organisation d'entraînements et d'événements de natation communautaires. Passionné par la promotion de la sécurité aquatique et l’encouragement d’un mode de vie sain et actif grâce à la natation.
+
+		</hobandint>
+		<references>
+			<referee name="Jean Martin" address="456 Avenue des Champs, 75008 Paris, France" telephone="+33 1 98 76 54 32" email="j.martin@aquaticcenter.com">
+				<comments>Le dévouement de Marie envers la natation et l'entraînement est évident dans les réussites de ses élèves. Elle crée un environnement de formation positif et engageant.</comments>
+			</referee>
+			<referee name="Martin Dubois" address="789 Boulevard Saint-Germain, 75006 Paris, France" telephone="+33 1 67 89 01 23" email="m.dubois@cityswimclub.com">
+				<comments>Marie est un entraîneur exceptionnel avec une compréhension approfondie des techniques de natation et un talent pour motiver les nageurs à atteindre leur plein potentiel.</comments>
+			</referee>
+		</references>
+	</cv>
+</doc>
