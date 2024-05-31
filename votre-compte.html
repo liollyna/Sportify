@@ -13,6 +13,7 @@
 
     <title>Votre Compte - Sportify</title>    <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
 </head>
+
 <body>
     <div class="background-wrapper">
         <header>
@@ -34,6 +35,33 @@
         <!-- Contenu principal de la page -->
         <section>
             <h1>Votre Compte</h1>
+            <div class="caption"> 
+                <p>Catégories des services disponibles chez Sportify :</p>
+                <ul>
+                    <li>
+                        <button class="button" id="clients-button" name="sports" value="1">Clients</button>
+
+                    </li>
+                    <script>
+                        // Sélectionnez le bouton "Clients"
+                        var clientsButton = document.getElementById('clients-button');
+                    
+                        // Sélectionnez le formulaire de connexion
+                        var loginForm = document.getElementById('login-form');
+                    
+                        // Ajoutez un gestionnaire d'événements pour le clic sur le bouton "Clients"
+                        clientsButton.addEventListener('click', function() {
+                            // Affichez le formulaire de connexion
+                            loginForm.style.display = 'block';
+                        });
+                    </script>
+                    <li>
+                        <button class="button" id="clients-button" name="sports" value="2">Coachs ou personnel de sports</button>
+                    </li>
+                    <li>
+                        <button class="button" id="clients-button" name="sports" value="3">Administrateur</button>
+                    </li>
+                </ul>
             <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
             
             <h2>Informations Personnelles</h2>
