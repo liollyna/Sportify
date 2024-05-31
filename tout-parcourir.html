@@ -41,7 +41,18 @@
                     <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="2">Les Sports de compétition</button></li>
                     <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="3">Salle de sport Omnes</button></li>
                 </ul>
-               
+                <form id="bookForm" method="POST" action="tout-parcourir.php">
+                    <div class="form-group">
+                        <label for="activites">activites:</label>
+                        <input type="text" id="activites" name="activites">
+                    </div>
+                
+                    <!-- Espace pour entrer le coach -->
+                    <div class="form-group">
+                        <label for="coachs">coachs:</label>
+                        <input type="text" id="coachs" name="coachs">
+                    </div>
+                
                     <!-- Espace pour entrer la disponibilité -->
                     <div class="form-group">
                         <label for="creneaux">creneaux:</label>
@@ -68,7 +79,7 @@
                 <div id="activites-sportives" class="details">
                     <h3>Activités sportives</h3>
                     <ul>
-                        <li><button type="submit" class="button" name="action" value="A">Seance de natation</button></li>
+					<li><button type="submit" class="button" name="action" value="A">Seance de natation</button></li>
                         <li><button type="submit" class="button" name="action" value="B">entrainement de rugby</button></li>
                         <li><button type="submit" class="button" name="action" value="C">Cours de Fitness</button></li>
                       
@@ -92,6 +103,6 @@
         $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
     }
     </script>
-    </div>
+    
 </body>
 </html>
