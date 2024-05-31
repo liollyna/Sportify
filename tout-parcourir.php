@@ -34,7 +34,11 @@
                     <ul>
                         <li><button class="button" name="sports" value="1">Activités sportives</button></li>
                         <li><button class="button" name="sports" value="2">Les Sports de compétition</button></li>
-                        <li><button class="button" name="sports" value="3">Salle de sport Omnes</button></li>
+                        <li>
+                            <form action="SalleDeSport.html" method="GET">
+                                <button type="submit" class="button" name="action" value="3">Salle de sport Omnes</button>
+                            </form>
+                        </li>
                     </ul>
                     <form id="bookForm" method="POST" action="tout-parcourir.php">
                         <div id="activites-sportives" class="details">
