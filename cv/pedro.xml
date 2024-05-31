@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xml" href="#stylesheet"?>
+<!DOCTYPE doc [
+<!ATTLIST xsl:stylesheet
+  id ID #REQUIRED>
+]>
+<doc>
+	<xsl:stylesheet version="1.0" id="stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:output method="html"/>
+		<xsl:template match="xsl:stylesheet" />
+		<xsl:template match="/">
+			<html>
+				<head>
+					<title><xsl:value-of select="//cv/me/@name"/></title>
+					<style type="text/css">
+						/* printing specific CSS */
+						@media all
+						{
+							.page-break  { display:none; }
+						}
+						@media print
+						{
+							.page-break  { display:block; page-break-before:always; }
+							#hobbiesandinterests h2 { padding-top: 1cm; }
+							#references h2 { padding-top: 1cm; }
+						}
+						@page
+						{
+							size: auto;   /* auto is the initial value */
+							margin: 0mm;  /* this affects the margin in the printer settings */
+						}
+						/* regular CSS */
+						body
+						{
+							background-color: #bbb;
+							text-align: center;
+							line-height: 24px;
+							color: #555;
+							margin-top: 20px;
+							margin-bottom: 20px;
+							font-family: arial;
+							font-size: 90%;
+						}
+						#container 
+						{
+							margin: 0 auto;
+							width: 960px;
+							text-align: left;
+							background-color: #fff;
+							padding-top: 20px;
+							padding-bottom: 20px;
+						}
+						#me h1
+						{
+							background-color: #000;
+							color: #fff;
+							font-size:480%;
+							padding: 10px 5px 10px 5px;
+						}
+						#content
+						{
+							margin: 20px;
+						}
+						#statement
+						{
+							border: 1px solid #aaa;
+							text-align: justify;
+						}
+						#statement p
+						{
+							margin: 10px;
+						}
+						#sxscontainer
+						{
+							margin-top: 20px;
+						}
+						#education
+						{
+							float: left;
+							width: 250px;
+						}
+						#education div.qual p.qualcontent
+						{
+							margin-bottom: 0px;
+						}
+						#education div.qual p.qualestablishment
+						{
+							margin-top: 0px;
+							font-style:italic;
+						}
+						#employment
+						{
+							float: right;
+							width: 650px;
+						}
+						#employment p.jobdescription
+						{
+							margin-bottom: 0px;
+						}
+						#employment ul.jobachievementlist
+						{
+							margin-top: 0px;
+						}
+						#hobbiesandinterests
+						{
+							clear:both;
+							padding-top: 10px;
+						}
+					</style>
+					<link rel="stylesheet" type="text/css" href="cvedit.css" />
+					<!-- link to cvedit.js is last element in body tag -->
+				</head>
+				<body>
+					<div id="container">
+						<div id="me">
+							<h1><xsl:value-of select="//cv/me/@name"/></h1>
+							<ul id="contactdetails">
+								<li>Addresse: <xsl:value-of select="//cv/me/@address"/></li>
+								<li>Téléphone: <xsl:value-of select="//cv/me/@telephone"/></li>
+								<li>Email: <xsl:value-of select="//cv/me/@email"/></li>
+							</ul>
+						</div>
+						<div id="content">
+							<div id="statement">
+								<p><xsl:copy-of select="//cv/me"/></p>
+							</div>
+							<div id="sxscontainer">
+								<div id="education">
+									<h2>Education</h2>
+									<xsl:call-template name="showEducation"/>
+								</div>
+								<div id="Expériences professionnelles">
+									<h2>Expériences professionnelles</h2>
+									<xsl:call-template name="showEmployment"/>
+								</div>
+							</div>
+							<div class="page-break"/>
+							<div id="Passions et hobbies">
+								<h2>Passions et hobbies</h2>
+								<xsl:copy-of select="//cv/hobandint"/>
+							</div>
+							<div id="Références">
+								<h2>References</h2>
+								<xsl:call-template name="showReferences"/>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript" src="cvedit.js"></script>
+				</body>
+			</html>
+		</xsl:template>
+		<!-- useThisElseThat: if the value passed is null, return the 'That' value -->
+		<xsl:template name="useThisElseThat">
+			<xsl:param name="this"/>
+			<xsl:param name="that"/>
+			<xsl:choose>
+				<xsl:when test="$this!=''">
+					<xsl:value-of select="$this"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$that"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>
+		<!-- showDateRange: standardise the way date ranges are shown across the document -->
+		<xsl:template name="showDateRange">
+			<xsl:param name="fromDate"/>
+			<xsl:param name="toDate"/>
+			<xsl:param name="noToDate"/>
+			(<xsl:value-of select="$fromDate"/> - 
+			<xsl:call-template name="useThisElseThat">
+				<xsl:with-param name="this" select="$toDate"/>
+				<xsl:with-param name="that" select="$noToDate"/>
+			</xsl:call-template>)
+		</xsl:template>
+		<!-- niceQual: what an individual qual looks like -->
+		<xsl:template name="showQual">
+			<xsl:param name="currentQual"/>
+			<div class="qual">
+				<p class="qualcontent"><xsl:copy-of select="."/></p>
+				<p class="qualestablishment"><xsl:value-of select="@establishment"/>
+					<xsl:call-template name="showDateRange">
+						<xsl:with-param name="fromDate" select="@from"/>
+						<xsl:with-param name="toDate" select="@to"/>
+						<xsl:with-param name="noToDate" select="'Ongoing'"/>
+					</xsl:call-template>
+				</p>
+			</div>
+		</xsl:template>
+		<!-- showEducation: the education section of the document -->
+		<xsl:template name="showEducation">
+			<h3 class="qualtype"><xsl:value-of select="//cv/education/qualification[1]/@type"/></h3>
+			<xsl:for-each select="//cv/education/qualification">
+				<xsl:if test="@type != preceding-sibling::qualification[1]/@type">
+					<h3 class="qualtype"><xsl:value-of select="@type"/></h3>
+				</xsl:if>
+				<xsl:call-template name="showQual">
+					<xsl:with-param name="currentQual" select="."/>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showEmployment: the employment section of the document -->
+		<xsl:template name="showEmployment">
+			<xsl:for-each select="//cv//employment/experience">
+				<h3 class="jobtitle">
+					<strong><xsl:value-of select="@job_title"/></strong>, <xsl:value-of select="@establishment"/>
+					<span>
+						<xsl:call-template name="showDateRange">
+							<xsl:with-param name="fromDate" select="@from"/>
+							<xsl:with-param name="toDate" select="@to"/>
+							<xsl:with-param name="noToDate" select="'Ongoing'"/>
+						</xsl:call-template>
+					</span>
+				</h3>
+				<p class="jobdescription"><xsl:value-of select="./description[1]"/></p>
+				<ul class="jobachievementlist">
+					<xsl:for-each select="achievement">
+						<li class="jobachievementitem"><xsl:value-of select="."/></li>
+					</xsl:for-each>
+				</ul>
+			</xsl:for-each>
+		</xsl:template>
+		<!-- showReferences: the references section of the document -->
+		<xsl:template name="showReferences">
+			<xsl:for-each select="//cv/references/referee">
+				<h3 class="refereename"><xsl:value-of select="@name"/></h3>
+				<ul class="refereecontactdetails">
+					<li>Address: <xsl:value-of select="@address"/></li>
+					<li>Telephone: <xsl:value-of select="@telephone"/></li>
+					<li>Email: <xsl:value-of select="@email"/></li>
+				</ul>
+				<p class="refereecomments"><xsl:value-of select="comments"/></p>
+			</xsl:for-each>
+		</xsl:template>
+	</xsl:stylesheet>
+	<cv>
+		<me name="Pedro Pot" address="11 rue de la Pléiade, 75009, Paris" telephone="+33 7 89 65 34 16" email="pedro.pot@omnessports.fr">
+			Coach de musculation expérimenté avec plus de 8 ans d'expérience dans l'entraînement de clients de tous niveaux pour atteindre leurs objectifs de fitness. Expert en développement de programmes personnalisés, en renforcement musculaire et en techniques de motivation. Passionné par le fitness et engagé à aider les clients à mener une vie saine et active.
+		</me>
+		<education>
+			<qualification type="Certification personnelle" establishment="Fédération espagnole de musculation" from="2016" to="2016">
+				Certification de coach de musculation.
+			</qualification>
+			<qualification type="Licence en Sciences du Sport" establishment="Université Complutense de Madrid" from="2012" to="2016">
+				Licence en sciences du sport, spécialisation en entraînement physique et performance.
+			</qualification>
+			<qualification type="Baccalauréat scientifique" establishment="Lycée Cervantes" from="2009" to="2012">
+				Obtention du Baccalauréat scientifique, mention Bien.
+			</qualification>
+		</education>
+		<employment>
+			<experience job_title="Coach de musculation en chef" establishment="Fit Gym Madrid" from="2019" to="Maintenant">
+				<description>
+					Responsable de la création et de la supervision de programmes d'entraînement pour les clients individuels et les groupes.
+				</description>
+				<achievement>Élaboration de programmes d'entraînement personnalisés qui ont aidé de nombreux clients à atteindre leurs objectifs de fitness.</achievement>
+				<achievement>Organisation de sessions de groupe et d'ateliers sur le renforcement musculaire et la nutrition sportive.</achievement>
+			</experience>
+			<experience job_title="Coach de musculation" establishment="Gym Power" from="2016" to="2019">
+				<description>
+					Fourniture de conseils et de programmes d'entraînement personnalisés aux membres du gymnase.
+				</description>
+				<achievement>A aidé plus de 300 clients à améliorer leur forme physique et à atteindre leurs objectifs personnels.</achievement>
+				<achievement>Mise en place de protocoles de sécurité et formation des clients sur l'utilisation correcte des équipements.</achievement>
+			</experience>
+		</employment>
+		<hobandint>
+			Je suis passionné par la musculation et le fitness, ainsi que par l'organisation de compétitions et d'événements de fitness communautaires. J'aime également promouvoir un mode de vie sain et actif grâce à des conseils en nutrition et à l'entraînement physique.
+		</hobandint>
+		<references>
+			<referee name="Carlos Rodriguez" address="789 Avenida de Barcelona, 08008 Barcelona, Spain" telephone="+34 900 456 789" email="c.rodriguez@fitgym.com">
+				<comments>Pedro est un coach exceptionnel qui combine une connaissance approfondie de la musculation avec une capacité unique à motiver ses clients. Il crée des programmes d'entraînement efficaces et adaptés aux besoins de chacun.</comments>
+			</referee>
+			<referee name="Ana Martinez" address="456 Calle de Sevilla, 41004 Sevilla, Spain" telephone="+34 700 123 789" email="a.martinez@powergym.com">
+				<comments>Pedro est un coach de musculation dévoué avec une passion pour le fitness et un talent pour aider les clients à atteindre leurs objectifs. Il a toujours montré un grand professionnalisme et un engagement envers le bien-être de ses clients.</comments>
+			</referee>
+		</references>
+	</cv>
+</doc>
