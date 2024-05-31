@@ -1,7 +1,4 @@
 <?php
-// Démarrage de la session
-session_start();
-
 // Connexion à la base de données
 $servername = "localhost";
 $username = "votre_nom_utilisateur";
@@ -22,15 +19,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Requête SQL pour récupérer l'utilisateur avec cet e-mail et ce mot de passe
-    $sql = "SELECT id, nom, email FROM utilisateurs WHERE email='$email' AND mot_de_passe='$password'";
+    $sql = "SELECT id, nom FROM utilisateurs WHERE email='$email' AND mot_de_passe='$password'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Utilisateur trouvé dans la base de données, stocker les informations de l'utilisateur dans une session
-        $user = $result->fetch_assoc();
-        $_SESSION['user'] = $user;
+        // Utilisateur trouvé dans la base de données, rediriger vers la page client par exemple
+        header("Location: page_client.html");
+        exit;
     } else {
-        // Utilisateur non trouvé, afficher un message d'erreur
+        // Utilisateur non trouvé, afficher un message d'erreur ou rediriger vers une autre page
         echo "Adresse e-mail ou mot de passe incorrect.";
     }
 }
