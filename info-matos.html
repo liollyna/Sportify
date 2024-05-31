@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="matos.js"></script>
+    <title>Informations sur le Matériel - Salle de Sport Omnes</title>
+    <style>
+            
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f8f9fa;
+            }
+
+            header, footer {
+                background-color: #333;
+                color: white;
+                text-align: center;
+                padding: 1em;
+            }
+
+            nav {
+                margin: 1em 0;
+                background-color: #cccbcb;
+                text-align: center;
+                padding: 1em;
+            }
+
+            nav a {
+                margin: 0 1em;
+                text-decoration: none;
+                color: #333;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                color: rgba(95, 188, 211, 0.959);
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            /* Styles du carrousel */
+            .carousel-container {
+                width: 80%;
+                margin: 0 auto;
+                overflow: hidden;
+                border-radius: 10px;
+                position: relative;
+                height: 400px; /* Ajustez la hauteur selon vos besoins */
+            }
+
+            .carousel-slide {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+                width: calc(100% * 3); /* Assurez-vous que cela correspond au nombre d'images */
+            }
+
+            .carousel-slide img {
+                width: calc(100% / 3); /* Assurez-vous que cela correspond au nombre d'images */
+                height: 100%;
+                object-fit: cover; /* Ajuste les images pour qu'elles remplissent le conteneur */
+            }
+
+            .prev, .next {
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                width: auto;
+                margin-top: -22px;
+                padding: 16px;
+                color: white;
+                font-weight: bold;
+                font-size: 18px;
+                transition: 0.6s ease;
+                border-radius: 0 3px 3px 0;
+                user-select: none;
+            }
+
+            .next {
+                right: 0;
+                border-radius: 3px 0 0 3px;
+            }
+
+            .prev:hover, .next:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            /* Section d'informations */
+            .info-section {
+                margin-top: 20px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .info-section p {
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+            .back-button {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                color: white;
+                background-color: #333;
+                text-decoration: none;
+                text-align: center;
+                border-radius: 5px;
+                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+                transition: background-color 0.3s, box-shadow 0.3s;
+                font-size: 16px;
+            }
+
+            .back-button:hover {
+                background-color: #555;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+            }
+
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>Informations sur le Matériel</h1>
+    </header>
+
+    <div class="content">
+        <div class="carousel-container">
+            <div class="carousel-slide">
+                <img src="image/veloellipte.png" alt="Vélos élliptiques">
+                <img src="image/tapis.jpg" alt="Tapis de course">
+                <img src="image/squat_rack.png" alt="Squat Rack">
+                <img src="image/banc.png" alt="Banc de musculation">
+                <img src="image/poids.png" alt="Poids libres">
+                <!-- Ajoutez autant d'images que nécessaire -->
+            </div>
+            <a class="prev" onclick="moveSlide(-1)">&#10094;</a>
+            <a class="next" onclick="moveSlide(1)">&#10095;</a>
+        </div>
+
+        <div class="info-section">
+            <h2>Notre Matériel</h2>
+            <p>Nous disposons d'une large gamme de matériel de haute qualité pour répondre à tous vos besoins d'entraînement. Voici quelques exemples de ce que nous proposons :</p>
+            <ul>
+                <li>Tapis de course modernes avec écran intégré</li>
+                <li>Vélos elliptiques pour un entraînement cardio efficace</li>
+                <li>Machines de musculation pour travailler tous les groupes musculaires</li>
+                <li>Poids libres et kettlebells</li>
+                <li>Et bien plus encore!</li>
+            </ul>
+        </div>
+
+        <a href="SalleDeSport.html" class="back-button">Retour</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Salle de Sport Omnes</p>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide img');
+
+        function showSlide(index) {
+            const slideWidth = slides[0].clientWidth;
+            const newTransformValue = -index * slideWidth;
+            document.querySelector('.carousel-slide').style.transform = `translateX(${newTransformValue}px)`;
+        }
+
+        function moveSlide(direction) {
+            slideIndex += direction;
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            } else if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+            showSlide(slideIndex);
+        }
+
+        showSlide(slideIndex);
+    </script>
+</body>
+</html>

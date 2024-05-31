@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salle de Sport Omnes</title>
+    <style>
+        .salle-de-sport-wrapper {
+            background-image: url("AAA.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        nav {
+            margin: 1em 0;
+            background-color: #cccbcb;
+            text-align: center;
+            padding: 1em;
+        }
+        nav a {
+            margin: 0 1em;
+            text-decoration: none;
+            color: #333;
+        }
+        section {
+            padding: 1em;
+        }
+        h2 {
+            color: #333;
+            margin-left: 100px;
+            font-size: 30px;
+        }
+        .service-item {
+            margin-bottom: 1em;
+        }
+        form {
+            margin-top: 2em;
+        }
+        label {
+            display: block;
+            margin-top: 1em;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-top: 0.5em;
+        }
+        button {
+            margin-top: 1em;
+            padding: 0.5em 2em;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .appointment-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #333;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .appointment-button:hover {
+            background-color: #555;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+        }
+        .info-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Salle de Sport Omnes</h1>
+    </header>
+
+    <nav>
+        <a href="#services">Services</a>
+        <a href="#regles">Règles</a>
+        <a href="#horaires">Horaires</a>
+        <a href="#questionnaire">Questionnaire</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="services">
+        <h2>Services Disponibles</h2>
+        <div class="service-item">
+            <h3>Matériel d'entraînement</h3>
+            <p>Nous offrons des machines  performantes et de dernière génération pour tous les types d'entraînement.</p>
+            <p>Nos machines sont variées pour tous les niveau et types d'entraînement</p>
+            <a href="info-matos.html" class="info-button">Plus d'informations</a>
+        </div>
+        <div class="service-item">
+            <h3>Programmes Personnalisés</h3>
+            <p>Des programmes d'entraînement personnalisés avec nos coach sont disponibles sur demande.</p>
+        </div>
+        <a href="URL_DE_LA_PAGE_DE_RDV" class="appointment-button">Prendre un rendez-vous</a>
+        <div class="service-item">
+            <h3>Cours Collectifs</h3>
+            <p>Participez à nos cours collectifs pour une séance d'entraînement dynamique et motivante.</p>
+        </div>
+    </section>
+    <section id="regles">
+        <h2>Règles d'Utilisation des Machines :</h2>
+        <ul>
+            <li>Pour l'hygiène de tous, veillez nettoyer les machines après chaque utilisation.</li>
+            <li>Respecter les autres utilisateurs et limiter le temps d'utilisation des machines en période de forte affluence.</li>
+            <li>Signaler tout dysfonctionnement ou problème concernant les machines au personnel.</li>
+        </ul>
+        <h2>Dans les vestiaires :</h2>
+        <ul>
+            <li>Pour les casiers, veuillez apporter vos propres cadenas. La gym ne n'est pas responsable des pertes ou vols de toutes affaires personnelles.</li>
+            <li>Utiliser une serviette personnelle.</li>
+            <li>Respecter des autres utilisateurs.</li>
+        </ul>
+    </section>
+
+    <section id="horaires">
+        <h2>Horaires de la Salle de sport :</h2>
+        <p>Lundi - Vendredi: 6h00 - 22h00</p>
+        <p>Samedi: 8h00 - 20h00</p>
+        <p>Dimanche: 8h00 - 18h00</p>
+    </section>
+
+    <section id="questionnaire">
+        <h2>Questionnaire pour les Nouveaux Utilisateurs</h2>
+        <p>Veuillez répondre à ce questionnaire avant de continuer</p>
+        <form>
+            <label for="name">Nom:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="experience">Expérience en Salle de Sport:</label>
+            <textarea id="experience" name="experience" rows="4" required></textarea>
+
+            <label for="goals">Objectifs d'Entraînement:</label>
+            <textarea id="goals" name="goals" rows="4" required></textarea>
+
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+
+    <section id="contact">
+        <h2>Coordonnées du Responsable</h2>
+        <p>Nom : Bastien Savard</p>
+        <p>Email : bastien.savard@salledesportomnes.com</p>
+        <p>Téléphone : +33 6 87 53 68 19</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Salle de Sport Omnes. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
