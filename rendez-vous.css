@@ -1,78 +1,72 @@
-body {
-    font-family: Arial, sans-serif;
+body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
+.background-wrapper {
+    background-image: url('AAA.jpg');
+    background-size: cover;
+}
+
+.texte1 {
+    color:rgb(55, 107, 128)
+}
+
+
+.occasion-button {
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.3s;
+    display: inline-block;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
 }
 
 nav ul {
     list-style-type: none;
+    margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
-nav ul li {
-    margin: 0 15px;
+
+h1 {
+    color: rgba(95, 188, 211, 0.959);
+    font-size: 30px;
+    text-align: center;
+    padding: 50px;
 }
 
-nav ul li a {
-    color: white;
+.page-footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+.page-footer .infos {
+    margin-bottom: 20px;
+}
+
+.page-footer .A {
+    display: block;
+    margin-bottom: 10px;
+    color: #007bff;
     text-decoration: none;
 }
 
-main {
-    padding: 20px;
+.page-footer p {
+    margin: 0;
 }
 
-h1, h2 {
-    color: #333;
+.page-footer .text-left {
+    text-align: left;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-form label {
-    margin-top: 10px;
-}
-
-form input, form select, form button {
-    margin-top: 5px;
-    padding: 10px;
-    font-size: 16px;
-}
-
-form button {
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-form button:hover {
-    background-color: #555;
-}
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 0 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.page-footer .infos {
+    padding-right: 20px;
 }
