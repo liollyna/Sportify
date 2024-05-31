@@ -100,7 +100,7 @@
                                 echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
                                 echo "<button onclick='prendreRendezVous(" . $coach['id'] . ")'>Prendre rendez-vous</button>";
                                 echo "<button onclick='contacterCoach(" . $coach['id'] . ")'>Contacter le coach</button>";
-                                echo "<button onclick='voirCV(" . $coach['id'] . ")'>Voir CV</button>";
+                                echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                                 echo "</div>";
                                 echo "</div>";
                             } else {

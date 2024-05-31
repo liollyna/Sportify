@@ -25,3 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function voirCV(cvPath) {
+    window.open(cvPath, '_blank');
+}

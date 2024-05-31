@@ -234,7 +234,7 @@
 		</xsl:template>
 	</xsl:stylesheet>
 	<cv>
-		<me name="Antoine Peor" address="456 Rue du Stade, 75015 Paris, France" telephone="+33 6 18 95 37 46" email="antoine.peor@omnessports.fr">
+		<me name="Antoine Dupont" address="456 Rue du Stade, 75015 Paris, France" telephone="+33 6 18 95 37 46" email="antoine.dupont@omnessports.fr">
 			Coach de rugby passionné avec plus de 10 ans d'expérience dans l'entraînement de joueurs de tous âges et niveaux. Spécialiste du développement de programmes d'entraînement, de la stratégie de match et de la motivation des équipes. Dévoué à l'amélioration continue des performances des joueurs et à la promotion des valeurs du rugby.
 		</me>
 		<education>
