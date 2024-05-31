@@ -1,5 +1,5 @@
 <?php
-$database = "bdd";
+$database = "spotify2";
 $db_handle = mysqli_connect('localhost', 'root', '', $database);
 
 if (!$db_handle) {
