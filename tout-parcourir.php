@@ -38,7 +38,7 @@ if (isset($_POST['action'])) {
                 echo "Informations du coach A :<br>";
                 echo "ID : " . $coach['id'] . "<br>";
                 echo "Nom : " . $coach['nom'] . "<br>";
-                echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='100'><br>"; // Affichage de l'image du coach
+                echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
                 echo "Bureau : " . $coach['bureau'] . "<br>";
                 echo "Téléphone : " . $coach['Telephone'] . "<br>";
                 echo "Email : " . $coach['Email'] . "<br>";
@@ -58,7 +58,7 @@ if (isset($_POST['action'])) {
 }
 }
 if ($action == "B") {
-    // Récupérer les informations du coach avec l'id 1
+    
     $query = "SELECT * FROM coachs WHERE id = 2";
     $result = mysqli_query($db_handle, $query);
 
@@ -71,7 +71,7 @@ if ($action == "B") {
             echo "Informations du coach B :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
-            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='100'><br>"; // Affichage de l'image du coach
+            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
             echo "Bureau : " . $coach['bureau'] . "<br>";
             echo "Téléphone : " . $coach['Telephone'] . "<br>";
             echo "Email : " . $coach['Email'] . "<br>";
@@ -107,7 +107,7 @@ if ($action == "C") {
             echo "Informations du coach C :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
-            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='100'><br>"; // Affichage de l'image du coach
+            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
             echo "Bureau : " . $coach['bureau'] . "<br>";
             echo "Téléphone : " . $coach['Telephone'] . "<br>";
             echo "Email : " . $coach['Email'] . "<br>";
@@ -117,7 +117,7 @@ if ($action == "C") {
          echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
          echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
      } else {
-         echo "Aucun coach trouvé avec l'ID 1.";
+         echo "Aucun coach trouvé avec l'ID 3.";
      }
  } else {
      echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
@@ -126,6 +126,100 @@ if ($action == "C") {
 
 
 
+if ($action == "D") {
+    // Récupérer les informations du coach avec l'id 1
+    $query = "SELECT * FROM coachs WHERE id = 4";
+    $result = mysqli_query($db_handle, $query);
+
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            // Récupérer les données du coach
+            $coach = mysqli_fetch_assoc($result);
+
+            // Afficher les informations du coach
+            echo "Informations du coach C :<br>";
+            echo "ID : " . $coach['id'] . "<br>";
+            echo "Nom : " . $coach['nom'] . "<br>";
+            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
+            echo "Bureau : " . $coach['bureau'] . "<br>";
+            echo "Téléphone : " . $coach['Telephone'] . "<br>";
+            echo "Email : " . $coach['Email'] . "<br>";
+            // Afficher d'autres informations si nécessaire
+         // Afficher les boutons
+         echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+         echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+         echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+     } else {
+         echo "Aucun coach trouvé avec l'ID 4.";
+     }
+ } else {
+     echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+ }
+}
+
+
+if ($action == "E") {
+    // Récupérer les informations du coach avec l'id 1
+    $query = "SELECT * FROM coachs WHERE id = 5";
+    $result = mysqli_query($db_handle, $query);
+
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            // Récupérer les données du coach
+            $coach = mysqli_fetch_assoc($result);
+
+            // Afficher les informations du coach
+            echo "Informations du coach C :<br>";
+            echo "ID : " . $coach['id'] . "<br>";
+            echo "Nom : " . $coach['nom'] . "<br>";
+            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
+            echo "Bureau : " . $coach['bureau'] . "<br>";
+            echo "Téléphone : " . $coach['Telephone'] . "<br>";
+            echo "Email : " . $coach['Email'] . "<br>";
+            // Afficher d'autres informations si nécessaire
+         // Afficher les boutons
+         echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+         echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+         echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+     } else {
+         echo "Aucun coach trouvé avec l'ID 5.";
+     }
+ } else {
+     echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+ }
+}
+
+
+if ($action == "F") {
+    // Récupérer les informations du coach avec l'id 1
+    $query = "SELECT * FROM coachs WHERE id = 6";
+    $result = mysqli_query($db_handle, $query);
+
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            // Récupérer les données du coach
+            $coach = mysqli_fetch_assoc($result);
+
+            // Afficher les informations du coach
+            echo "Informations du coach C :<br>";
+            echo "ID : " . $coach['id'] . "<br>";
+            echo "Nom : " . $coach['nom'] . "<br>";
+            echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
+            echo "Bureau : " . $coach['bureau'] . "<br>";
+            echo "Téléphone : " . $coach['Telephone'] . "<br>";
+            echo "Email : " . $coach['Email'] . "<br>";
+            // Afficher d'autres informations si nécessaire
+         // Afficher les boutons
+         echo "<button onclick='prendreRendezVous(".$coach['id'].")'>Prendre rendez-vous</button>";
+         echo "<button onclick='contacterCoach(".$coach['id'].")'>Contacter le coach</button>";
+         echo "<button onclick='voirCV(".$coach['id'].")'>Voir CV</button>";
+     } else {
+         echo "Aucun coach trouvé avec l'ID 6.";
+     }
+ } else {
+     echo "Erreur lors de la récupération des informations du coach : " . mysqli_error($db_handle);
+ }
+}
 
 $query_all = "SELECT activites.nom AS activites, coachs.*, creneaux.date AS creneaux, messages.contenu AS messages, rendez_vous.date AS rendez_vous, utilisateurs.nom AS utilisateurs
               FROM activites

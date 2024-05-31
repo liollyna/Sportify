@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tout Parcourir - Sportify</title>
     <link rel="stylesheet" href="tout-parcourir.css"/>
-    <!-- Inclure ici les liens vers les fichiers CSS et JavaScript -->
+    
 
     <link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> <!-- pack ou min change les bugs graphique-->
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script></head></head>
 <body>
     <div class="background-wrapper">
         <header>
             <h1 class = "texte1">Sportify - Consultation sportive en ligne</h1>
-            <!-- Barre de navigation -->
+            
             <nav>
                 <ul>
                     <li><a href="index.html" class="occasion-button">Accueil</a></li>
@@ -27,65 +27,39 @@
                 </ul>
             </nav>
             <br><br>
+			 
         </header>
     
     <main>
-        <!-- Contenu principal de la page -->
+     
         <section>
             <h1>Tout Parcourir</h1>
-
-            <div class="caption"> 
+			
+			<div class="caption"> 
                 <p>Catégories des services disponibles chez Sportify :</p>
                 <ul>
                     <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="1">Activités sportives</button></li>
                     <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="2">Les Sports de compétition</button></li>
                     <li><button class="button" onclick="showDetails('activites-sportives')" name="sports" value="3">Salle de sport Omnes</button></li>
                 </ul>
-                <form id="bookForm" method="POST" action="tout-parcourir.php">
-                    <div class="form-group">
-                        <label for="activites">activites:</label>
-                        <input type="text" id="activites" name="activites">
+              <form id="bookForm" method="POST" action="tout-parcourir.php">
+                    <div id="activites-sportives" class="details">
+                        <h3>Activités sportives</h3>
+                        <ul>
+                            <li><button type="submit" class="button" name="action" value="A">Séance de natation</button></li>
+                            <li><button type="submit" class="button" name="action" value="B">Entraînement de rugby</button></li>
+                            <li><button type="submit" class="button" name="action" value="C">Cours de Musculation</button></li>
+                        </ul>
                     </div>
-                
-                    <!-- Espace pour entrer le coach -->
-                    <div class="form-group">
-                        <label for="coachs">coachs:</label>
-                        <input type="text" id="coachs" name="coachs">
+                    <div id="sports-competition" class="details" style="display: none;">
+                        <h3>Sports de compétition</h3>
+						<ul>
+							<li><button type="submit" class="button" name="action" value="D">Match de tennis</button></li>
+							<li><button type="submit" class="button" name="action" value="E">Match de basket</button></li>
+                            <li><button type="submit" class="button" name="action" value="F">Match de football</button></li>
+						</ul>
                     </div>
-                
-                    <!-- Espace pour entrer la disponibilité -->
-                    <div class="form-group">
-                        <label for="creneaux">creneaux:</label>
-                        <input type="text" id="creneaux" name="creneaux">
-                    </div>
-                
-                    <!-- Espace pour entrer les messages -->
-                    <div class="form-group">
-                        <label for="messages">messages:</label>
-                        <input type="text" id="messages" name="messages">
-                    </div>
-                
-                    <!-- Espace pour entrer le rendez-vous -->
-                    <div class="form-group">
-                        <label for="rendez_vous">rendez_vous :</label>
-                        <input type="text" id="rendez_vous" name="rendez_vous">
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="utilisateurs">utilisateurs :</label>
-                        <input type="text" id="utilisateurs" name="utilisateurs">
-                    </div>
-                
-                <div id="activites-sportives" class="details">
-                    <h3>Activités sportives</h3>
-                    <ul>
-					<li><button type="submit" class="button" name="action" value="A">Seance de natation</button></li>
-                        <li><button type="submit" class="button" name="action" value="B">entrainement de rugby</button></li>
-                        <li><button type="submit" class="button" name="action" value="C">Cours de Fitness</button></li>
-                      
-                    </ul>
-                </div>
-            </form>
+                </form>
                 <!-- Ajoutez les autres sections comme nécessaire -->
             </div>
         </section>
@@ -97,12 +71,7 @@
         <!-- Inclure éventuellement une carte Google Maps -->
     </footer>
 
-    <script>
-    function showDetails(id) {
-        $('.details').hide(); // Cache toutes les sections de détails
-        $('#' + id).fadeIn();  // Affiche la section de détails avec un effet de fondu
-    }
-    </script>
+
     
 </body>
 </html>
