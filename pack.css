@@ -1,30 +1,15 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.background-wrapper {
-    background-image: url('AAA.jpg');
-    background-size: cover;
-}
-
-header, .page-header, .carousel-container, #carrousel {
-    margin: 0;
-    padding: 0;
-}
 
 h1 {
     color: rgb(51, 0, 255);
     font-size: 30px;
     text-align: center;
+ 
     padding: 50px;
 }
 
 .carousel-container {
     position: relative;
-    height: 400px;
+    height: 400px; /* Ajustez la hauteur selon vos besoins */
 }
 
 #carrousel {
@@ -33,7 +18,7 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -1; /* Place le carrousel en arrière-plan */
 }
 
 #carrousel ul {
@@ -46,35 +31,34 @@ h1 {
     position: absolute; 
     top: 0; 
     left: 0; 
-    width: 100%;
-    height: 100%;
-}
-
-#carrousel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Les images rempliront le conteneur en conservant leur proportion */
 }
 
 .page-header {
     background-size: cover;
     background-position: center;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Assure que le contenu est affiché au-dessus du carrousel */
 }
 
 .occasion-button {
-    text-decoration: none;
+
+    text-decoration: none; 
     color: #333;
     padding: 10px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
     transition: box-shadow 0.3s;
-    display: inline-block;
+    display: inline-block; 
     border-radius: 10px;
-    width: 100px;
+    width: 100px; 
     text-align: center;
 }
-
+.improved-text {
+    font-family: 'Arial', sans-serif; /* Change to your desired font */
+    font-size: 12px; /* Adjust the size as needed */
+    font-weight: normal; /* You can use 'bold' or 'lighter' if you want */
+    text-decoration: none; /* This removes any underlining */
+    color: #333; /* Change to your desired text color */
+}
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -83,36 +67,29 @@ nav ul {
     justify-content: space-around;
 }
 
-p {
+p{
+
+
     text-align: center;
 }
-
-h2 {
+h2{
+    
     text-align: center;
-}
 
-.row {
+}
+.row{
     display: flex;
     flex-wrap: wrap;
     position: relative;
     justify-content: left;
 }
-
-.thumbnail-image {
-    width: 100%;
-    height: 200px; /* Ajustez la hauteur selon vos besoins */
-    object-fit: cover; /* Les images rempliront le conteneur en conservant leur proportion */
-}
-
 .page-footer {
     background-color: #f8f9fa;
     padding: 20px 0;
 }
-
 .page-footer .infos {
     margin-bottom: 20px;
 }
-
 .page-footer .A {
     display: block;
     margin-bottom: 10px;
@@ -123,11 +100,9 @@ h2 {
 .page-footer p {
     margin: 0;
 }
-
 .page-footer .text-left {
     text-align: left;
 }
-
 .page-footer .infos {
     padding-right: 20px;
 }

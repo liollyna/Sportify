@@ -10,9 +10,6 @@ body, html {
     background-size: cover;
 }
 
-.texte1 {
-    color:rgb(55, 107, 128)
-}
 
 
 .occasion-button {
@@ -37,7 +34,7 @@ nav ul {
 
 
 h1 {
-    color: rgba(95, 188, 211, 0.959);
+    color: rgb(51, 0, 255);
     font-size: 30px;
     text-align: center;
     padding: 50px;
