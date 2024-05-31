@@ -35,7 +35,6 @@ if (isset($_POST['action'])) {
                 $coach = mysqli_fetch_assoc($result);
 
                 // Afficher les informations du coach
-                echo "Informations du coach A :<br>";
                 echo "ID : " . $coach['id'] . "<br>";
                 echo "Nom : " . $coach['nom'] . "<br>";
                 echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
@@ -68,7 +67,6 @@ if ($action == "B") {
             $coach = mysqli_fetch_assoc($result);
 
             // Afficher les informations du coach
-            echo "Informations du coach B :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
             echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
@@ -104,7 +102,6 @@ if ($action == "C") {
             $coach = mysqli_fetch_assoc($result);
 
             // Afficher les informations du coach
-            echo "Informations du coach C :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
             echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
@@ -137,7 +134,6 @@ if ($action == "D") {
             $coach = mysqli_fetch_assoc($result);
 
             // Afficher les informations du coach
-            echo "Informations du coach C :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
             echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
@@ -169,7 +165,6 @@ if ($action == "E") {
             $coach = mysqli_fetch_assoc($result);
 
             // Afficher les informations du coach
-            echo "Informations du coach C :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
             echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
@@ -201,7 +196,6 @@ if ($action == "F") {
             $coach = mysqli_fetch_assoc($result);
 
             // Afficher les informations du coach
-            echo "Informations du coach C :<br>";
             echo "ID : " . $coach['id'] . "<br>";
             echo "Nom : " . $coach['nom'] . "<br>";
             echo "Photo : <img src='" . $coach['photo'] . "' alt='Photo du coach' width='300'><br>"; // Affichage de l'image du coach
