@@ -4,7 +4,6 @@ session_start(); // Démarrer la session
 if (!isset($_SESSION['utilisateur_id'])) {
     $_SESSION['utilisateur_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -88,22 +87,9 @@ if (!isset($_SESSION['utilisateur_id'])) {
             });
         }
 
-        function prendreRendezVous(creneauId) {
-            // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update-creneau.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var creneau = document.querySelector('.creneau[data-id="' + creneauId + '"]');
-                    creneau.classList.remove('disponible');
-                    creneau.classList.add('reserve');
-                    creneau.dataset.type = 'reserve';
-                } else {
-                    alert('Erreur lors de la réservation du créneau.');
-                }
-            };
-            xhr.send('creneauId=' + creneauId);
+        function prendreRendezVous(coachId) {
+            var url = 'creneaux.php?coach_id=' + coachId;
+            window.open(url, '_blank');
         }
     </script>
 </head>
@@ -214,7 +200,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                 echo "<p>Bureau : " . htmlspecialchars($coach['bureau']) . "</p>";
                                 echo "<p>Téléphone : " . htmlspecialchars($coach['Telephone']) . "</p>";
                                 echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
-                                echo "<button type='button' onclick='colorierCreneaux()'>Prendre rendez-vous</button>";
+                                echo "<button type='button' onclick='prendreRendezVous(" . $coach['id'] . ")'>Prendre rendez-vous</button>";
                                 echo "<button onclick='contacterCoach(" . $coach['id'] . ")'>Contacter le coach</button>";
                                 echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                                 echo "</div>";

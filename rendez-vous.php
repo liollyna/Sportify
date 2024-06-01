@@ -1,6 +1,6 @@
 <?php
 // Informations de connexion à la base de données
-$database = "spotify3";
+$database = "spotify2";
 $db_handle = mysqli_connect('localhost', 'root', '', $database);
 
 if (!$db_handle) {
