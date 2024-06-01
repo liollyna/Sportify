@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,76 +25,74 @@
                 </ul>
             </nav>
         </header>
-        <main>
-            <section>
-                <h1>Votre Compte</h1>
-                <h2>Choisissez votre type de compte :</h2>
-                <div class="caption">
-                    <form method="post" action="votre-compte.php">
-                        <ul>
-                            <li><button class="button" type="submit" name="account_type" value="client">Clients</button></li>
-                            <li><button class="button" type="submit" name="account_type" value="coach">Coachs</button></li>
-                            <li><button class="button" type="submit" name="account_type" value="admin">Administrateurs</button></li>
-                        </ul>
-
-                        <!-- Formulaire d'authentification pour les clients -->
-                        <h2>Authentification Client</h2>
-                        <label for="email">Email :</label>
-                        <input type="email" id="email" name="email">
-
-                        <label for="password">Mot de Passe :</label>
-                        <input type="password" id="password" name="password">
-
-                        <button type="submit">Se Connecter</button>
-                    </form>
-                    <h1>Créer un Compte</h1>
-                    <form method="post" action="votre-compte.php">
-                        <label for="nom">Nom :</label>
-                        <input type="text" id="nom" name="nom" required><br><br>
-
-                        <label for="email">Email :</label>
-                        <input type="email" id="email" name="email" required><br><br>
-
-                        <label for="adresse">Adresse :</label>
-                        <input type="text" id="adresse" name="adresse"><br><br>
-
-                        <label for="telephone">Téléphone :</label>
-                        <input type="text" id="telephone" name="telephone"><br><br>
-
-                        <label for="mot_de_passe">Mot de Passe :</label>
-                        <input type="password" id="mot_de_passe" name="mot_de_passe" required><br><br>
-
-                        <label for="type_compte">Type de Compte :</label>
-                        <select id="type_compte" name="type_compte">
-                            <option value="client">Client</option>
-                            <option value="coach">Coach</option>
-                        </select><br><br>
-
-                        <button type="submit">Créer un Compte</button>
-                    </form>
-                    <p>Catégories des services disponibles chez Sportify :</p>
-                    <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
-                    <h2>Informations Personnelles</h2>
-                    <ul>
-                        <li>Nom : John Doe</li>
-                        <li>Email : johndoe@example.com</li>
-                        <li>Adresse : 123 Rue Sport, Ville Sportive</li>
-                        <li>Téléphone : 123-456-7890</li>
-                    </ul>
-                </div>
+        <main class="d-flex flex-column align-items-center justify-content-center" style="height: 150vh;">
+            <section class="text-center">
+                <?php
+                session_start();
+				 // Vérifier si l'utilisateur demande la déconnexion
+    if (isset($_POST['logout'])) {
+        session_destroy();
+        header("Location: votre-compte.php");
+        exit();
+    }
+                if (isset($_SESSION['user'])) {
+                    $user = $_SESSION['user'];
+                    echo "<div class='alert alert-success text-center'>
+                            Vous êtes connecté avec succès.<br>
+                            Bonjour " . $user['nom'] . ".<br>
+                            Email : " . $user['email'] . ".<br>
+                            Adresse : " . $user['adresse'] . ".<br>
+                            Téléphone : " . $user['telephone'] . ".<br>
+                            Type de compte : " . $user['type'] . ".
+                            <form method='post' action='votre-compte.php'>
+                                <button type='submit' name='logout' class='btn btn-danger mt-3'>Se Déconnecter</button>
+                            </form>
+                          </div>";
+                } else {
+                    echo '<div class="caption">
+                            <form method="post" action="votre-compte.php" class="mb-4">
+                                <h2>Authentification Client</h2>
+                                <label for="email">Email :</label>
+                                <input type="email" id="email" name="email" class="form-control mb-2">
+                                <label for="password">Mot de Passe :</label>
+                                <input type="password" id="password" name="password" class="form-control mb-2">
+                                <button type="submit" class="btn btn-primary">Se Connecter</button>
+                            </form>
+                            <h2>Créer un Compte</h2>
+                            <form method="post" action="votre-compte.php">
+                                <label for="nom">Nom :</label>
+                                <input type="text" id="nom" name="nom" required class="form-control mb-2">
+                                <label for="email">Email :</label>
+                                <input type="email" id="email" name="email" required class="form-control mb-2">
+                                <label for="adresse">Adresse :</label>
+                                <input type="text" id="adresse" name="adresse" class="form-control mb-2">
+                                <label for="telephone">Téléphone :</label>
+                                <input type="text" id="telephone" name="telephone" class="form-control mb-2">
+                                <label for="mot_de_passe">Mot de Passe :</label>
+                                <input type="password" id="mot_de_passe" name="mot_de_passe" required class="form-control mb-2">
+                                <label for="type_compte">Type de Compte :</label>
+                                <select id="type_compte" name="type_compte" class="form-control mb-2">
+                                    <option value="client">Client</option>
+                                    <option value="coach">Coach</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Créer un Compte</button>
+                            </form>
+                            <p>Catégories des services disponibles chez Sportify :</p>
+                            <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
+                        </div>';
+                }
+                ?>
             </section>
         </main>
-        <footer>
+        <footer class="page-footer">
             <p>Contactez-nous par mail, téléphone ou à notre adresse physique.</p>
         </footer>
     </div>
 </body>
 </html>
 
-
-
-
 <?php
+
 // Vérifier si la méthode de requête est POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connexion à la base de données
@@ -108,6 +107,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Échec de la connexion : " . $conn->connect_error);
     }
 
+    // Vérifier si l'utilisateur demande la déconnexion
+    if (isset($_POST['logout'])) {
+        session_destroy();
+        header("Location: votre-compte.php");
+        exit();
+    }
+
     // Vérifier si les clés email et password existent dans le tableau $_POST pour l'authentification
     if (isset($_POST['email']) && isset($_POST['password']) && !isset($_POST['nom'])) {
         // Récupérer les valeurs du formulaire
@@ -120,9 +126,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Vérifier si l'utilisateur est authentifié avec succès
         if ($result->num_rows > 0) {
-            echo "Vous êtes connecté avec succès.";
+            // Récupérer les informations de l'utilisateur
+            $user = $result->fetch_assoc();
+            $_SESSION['user'] = $user;
+            //header("Location: votre-compte.php");
+            exit();
         } else {
-            echo "Adresse e-mail ou mot de passe incorrect.";
+            echo "<div class='container mt-5'>
+                    <div class='alert alert-danger text-center'>
+                        Adresse e-mail ou mot de passe incorrect.
+                    </div>
+                  </div>";
         }
     }
 
@@ -145,9 +159,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Exécuter la requête
         if ($stmt->execute()) {
-            echo "Nouveau compte créé avec succès !";
+            echo "<div class='container mt-5'>
+                    <div class='alert alert-success text-center'>
+                        Nouveau compte créé avec succès !
+                    </div>
+                  </div>";
         } else {
-            echo "Erreur : " . $stmt->error;
+            echo "<div class='container mt-5'>
+                    <div class='alert alert-danger text-center'>
+                        Erreur : " . $stmt->error . "
+                    </div>
+                  </div>";
         }
 
         // Fermer la déclaration
@@ -157,6 +179,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Fermer la connexion à la base de données
     $conn->close();
 } else {
-    echo "Erreur : la méthode de requête HTTP n'est pas POST.";
+    echo "";
 }
 ?>

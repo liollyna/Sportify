@@ -8,12 +8,16 @@ body, html {
 .background-wrapper {
     background-image: url('AAA.jpg');
     background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
 }
 
 .texte1 {
-    color:rgb(55, 107, 128)
+    color: rgb(55, 107, 128);
+    text-align: center;
 }
-
 
 .occasion-button {
     text-decoration: none;
@@ -35,7 +39,6 @@ nav ul {
     justify-content: space-around;
 }
 
-
 h1 {
     color: rgba(95, 188, 211, 0.959);
     font-size: 30px;
@@ -46,27 +49,9 @@ h1 {
 .page-footer {
     background-color: #f8f9fa;
     padding: 20px 0;
-}
-
-.page-footer .infos {
-    margin-bottom: 20px;
-}
-
-.page-footer .A {
-    display: block;
-    margin-bottom: 10px;
-    color: #007bff;
-    text-decoration: none;
+    text-align: center;
 }
 
 .page-footer p {
     margin: 0;
-}
-
-.page-footer .text-left {
-    text-align: left;
-}
-
-.page-footer .infos {
-    padding-right: 20px;
 }
