@@ -98,21 +98,23 @@ if ($coachId <= 0) {
         }
 
         function prendreRendezVous(creneauId) {
-            // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update-creneau.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var creneau = document.querySelector('.creneau[data-id="' + creneauId + '"]');
-                    creneau.classList.remove('disponible');
-                    creneau.classList.add('reserve');
-                    creneau.dataset.type = 'reserve';
-                } else {
-                    alert('Erreur lors de la réservation du créneau.');
-                }
-            };
-            xhr.send('creneauId=' + creneauId);
+            if (confirm("Voulez-vous vraiment réserver ce créneau ?")) {
+                // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update-creneau.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var creneau = document.querySelector('.creneau[data-id="' + creneauId + '"]');
+                        creneau.classList.remove('disponible');
+                        creneau.classList.add('reserve');
+                        creneau.dataset.type = 'reserve';
+                    } else {
+                        alert('Erreur lors de la réservation du créneau.');
+                    }
+                };
+                xhr.send('creneauId=' + creneauId);
+            }
         }
     </script>
 </head>
