@@ -1,3 +1,12 @@
+<?php
+session_start(); // Démarrer la session
+// Pour le test, nous allons définir un utilisateur_id de test dans la session
+if (!isset($_SESSION['utilisateur_id'])) {
+    $_SESSION['utilisateur_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,6 +19,93 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="tout-parcourir.js" defer></script>
+    <style>
+        .coach-container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .coach-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-right: 20px;
+            background-color: #f9f9f9;
+        }
+        .agenda-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            background-color: #f9f9f9;
+            flex: 1;
+        }
+        .coach-photo {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            height: 100px; /* Hauteur uniforme pour toutes les cellules */
+            width: 100px;  /* Largeur uniforme pour toutes les cellules */
+            vertical-align: middle; /* Centrage vertical du contenu */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .empty-cell {
+            background-color: #333;
+            color: #fff;
+        }
+        .disponible {
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .reserve, .conge {
+            background-color: #add8e6;
+            background-image: linear-gradient(45deg, #add8e6 25%, #87ceeb 25%, #87ceeb 50%, #add8e6 50%, #add8e6 75%, #87ceeb 75%, #87ceeb 100%);
+            background-size: 20px 20px;
+            color: #000;
+        }
+        .disponible:hover {
+            background-color: #e0f7fa;
+        }
+    </style>
+    <script>
+        function colorierCreneaux() {
+            var creneaux = document.querySelectorAll('.creneau');
+            creneaux.forEach(function(creneau) {
+                if (creneau.dataset.type === 'disponible') {
+                    creneau.classList.add('disponible');
+                } else {
+                    creneau.classList.add('reserve');
+                }
+            });
+        }
+
+        function prendreRendezVous(creneauId) {
+            // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update-creneau.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var creneau = document.querySelector('.creneau[data-id="' + creneauId + '"]');
+                    creneau.classList.remove('disponible');
+                    creneau.classList.add('reserve');
+                    creneau.dataset.type = 'reserve';
+                } else {
+                    alert('Erreur lors de la réservation du créneau.');
+                }
+            };
+            xhr.send('creneauId=' + creneauId);
+        }
+    </script>
 </head>
 <body>
     <div class="background-wrapper">
@@ -62,7 +158,9 @@
             </section>
             <section id="coach-section">
                 <?php
-                $database = "spotify2";
+                echo "<p>Utilisateur ID: " . $_SESSION['utilisateur_id'] . "</p>"; // Test pour afficher l'utilisateur ID
+
+                $database = "spotify3";
                 $db_handle = mysqli_connect('localhost', 'root', '', $database);
 
                 if (!$db_handle) {
@@ -86,7 +184,10 @@
 
                     if (array_key_exists($action, $actionToIdMap)) {
                         $coachId = $actionToIdMap[$action];
-                        $query = "SELECT * FROM coachs WHERE id = $coachId";
+                        $query = "SELECT coachs.*, activites.nom as activite_nom 
+                                  FROM coachs 
+                                  JOIN activites ON coachs.activite_id = activites.id 
+                                  WHERE coachs.id = $coachId";
                         $result = mysqli_query($db_handle, $query);
 
                         if ($result) {
@@ -94,7 +195,8 @@
                                 // Récupérer les données du coach
                                 $coach = mysqli_fetch_assoc($result);
 
-                                // Afficher les informations du coach
+                                // Afficher les informations du coach et ses créneaux
+                                echo "<div class='coach-container'>";
                                 echo "<div class='coach-card'>";
                                 echo "<img src='" . htmlspecialchars($coach['photo']) . "' alt='Photo du coach' class='coach-photo'>";
                                 echo "<div class='coach-info'>";
@@ -102,11 +204,92 @@
                                 echo "<p>Bureau : " . htmlspecialchars($coach['bureau']) . "</p>";
                                 echo "<p>Téléphone : " . htmlspecialchars($coach['Telephone']) . "</p>";
                                 echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
-                                echo "<button onclick='prendreRendezVous(" . $coach['id'] . ")'>Prendre rendez-vous</button>";
+                                echo "<button type='button' onclick='colorierCreneaux()'>Prendre rendez-vous</button>";
                                 echo "<button onclick='contacterCoach(" . $coach['id'] . ")'>Contacter le coach</button>";
                                 echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                                 echo "</div>";
                                 echo "</div>";
+
+                                // Récupérer les créneaux du coach
+                                $creneauxQuery = "SELECT * FROM creneaux WHERE coach_id = $coachId ORDER BY date, heure_debut";
+                                $creneauxResult = mysqli_query($db_handle, $creneauxQuery);
+
+                                echo "<div class='agenda-card'>";
+                                echo "<h3>Agenda de la Semaine :</h3>";
+                                if ($creneauxResult) {
+                                    $dates = [
+                                        '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', 
+                                        '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-08'
+                                    ];
+                                    $creneauxParDate = [];
+
+                                    // Initialiser les créneaux par date
+                                    foreach ($dates as $date) {
+                                        $creneauxParDate[$date] = [
+                                            'AM' => [],
+                                            'PM' => []
+                                        ];
+                                    }
+
+                                    // Remplir les créneaux par date
+                                    while ($creneaux = mysqli_fetch_assoc($creneauxResult)) {
+                                        $date = $creneaux['date'];
+                                        $heureDebut = new DateTime($creneaux['heure_debut']);
+                                        $periode = $heureDebut->format('H') < 12 ? 'AM' : 'PM';
+                                        $creneauxParDate[$date][$periode][] = $creneaux;
+                                    }
+
+                                    echo "<table class='table'>";
+                                    echo "<thead><tr><th>Spécialité</th><th>Coach</th>";
+                                    foreach ($dates as $date) {
+                                        echo "<th colspan='2'>" . htmlspecialchars($date) . "</th>";
+                                    }
+                                    echo "</tr></thead>";
+                                    echo "<tbody>";
+                                    echo "<tr><td rowspan='2'>" . htmlspecialchars($coach['activite_nom']) . "</td>";
+                                    echo "<td rowspan='2'>" . htmlspecialchars($coach['nom']) . "</td>";
+
+                                    // Afficher les créneaux AM
+                                    foreach ($dates as $date) {
+                                        echo "<td>AM</td>";
+                                        echo "<td>";
+                                        if (empty($creneauxParDate[$date]['AM'])) {
+                                            echo "<div class='empty-cell'>&nbsp;</div>";
+                                        } else {
+                                            foreach ($creneauxParDate[$date]['AM'] as $creneau) {
+                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "' onclick='prendreRendezVous(" . $creneau['id'] . ")'>";
+                                                echo htmlspecialchars($creneau['heure_debut'] . ' - ' . $creneau['heure_fin']);
+                                                echo "</div>";
+                                            }
+                                        }
+                                        echo "</td>";
+                                    }
+                                    echo "</tr><tr>";
+
+                                    // Afficher les créneaux PM
+                                    foreach ($dates as $date) {
+                                        echo "<td>PM</td>";
+                                        echo "<td>";
+                                        if (empty($creneauxParDate[$date]['PM'])) {
+                                            echo "<div class='empty-cell'>&nbsp;</div>";
+                                        } else {
+                                            foreach ($creneauxParDate[$date]['PM'] as $creneau) {
+                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "' onclick='prendreRendezVous(" . $creneau['id'] . ")'>";
+                                                echo htmlspecialchars($creneau['heure_debut'] . ' - ' . $creneau['heure_fin']);
+                                                echo "</div>";
+                                            }
+                                        }
+                                        echo "</td>";
+                                    }
+
+                                    echo "</tr></tbody>";
+                                    echo "</table>";
+                                } else {
+                                    echo "Erreur lors de la récupération des créneaux : " . mysqli_error($db_handle);
+                                }
+                                echo "</div>"; // Fin de la agenda-card
+
+                                echo "</div>"; // Fin de la coach-container
                             } else {
                                 echo "Aucun coach trouvé avec l'ID $coachId.";
                             }
