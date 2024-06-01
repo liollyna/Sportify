@@ -3,68 +3,12 @@ body, html {
     padding: 0;
     height: 100%;
     width: 100%;
+    font-family: Arial, sans-serif;
 }
 
 .background-wrapper {
     background-image: url('AAA.jpg');
     background-size: cover;
-}
-
-.texte1 {
-    color:rgb(55, 107, 128)
-}
-
-header, .page-header, .carousel-container, #carrousel {
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    color: rgba(95, 188, 211, 0.959);
-    font-size: 30px;
-    text-align: center;
-    padding: 50px;
-}
-
-.carousel-container {
-    position: relative;
-    height: 400px;
-}
-
-#carrousel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-#carrousel ul {
-    padding: 0;
-    margin: 0;
-    list-style: none; 
-}
-
-#carrousel ul li { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%;
-    height: 100%;
-}
-
-#carrousel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Les images rempliront le conteneur en conservant leur proportion */
-}
-
-.page-header {
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    z-index: 1;
 }
 
 .occasion-button {
@@ -85,53 +29,106 @@ nav ul {
     padding: 0;
     display: flex;
     justify-content: space-around;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 10px;
 }
 
-p {
+.texte1 {
+    color: rgb(55, 107, 128);
     text-align: center;
+    padding: 20px;
 }
 
-h2 {
+h1 {
+    color: rgb(51, 0, 255);
+    font-size: 30px;
     text-align: center;
+    padding: 50px;
+}
+
+
+.caption {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.thumbnail {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    overflow: hidden;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+}
+
+.thumbnail .caption {
+    padding: 15px;
+}
+
+.improved-text {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-top: 10px;
+}
+
+footer .infos {
+    margin-bottom: 20px;
+}
+
+footer .infos h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+footer .infos p {
+    font-size: 14px;
+    color: #333;
+}
+
+footer .footer-copyright {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+.weekly-bulletin {
+    margin-top: 50px;
 }
 
 .row {
     display: flex;
     flex-wrap: wrap;
-    position: relative;
-    justify-content: left;
+    justify-content: space-between;
 }
 
-.thumbnail-image {
-    width: 100%;
-    height: 200px; /* Ajustez la hauteur selon vos besoins */
-    object-fit: cover; /* Les images rempliront le conteneur en conservant leur proportion */
-}
-
-.page-footer {
-    background-color: #f8f9fa;
-    padding: 20px 0;
-}
-
-.page-footer .infos {
-    margin-bottom: 20px;
-}
-
-.page-footer .A {
-    display: block;
-    margin-bottom: 10px;
-    color: #007bff;
-    text-decoration: none;
-}
-
-.page-footer p {
-    margin: 0;
-}
-
-.page-footer .text-left {
-    text-align: left;
-}
-
-.page-footer .infos {
-    padding-right: 20px;
+.custom-row {
+    justify-content: space-around;
 }
