@@ -10,7 +10,9 @@ body, html {
     background-image: url('AAA.jpg');
     background-size: cover;
 }
-
+.texte{
+	text-align: center;
+}
 .occasion-button {
     text-decoration: none;
     color: #333;
