@@ -118,6 +118,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                     <li><a href="recherche.html" class="occasion-button">Recherche</a></li>
                     <li><a href="rendez-vous.html" class="occasion-button">Rendez-vous</a></li>
                     <li><a href="votre-compte.php" class="occasion-button">Votre Compte</a></li>
+                    <li><a href="chatroom.php" class="occasion-button">Chatroom</a></li>
                 </ul>
             </nav>
             <br><br>
