@@ -60,8 +60,10 @@
                           if ($user['type'] == 'admin') {
                           // Afficher les fonctionnalités admin
                          echo "<h2>Fonctionnalités administrateur :</h2>
-                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Supprimer un coach</button>
-                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Ajouter un Coach</button>";
+                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deleteCoachModal'>Supprimer un coach</button>
+                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Ajouter un Coach</button>
+                          <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Modifier le calendrier</button>
+                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#createAccountModal'>Créer un Compte</button>";
                               }
                           
 
@@ -113,6 +115,40 @@
 
                 
                 ?>
+                
+                <!-- Modale pour créer un compte -->
+                <div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createAccountModalLabel">Créer un Compte</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="votre-compte.php">
+                                    <label for="nom">Nom :</label>
+                                    <input type="text" id="nom" name="nom" required class="form-control mb-2">
+                                    <label for="email">Email :</label>
+                                    <input type="email" id="email" name="email" required class="form-control mb-2">
+                                    <label for="adresse">Adresse :</label>
+                                    <input type="text" id="adresse" name="adresse" class="form-control mb-2">
+                                    <label for="telephone">Téléphone :</label>
+                                    <input type="text" id="telephone" name="telephone" class="form-control mb-2">
+                                    <label for="mot_de_passe">Mot de Passe :</label>
+                                    <input type="password" id="mot_de_passe" name="mot_de_passe" required class="form-control mb-2">
+                                    <label for="type_compte">Type de Compte :</label>
+                                    <select id="type_compte" name="type_compte" class="form-control mb-2">
+                                        <option value="client">Client</option>
+                                        <option value="coach">Coach</option>
+                                    </select>
+                                    <button type="submit" name="createAccount" class="btn btn-primary">Créer un Compte</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -155,6 +191,15 @@
                                     <div class="form-group">
                                         <label for="coachActivity">Activité</label>
                                         <select class="form-control" id="coachActivity" name="coachActivity" required>
+                                    </div>
+            </div>
+            </div>
+            
+      
+            
+            
+
+
                                             <!-- Remplir avec les activités disponibles -->
                                             <?php
                                             $conn = new mysqli("localhost", "root", "", "spotify2");
@@ -196,8 +241,71 @@
                         </div>
                     </div>
                 </div>
+                                        </div>
                 
-        
+  <!-- Modale pour supprimer un coach -->
+<div class="modal fade" id="deleteCoachModal" tabindex="-1" role="dialog" aria-labelledby="deleteCoachModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCoachModalLabel">Supprimer un Coach</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="votre-compte.php">
+                    <div class="form-group">
+                        <label for="coachToDelete">Sélectionnez le coach à supprimer :</label>
+                        <select class="form-control" id="coachToDelete" name="coachToDelete" required>
+                            <?php
+                            $conn = new mysqli("localhost", "root", "", "spotify2");
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            }
+
+                            $result = $conn->query("SELECT * FROM utilisateurs WHERE type='coach'");
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
+                                }
+                            } else {
+                                echo "<option value=''>Aucun coach trouvé</option>";
+                            }
+                            $conn->close();
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit" name="deleteCoach" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+// Vérifier si une demande de suppression de coach est soumise
+if (isset($_POST['deleteCoach'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $coachToDelete = $_POST['coachToDelete'];
+    
+    // Supprimer le coach de la base de données
+    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ?");
+    $stmt->bind_param("i", $coachToDelete);
+    
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
+    } else {
+        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
 
 <?php
 
@@ -315,7 +423,7 @@ if (isset($_POST['addCoach'])) {
     $coachRoom = $_POST['coachRoom'];
 
     // Upload files
-    $target_dir = __DIR__ . "/Upload/";
+    $target_dir = __DIR__ . "Upload/";
     $coachPhoto = $_FILES['coachPhoto']['name'];
     $coachCV = $_FILES['coachCV']['name'];
     $target_file_photo = $target_dir . basename($_FILES["coachPhoto"]["name"]);
@@ -339,6 +447,30 @@ if (isset($_POST['addCoach'])) {
     $conn->close();
 }
                 ?>
+                <?php
+               
+if (isset($_POST['deleteCoach'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $coachToDelete = $_POST['coachToDelete'];
+    
+    // Supprimer le coach de la base de données
+    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ?");
+    $stmt->bind_param("i", $coachToDelete);
+    
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
+    } else {
+        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
      </section>
         </main>
         <footer>
