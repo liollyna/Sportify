@@ -14,6 +14,7 @@
 <body>
     <div class="background-wrapper">
         <header>
+            
             <h1 class="texte1">Sportify - Consultation sportive en ligne</h1>
             <nav>
                 <ul>
@@ -30,14 +31,18 @@
                 <?php
                 session_start();
 				 // Vérifier si l'utilisateur demande la déconnexion
-    if (isset($_POST['logout'])) {
-        session_destroy();
-        header("Location: votre-compte.php");
-        exit();
-    }
+             if (isset($_POST['logout'])) {
+               session_destroy();
+              header("Location: votre-compte.php");
+              exit();
+                  }
+    
                 if (isset($_SESSION['user'])) {
                     $user = $_SESSION['user'];
 					$_SESSION['user_id'] = $user['id'];
+                    
+
+                    
                     echo "<div class='alert alert-success text-center'>
                             Vous êtes connecté avec succès.<br>
                             Bonjour " . $user['nom'] . ".<br>
@@ -45,20 +50,38 @@
                             Adresse : " . $user['adresse'] . ".<br>
                             Téléphone : " . $user['telephone'] . ".<br>
                             Type de compte : " . $user['type'] . ".
+
                             <form method='post' action='votre-compte.php'>
                                 <button type='submit' name='logout' class='btn btn-danger mt-3'>Se Déconnecter</button>
                             </form>
                           </div>";
+                          // Vérifier si le type de compte est admin
+                          if ($user['type'] == 'admin') {
+                          // Afficher les fonctionnalités admin
+                         echo "<h2>Fonctionnalités administrateur :</h2>
+                         <button type='button' class='btn btn-danger' onclick='supprimerCoach()'>Supprimer un Coach</button>
+                         <button type='button' class='btn btn-success' onclick='ajouterCoach()'>Ajouter un Coach</button>";
+                              }
+                          
+
+
+
+
                 } else {
                     echo '<div class="caption">
                             <form method="post" action="votre-compte.php" class="mb-4">
-                                <h2>Authentification Client</h2>
+                                <h2>Authentification </h2>
                                 <label for="email">Email :</label>
                                 <input type="email" id="email" name="email" class="form-control mb-2">
                                 <label for="password">Mot de Passe :</label>
                                 <input type="password" id="password" name="password" class="form-control mb-2">
                                 <button type="submit" class="btn btn-primary">Se Connecter</button>
                             </form>
+
+
+
+
+                            
                             <h2>Créer un Compte</h2>
                             <form method="post" action="votre-compte.php">
                                 <label for="nom">Nom :</label>
@@ -83,6 +106,7 @@
                         </div>';
                 }
                 ?>
+                
             </section>
         </main>
         <footer class="page-footer">
