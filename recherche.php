@@ -10,7 +10,7 @@ if (!$db_handle) {
 $searchResults = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $searchTerm = $conn->real_escape_string($_POST['search']);
+    $searchTerm = mysqli_real_escape_string($db_handle, $_POST['search']);
     
     $sql = "SELECT c.nom AS coach_nom, a.nom AS activite_nom, s.nom AS salle_nom
             FROM coachs c
@@ -20,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                OR a.nom LIKE '%$searchTerm%' 
                OR s.nom LIKE '%$searchTerm%'";
                
-    $result = $conn->query($sql);
+    $result = mysqli_query($db_handle, $sql);
 
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
             $searchResults[] = $row;
         }
     } else {
@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+mysqli_close($db_handle);
 ?>
 
 <!DOCTYPE html>
@@ -77,11 +78,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php if (!empty($searchResults)): ?>
                         <ul>
                             <?php foreach ($searchResults as $result): ?>
-                                <li>Coach: <?php echo $result['coach_nom']; ?>, Activité: <?php echo $result['activite_nom']; ?>, Salle: <?php echo $result['salle_nom']; ?></li>
+                                <li>Coach: <?php echo htmlspecialchars($result['coach_nom']); ?>, Activité: <?php echo htmlspecialchars($result['activite_nom']); ?>, Salle: <?php echo htmlspecialchars($result['salle_nom']); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php elseif (isset($message)): ?>
-                        <p><?php echo $message; ?></p>
+                        <p><?php echo htmlspecialchars($message); ?></p>
                     <?php endif; ?>
                 </div>
             </section>
