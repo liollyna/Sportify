@@ -158,9 +158,18 @@ if (!isset($_SESSION['utilisateur_id'])) {
             </section>
             <section id="coach-section">
                 <?php
-                echo "<p>Utilisateur ID: " . $_SESSION['utilisateur_id'] . "</p>"; // Test pour afficher l'utilisateur ID
+				if (isset($_SESSION['user_id'])) {
+					// L'ID de l'utilisateur est disponible dans la session
+					$user_id = $_SESSION['user_id'];
+					// Vous pouvez maintenant utiliser $user_id comme bon vous semble, par exemple, pour effectuer des requêtes SQL
+					echo "L'ID de l'utilisateur connecté est : $user_id";
+				} else {
+					// L'ID de l'utilisateur n'est pas présent dans la session, cela signifie probablement que l'utilisateur n'est pas connecté
+					echo "L'utilisateur n'est pas connecté.";
+				}
+                //echo "<p>Utilisateur ID: " . $_SESSION['utilisateur_id'] . "</p>"; // Test pour afficher l'utilisateur ID
 
-                $database = "spotify3";
+                $database = "spotify2";
                 $db_handle = mysqli_connect('localhost', 'root', '', $database);
 
                 if (!$db_handle) {

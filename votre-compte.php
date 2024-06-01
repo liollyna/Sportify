@@ -37,6 +37,7 @@
     }
                 if (isset($_SESSION['user'])) {
                     $user = $_SESSION['user'];
+					$_SESSION['user_id'] = $user['id'];
                     echo "<div class='alert alert-success text-center'>
                             Vous êtes connecté avec succès.<br>
                             Bonjour " . $user['nom'] . ".<br>
