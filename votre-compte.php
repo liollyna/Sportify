@@ -60,8 +60,8 @@
                           if ($user['type'] == 'admin') {
                           // Afficher les fonctionnalités admin
                          echo "<h2>Fonctionnalités administrateur :</h2>
-                         <button type='button' class='btn btn-danger' onclick='supprimerCoach()'>Supprimer un Coach</button>
-                         <button type='button' class='btn btn-success' onclick='ajouterCoach()'>Ajouter un Coach</button>";
+                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Supprimer un coach</button>
+                         <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Ajouter un Coach</button>";
                               }
                           
 
@@ -106,16 +106,98 @@
                             <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
                         </div>';
                 }
-                ?>
+
+
+
+
+
                 
-            </section>
-        </main>
-        <footer class="page-footer">
-            <p>Contactez-nous par mail, téléphone ou à notre adresse physique.</p>
-        </footer>
-    </div>
-</body>
-</html>
+                ?>
+
+
+
+                <!-- Modale pour ajouter un coach -->
+                <div class="modal fade" id="addCoachModal" tabindex="-1" role="dialog" aria-labelledby="addCoachModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addCoachModalLabel">Ajouter un Coach</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="votre-compte.php" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="coachName">Nom</label>
+                                        <input type="text" class="form-control" id="coachName" name="coachName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachPhoto">Photo</label>
+                                        <input type="file" class="form-control" id="coachPhoto" name="coachPhoto" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachCV">CV</label>
+                                        <input type="file" class="form-control" id="coachCV" name="coachCV" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachOffice">Bureau</label>
+                                        <input type="text" class="form-control" id="coachOffice" name="coachOffice" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachPhone">Téléphone</label>
+                                        <input type="text" class="form-control" id="coachPhone" name="coachPhone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachEmail">Email</label>
+                                        <input type="email" class="form-control" id="coachEmail" name="coachEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachActivity">Activité</label>
+                                        <select class="form-control" id="coachActivity" name="coachActivity" required>
+                                            <!-- Remplir avec les activités disponibles -->
+                                            <?php
+                                            $conn = new mysqli("localhost", "root", "", "spotify2");
+                                            if ($conn->connect_error) {
+                                                die("Connection failed: " . $conn->connect_error);
+                                            }
+                                            $result = $conn->query("SELECT * FROM activites");
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
+                                                }
+                                            }
+                                            $conn->close();
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coachRoom">Salle</label>
+                                        <select class="form-control" id="coachRoom" name="coachRoom" required>
+                                            <!-- Remplir avec les salles disponibles -->
+                                            <?php
+                                            $conn = new mysqli("localhost", "root", "", "spotify2");
+                                            if ($conn->connect_error) {
+                                                die("Connection failed: " . $conn->connect_error);
+                                            }
+                                            $result = $conn->query("SELECT * FROM salles");
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
+                                                }
+                                            }
+                                            $conn->close();
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <button type="submit" name="addCoach" class="btn btn-primary">Ajouter</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+        
 
 <?php
 
@@ -183,6 +265,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, email, adresse, telephone, mot_de_passe, type) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssss", $nom, $email, $adresse, $telephone, $mot_de_passe_hache, $type_compte);
 
+
+    
+
+
+
+
+
+        
         // Exécuter la requête
         if ($stmt->execute()) {
             echo "<div class='container mt-5'>
@@ -197,10 +287,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                   </div>";
         }
+    
 
         // Fermer la déclaration
         $stmt->close();
-    }
+    
+}
 
     // Fermer la connexion à la base de données
     $conn->close();
@@ -208,3 +300,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "";
 }
 ?>
+    <?php
+if (isset($_POST['addCoach'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $coachName = $_POST['coachName'];
+    $coachOffice = $_POST['coachOffice'];
+    $coachPhone = $_POST['coachPhone'];
+    $coachEmail = $_POST['coachEmail'];
+    $coachActivity = $_POST['coachActivity'];
+    $coachRoom = $_POST['coachRoom'];
+
+    // Upload files
+    $target_dir = __DIR__ . "/uploads/";
+    $coachPhoto = $_FILES['coachPhoto']['name'];
+    $coachCV = $_FILES['coachCV']['name'];
+    $target_file_photo = $target_dir . basename($_FILES["coachPhoto"]["name"]);
+    $target_file_cv = $target_dir . basename($_FILES["coachCV"]["name"]);
+
+    if (move_uploaded_file($_FILES["coachPhoto"]["tmp_name"], $target_file_photo) && move_uploaded_file($_FILES["coachCV"]["tmp_name"], $target_file_cv)) {
+        $stmt = $conn->prepare("INSERT INTO coachs (nom, photo, CV, bureau, Telephone, Email, activite_id, salle_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssisii", $coachName, $coachPhoto, $coachCV, $coachOffice, $coachPhone, $coachEmail, $coachActivity, $coachRoom);
+
+        if ($stmt->execute()) {
+            echo "<div class='alert alert-success'>Coach ajouté avec succès.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Erreur lors de l'ajout du coach.</div>";
+        }
+
+        $stmt->close();
+    } else {
+        echo "<div class='alert alert-danger'>Erreur lors du téléchargement des fichiers.</div>";
+    }
+
+    $conn->close();
+}
+                ?>
+     </section>
+        </main>
+        <footer>
+            <p>© 2023 Sportify - Tous droits réservés.</p>
+        </footer>
+    </div>
+</body>
+</html>
