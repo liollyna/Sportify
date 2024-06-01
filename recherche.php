@@ -49,11 +49,11 @@ mysqli_close($db_handle);
         .coach-result {
             display: flex;
             align-items: center;
+			background-color:white;
             border: 1px solid #ddd;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
-			background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .coach-photo {
@@ -71,6 +71,9 @@ mysqli_close($db_handle);
         }
         .coach-cv {
             margin-top: 10px;
+        }
+        .contact-button {
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -112,7 +115,10 @@ mysqli_close($db_handle);
                                     <h3><?php echo htmlspecialchars($result['coach_nom']); ?></h3>
                                     <p><strong>Activité :</strong> <?php echo htmlspecialchars($result['activite_nom']); ?></p>
                                     <p><strong>Salle :</strong> <?php echo htmlspecialchars($result['salle_nom']); ?></p>
-                                    <p><strong>Email :</strong> <?php echo htmlspecialchars($result['coach_email']); ?></p>
+                                    <p>
+                                        <strong>Email :</strong> <?php echo htmlspecialchars($result['coach_email']); ?>
+                                        <a href="mailto:<?php echo htmlspecialchars($result['coach_email']); ?>" class="btn btn-secondary contact-button">Contacter</a>
+                                    </p>
                                     <p><strong>Bureau :</strong> <?php echo htmlspecialchars($result['coach_bureau']); ?></p>
                                     <p><strong>Téléphone :</strong> <?php echo htmlspecialchars($result['coach_phone']); ?></p>
                                     <a href="<?php echo htmlspecialchars($result['coach_cv']); ?>" class="btn btn-primary coach-cv" target="_blank">Voir le CV</a>

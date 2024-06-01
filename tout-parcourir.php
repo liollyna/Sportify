@@ -200,17 +200,20 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                 echo "<p>Bureau : " . htmlspecialchars($coach['bureau']) . "</p>";
                                 echo "<p>Téléphone : " . htmlspecialchars($coach['Telephone']) . "</p>";
                                 echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
+								echo "<a href='mailto:" . htmlspecialchars($coach['Email']) . "'><button>Contacter par mail</button></a>";
                                 echo "<button type='button' onclick='prendreRendezVous(" . $coach['id'] . ")'>Prendre rendez-vous</button>";
-                                echo "<button onclick='contacterCoach(" . $coach['id'] . ")'>Contacter le coach</button>";
+                                echo "<button onclick='window.location.href=\"chatroom.php?coach_id=" . $coach['id'] . "\"'>Contacter le coach</button>";
                                 echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                                 echo "</div>";
-                                echo "</div>";
-
+								echo "</div>";
+                        							
+								
                                 // Récupérer les créneaux du coach
                                 $creneauxQuery = "SELECT * FROM creneaux WHERE coach_id = $coachId ORDER BY date, heure_debut";
                                 $creneauxResult = mysqli_query($db_handle, $creneauxQuery);
 
                                 echo "<div class='agenda-card'>";
+						
                                 echo "<h3>Agenda de la Semaine :</h3>";
                                 if ($creneauxResult) {
                                     $dates = [
