@@ -100,6 +100,7 @@ if ($coachId <= 0) {
         function prendreRendezVous(creneauId) {
             if (confirm("Voulez-vous vraiment réserver ce créneau ?")) {
                 // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
+                 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'update-creneau.php', true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
