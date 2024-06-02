@@ -65,8 +65,7 @@
                           <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCalender'>Modifier le calendrier</button>
                           <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#createAccountModal'>Créer un Compte</button>
                           <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#addClientModal'name=addClient'>Ajouter un Client</button>
-                          ";
-                              }
+                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#deleteClientModal'>Supprimer un Client </button>";}
                           
 
 
@@ -193,8 +192,47 @@
         </div>
     </div>
 </div>
-  
-            
+  <!-- Modale pour supprimer un client -->
+<div class="modal fade" id="deleteClientModal" tabindex="-1" role="dialog" aria-labelledby="deleteClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteClientModalLabel">Supprimer un Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="votre-compte.php">
+                    <div class="form-group">
+                        <label for="clientToDelete">Sélectionnez le client à supprimer :</label>
+                        <select class="form-control" id="clientToDelete" name="clientToDelete" required>
+                            <?php
+                            $conn = new mysqli("localhost", "root", "", "spotify2");
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            }
+
+                            // Récupérer uniquement les clients
+                            $result = $conn->query("SELECT id, nom FROM utilisateurs WHERE type = 'client'");
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
+                                }
+                            } else {
+                                echo "<option value=''>Aucun client trouvé</option>";
+                            }
+                            $conn->close();
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit" name="suppClient" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
                 <!-- Modale pour ajouter un coach -->
@@ -327,6 +365,7 @@
         </div>
     </div>
 </div>
+
 <?php
 // Vérifier si une demande de suppression de coach est soumise
 if (isset($_POST['deleteCoach'])) {
@@ -345,6 +384,30 @@ if (isset($_POST['deleteCoach'])) {
         echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
     } else {
         echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
+<?php
+// Vérifier si une demande de suppression de client est soumise
+if (isset($_POST['suppClient'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $clientToDelete = $_POST['clientToDelete'];
+
+    // Supprimer le client de la base de données
+    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ? AND type = 'client'");
+    $stmt->bind_param("i", $clientToDelete);
+
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success text-center'>Client supprimé avec succès.</div>";
+    } else {
+        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du client.</div>";
     }
 
     $stmt->close();
@@ -517,8 +580,30 @@ if (isset($_POST['deleteCoach'])) {
     $conn->close();
 }
 ?>
+<?php
+// Vérifier si une demande de suppression de client est soumise
+if (isset($_POST['suppClient'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
+    $clientToDelete = $_POST['clientToDelete'];
+    
+    // Supprimer le client de la base de données
+    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ? AND type = 'client'");
+    $stmt->bind_param("i", $clientToDelete);
+    
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success text-center'>Client supprimé avec succès.</div>";
+    } else {
+        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du client.</div>";
+    }
 
+    $stmt->close();
+    $conn->close();
+}
+?>
 
 
 <?php
