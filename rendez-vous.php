@@ -16,6 +16,12 @@ if (!$db_handle) {
     die("Échec de la connexion : " . mysqli_connect_error());
 }
 
+// Vérifier si l'utilisateur est un administrateur
+$user_type_query = "SELECT type FROM utilisateurs WHERE id = $user_id";
+$user_type_result = mysqli_query($db_handle, $user_type_query);
+$user_type_row = mysqli_fetch_assoc($user_type_result);
+$user_type = $user_type_row['type'];
+
 $query = "SELECT rendez_vous.*, coachs.nom as coach_nom, activites.nom as activite_nom 
           FROM rendez_vous 
           JOIN coachs ON rendez_vous.coach_id = coachs.id 
@@ -39,6 +45,13 @@ while ($row = mysqli_fetch_assoc($result)) {
         $upcomingAppointments[] = $row;
     }
 }
+
+// Récupérer les données des coachs et des activités pour le formulaire d'ajout de créneau
+$coachsQuery = "SELECT id, nom FROM coachs";
+$coachsResult = mysqli_query($db_handle, $coachsQuery);
+
+$activitesQuery = "SELECT id, nom FROM activites";
+$activitesResult = mysqli_query($db_handle, $activitesQuery);
 
 mysqli_close($db_handle);
 ?>
@@ -112,6 +125,49 @@ mysqli_close($db_handle);
             border-radius: 5px;
             cursor: pointer;
         }
+        .date, .time {
+            display: block;
+        }
+        .date {
+            font-weight: bold;
+        }
+        .time {
+            color: grey;
+        }
+        .form-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .form-container h2 {
+            text-align: center;
+            color: rgb(51, 0, 255);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(51, 0, 255);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
     <script>
         function annulerRendezVous(rendezVousId) {
@@ -165,9 +221,13 @@ mysqli_close($db_handle);
                         </thead>
                         <tbody>
                             <?php foreach ($upcomingAppointments as $row): ?>
+                                <?php
+                                $appointmentDate = new DateTime($row['date']);
+                                $appointmentTime = new DateTime($row['heure']);
+                                ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['date']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['heure']); ?></td>
+                                    <td><span class="date"><?php echo $appointmentDate->format('d/m/Y'); ?></span></td>
+                                    <td><span class="time"><?php echo $appointmentTime->format('H:i'); ?></span></td>
                                     <td><?php echo htmlspecialchars($row['coach_nom']); ?></td>
                                     <td><?php echo htmlspecialchars($row['activite_nom']); ?></td>
                                     <td><button class="cancel-button" onclick="annulerRendezVous(<?php echo $row['id']; ?>)">Annuler</button></td>
@@ -192,9 +252,13 @@ mysqli_close($db_handle);
                         </thead>
                         <tbody>
                             <?php foreach ($pastAppointments as $row): ?>
+                                <?php
+                                $appointmentDate = new DateTime($row['date']);
+                                $appointmentTime = new DateTime($row['heure']);
+                                ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['date']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['heure']); ?></td>
+                                    <td><span class="date"><?php echo $appointmentDate->format('d/m/Y'); ?></span></td>
+                                    <td><span class="time"><?php echo $appointmentTime->format('H:i'); ?></span></td>
                                     <td><?php echo htmlspecialchars($row['coach_nom']); ?></td>
                                     <td><?php echo htmlspecialchars($row['activite_nom']); ?></td>
                                 </tr>
@@ -203,6 +267,41 @@ mysqli_close($db_handle);
                     </table>
                 <?php else: ?>
                     <p style="text-align: center;">Vous n'avez aucun rendez-vous passé.</p>
+                <?php endif; ?>
+                
+                <?php if ($user_type === 'admin'): ?>
+                    <div class="form-container">
+                        <h2>Ajouter un créneau</h2>
+                        <form action="ajouter-creneau.php" method="POST">
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="heure_debut">Heure de début</label>
+                                <input type="time" id="heure_debut" name="heure_debut" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="coach_id">Coach</label>
+                                <select id="coach_id" name="coach_id" required>
+                                    <?php while ($coach = mysqli_fetch_assoc($coachsResult)): ?>
+                                        <option value="<?php echo $coach['id']; ?>"><?php echo htmlspecialchars($coach['nom']); ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="activite_id">Activité</label>
+                                <select id="activite_id" name="activite_id" required>
+                                    <?php while ($activite = mysqli_fetch_assoc($activitesResult)): ?>
+                                        <option value="<?php echo $activite['id']; ?>"><?php echo htmlspecialchars($activite['nom']); ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Ajouter</button>
+                            </div>
+                        </form>
+                    </div>
                 <?php endif; ?>
             </section>
         </main>
