@@ -1,8 +1,8 @@
 <?php
 session_start(); // Démarrer la session
 // Pour le test, nous allons définir un utilisateur_id de test dans la session
-if (!isset($_SESSION['utilisateur_id'])) {
-    $_SESSION['utilisateur_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
 }
 
 $coachId = isset($_GET['coach_id']) ? intval($_GET['coach_id']) : 0;
