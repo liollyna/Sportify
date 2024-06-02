@@ -24,6 +24,22 @@ $query = "SELECT rendez_vous.*, coachs.nom as coach_nom, activites.nom as activi
           ORDER BY date, heure";
 $result = mysqli_query($db_handle, $query);
 
+// Récupérer la date et l'heure actuelles
+$currentDateTime = new DateTime();
+
+// Initialiser les listes pour les rendez-vous passés et à venir
+$pastAppointments = [];
+$upcomingAppointments = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $appointmentDateTime = new DateTime($row['date'] . ' ' . $row['heure']);
+    if ($appointmentDateTime < $currentDateTime) {
+        $pastAppointments[] = $row;
+    } else {
+        $upcomingAppointments[] = $row;
+    }
+}
+
 mysqli_close($db_handle);
 ?>
 
@@ -135,7 +151,8 @@ mysqli_close($db_handle);
         <main>
             <section>
                 <h1>Mes Rendez-vous</h1>
-                <?php if ($result && mysqli_num_rows($result) > 0): ?>
+                <h2 style="text-align: center;">Rendez-vous à venir</h2>
+                <?php if (count($upcomingAppointments) > 0): ?>
                     <table class="table">
                         <thead>
                             <tr>
@@ -147,7 +164,7 @@ mysqli_close($db_handle);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                            <?php foreach ($upcomingAppointments as $row): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['date']); ?></td>
                                     <td><?php echo htmlspecialchars($row['heure']); ?></td>
@@ -155,11 +172,37 @@ mysqli_close($db_handle);
                                     <td><?php echo htmlspecialchars($row['activite_nom']); ?></td>
                                     <td><button class="cancel-button" onclick="annulerRendezVous(<?php echo $row['id']; ?>)">Annuler</button></td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <p style="text-align: center;">Vous n'avez aucun rendez-vous.</p>
+                    <p style="text-align: center;">Vous n'avez aucun rendez-vous à venir.</p>
+                <?php endif; ?>
+
+                <h2 style="text-align: center;">Rendez-vous passés</h2>
+                <?php if (count($pastAppointments) > 0): ?>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Coach</th>
+                                <th>Activité</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($pastAppointments as $row): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['date']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['heure']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['coach_nom']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['activite_nom']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p style="text-align: center;">Vous n'avez aucun rendez-vous passé.</p>
                 <?php endif; ?>
             </section>
         </main>
