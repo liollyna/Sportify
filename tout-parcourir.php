@@ -1,9 +1,31 @@
 <?php
 session_start(); // Démarrer la session
 // Pour le test, nous allons définir un utilisateur_id de test dans la session
-if (!isset($_SESSION['utilisateur_id'])) {
-    $_SESSION['utilisateur_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
 }
+
+$database = "spotify2";
+$db_handle = mysqli_connect('localhost', 'root', '', $database);
+
+if (!$db_handle) {
+    die("Échec de la connexion : " . mysqli_connect_error());
+}
+
+// Vérifier le type de l'utilisateur
+$user_id = $_SESSION['user_id'];
+$user_type_query = "SELECT type FROM utilisateurs WHERE id = $user_id";
+$user_type_result = mysqli_query($db_handle, $user_type_query);
+
+
+
+if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
+    $user_type_row = mysqli_fetch_assoc($user_type_result);
+    $user_type = $user_type_row['type'];
+} else {
+    $user_type = null;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -90,8 +112,12 @@ if (!isset($_SESSION['utilisateur_id'])) {
         }
 
         function prendreRendezVous(coachId) {
-            var url = 'creneaux.php?coach_id=' + coachId;
-            window.open(url, '_blank');
+            <?php if ($user_type === 'client'): ?>
+                var url = 'creneaux.php?coach_id=' + coachId;
+                window.open(url, '_blank');
+            <?php else: ?>
+                alert('Seuls les utilisateurs de type client peuvent prendre rendez-vous.');
+            <?php endif; ?>
         }
     </script>
 </head>
@@ -150,20 +176,11 @@ if (!isset($_SESSION['utilisateur_id'])) {
 				if (isset($_SESSION['user_id'])) {
 					// L'ID de l'utilisateur est disponible dans la session
 					$user_id = $_SESSION['user_id'];
-					// Vous pouvez maintenant utiliser $user_id comme bon vous semble, par exemple, pour effectuer des requêtes SQL
-					echo "L'ID de l'utilisateur connecté est : $user_id";
-				} else {
+                } else {
 					// L'ID de l'utilisateur n'est pas présent dans la session, cela signifie probablement que l'utilisateur n'est pas connecté
 					echo "L'utilisateur n'est pas connecté.";
 				}
                 //echo "<p>Utilisateur ID: " . $_SESSION['utilisateur_id'] . "</p>"; // Test pour afficher l'utilisateur ID
-
-                $database = "spotify2";
-                $db_handle = mysqli_connect('localhost', 'root', '', $database);
-
-                if (!$db_handle) {
-                    die("Échec de la connexion : " . mysqli_connect_error());
-                }
 
                 // Initialisez la variable $action
                 $action = isset($_POST['action']) ? $_POST['action'] : null;
