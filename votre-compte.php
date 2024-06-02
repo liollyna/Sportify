@@ -154,14 +154,14 @@
 
 
                 <!-- Formulair pour ajouter un client -->
-<div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addClientModalLabel">Ajouter un Client</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button >
+                </button>
             </div>
             <div class="modal-body">
                 <form method="post" action="votre-compte.php">
@@ -185,13 +185,20 @@
                         <label for="clientPassword">Mot de passe</label>
                         <input type="password" class="form-control" id="clientPassword" name="clientPassword" required>
                     </div>
+                    <div class="form-group">
+                        <label for="clientType">Type</label>
+                        <input type="text" class="form-control" id="clientType" name="clientType" required>
+                    </div>
                     <button type="submit" class="btn btn-primary" name="addClient">Ajouter</button>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
+
+
+    
+
   <!-- Modale pour supprimer un client -->
 <div class="modal fade" id="deleteClientModal" tabindex="-1" role="dialog" aria-labelledby="deleteClientModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -226,7 +233,7 @@
                             ?>
                         </select>
                     </div>
-                    <button type="submit" name="suppClient" class="btn btn-danger">Supprimer</button>
+           
                 </form>
             </div>
         </div>
@@ -275,6 +282,7 @@
                                         <label for="coachActivity">Activité</label>
                                         <select class="form-control" id="coachActivity" name="coachActivity" required>
                                     </div>
+                                  
             </div>
             </div>
             
@@ -366,30 +374,32 @@
     </div>
 </div>
 
+
+
 <?php
-// Vérifier si une demande de suppression de coach est soumise
-if (isset($_POST['deleteCoach'])) {
-    $conn = new mysqli("localhost", "root", "", "spotify2");
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $coachToDelete = $_POST['coachToDelete'];
-    
-    // Supprimer le coach de la base de données
-    $stmt = $conn->prepare("DELETE FROM coachs WHERE id = ?");
-    $stmt->bind_param("i", $coachToDelete);
-    
-    if ($stmt->execute()) {
-        echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
-    } else {
-        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
-    }
-
-    $stmt->close();
-    $conn->close();
-}
-?>
+               
+               if (isset($_POST['deleteCoach'])) {
+                   $conn = new mysqli("localhost", "root", "", "spotify2");
+                   if ($conn->connect_error) {
+                       die("Connection failed: " . $conn->connect_error);
+                   }
+               
+                   $coachToDelete = $_POST['coachToDelete'];
+                   
+                   // Supprimer le coach de la base de données
+                   $stmt = $conn->prepare("DELETE FROM coachs WHERE id = ?");
+                   $stmt->bind_param("i", $coachToDelete);
+                   
+                   if ($stmt->execute()) {
+                       echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
+                   } else {
+                       echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
+                   }
+               
+                   $stmt->close();
+                   $conn->close();
+               }
+               ?>
 <?php
 // Vérifier si une demande de suppression de client est soumise
 if (isset($_POST['suppClient'])) {
@@ -516,7 +526,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "";
 }
 ?>
-    <?php
+ <?php
 if (isset($_POST['addCoach'])) {
     $conn = new mysqli("localhost", "root", "", "spotify2");
     if ($conn->connect_error) {
@@ -531,7 +541,7 @@ if (isset($_POST['addCoach'])) {
     $coachRoom = $_POST['coachRoom'];
 
     // Upload files
-    $target_dir = __DIR__ . "Upload/";
+    $target_dir = __DIR__ . "\Z/";
     $coachPhoto = $_FILES['coachPhoto']['name'];
     $coachCV = $_FILES['coachCV']['name'];
     $target_file_photo = $target_dir . basename($_FILES["coachPhoto"]["name"]);
@@ -554,32 +564,44 @@ if (isset($_POST['addCoach'])) {
 
     $conn->close();
 }
-                ?>
+?>
 
-                <?php
-               
-if (isset($_POST['deleteCoach'])) {
+
+<?php
+if (isset($_POST['addClient'])) {
     $conn = new mysqli("localhost", "root", "", "spotify2");
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $coachToDelete = $_POST['coachToDelete'];
-    
-    // Supprimer le coach de la base de données
-    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ?");
-    $stmt->bind_param("i", $coachToDelete);
-    
+    $clientName = $_POST['clientName'];
+    $clientEmail = $_POST['clientEmail'];
+    $clientAddress = $_POST['clientAddress'];
+    $clientPhone = $_POST['clientPhone'];
+    $clientPassword = password_hash($_POST['clientPassword'], PASSWORD_BCRYPT);  // Hash the password
+    $clientType = isset($_POST['clientType']) ? $_POST['clientType'] : '';  // Check if clientType is set
+
+    // Vérifier que clientType n'est pas vide
+    if (empty($clientType)) {
+        echo "<div class='alert alert-danger text-center'>Le type du client ne peut être vide.</div>";
+        exit();
+    }
+
+    // Préparation de la requête SQL pour insérer le client
+    $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, email, adresse, telephone, mot_de_passe, type) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $clientName, $clientEmail, $clientAddress, $clientPhone, $clientPassword, $clientType);
+
     if ($stmt->execute()) {
-        echo "<div class='alert alert-success text-center'>Coach supprimé avec succès.</div>";
+        echo "<div class='alert alert-success text-center'>Client ajouté avec succès.</div>";
     } else {
-        echo "<div class='alert alert-danger text-center'>Erreur lors de la suppression du coach.</div>";
+        echo "<div class='alert alert-danger text-center'>Erreur lors de l'ajout du client : " . $stmt->error . "</div>";
     }
 
     $stmt->close();
     $conn->close();
 }
 ?>
+
 <?php
 // Vérifier si une demande de suppression de client est soumise
 if (isset($_POST['suppClient'])) {
@@ -606,43 +628,7 @@ if (isset($_POST['suppClient'])) {
 ?>
 
 
-<?php
-if (isset($_POST['addClient'])) {
-    $conn = new mysqli("localhost", "root", "", "spotify2");
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Récupérer les valeurs du formulaire
-    $nom = $_POST['clientName'];
-    $email = $_POST['clientEmail'];
-    $adresse = isset ($_POST['clientAddress'])? $_POST['clientAddress'] : null;
-    $telephone = isset($_POST['clientPhone'])? $_POST['clientPhone'] : null;
-    $mot_de_passe = $_POST['clientPassword'];
-    
-     // Hacher le mot de passe
-     $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_BCRYPT);
-    
-
-    // Préparer la requête SQL pour insérer les données dans la table clients
-    $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, email, adresse, telephone, mot_de_passe) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nom, $email, $adresse, $telephone, $mot_de_passe);
-
-    // Exécuter la requête
-    if ($stmt->execute()) {
-        echo "<div class='alert alert-success'>Client ajouté avec succès.</div>";
-    } else {
-        echo "<div class='alert alert-danger'>Erreur lors de l'ajout du client : " . $stmt->error . "</div>";
-    }
-
-    // Fermer la déclaration
-    $stmt->close();
-
-    $conn->close();
-}
-?>
-
-                ?>
+                
      </section>
         </main>
         <footer>

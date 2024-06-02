@@ -1,0 +1,40 @@
+<cv>
+    <me name="Sacha" address="5678 Avenue des Champions, 75008 Paris, France" telephone="+33 6 23 42 37 99" email="sacha@example.com">
+        Ancien athlète professionnel et coach expérimenté avec un palmarès impressionnant dans l'athlétisme. Expert en développement de stratégies d'entraînement, gestion d'équipe et analyse de performance. Passionné par l'athlétisme, avec une capacité prouvée à motiver et à conduire des athlètes vers la victoire.
+    </me>
+    <education>
+        <qualification type="Licence en Sciences de l'Athlétisme" establishment="Université de Paris" from="1990" to="1994">
+            Licence en sciences de l'athlétisme, avec une spécialisation en coaching et gestion d'équipe.
+        </qualification>
+        <qualification type="Formation de Coach Professionnel" establishment="Institut National du Sport, de l'Expertise et de la Performance (INSEP)" from="2008" to="2009">
+            Formation avancée en coaching professionnel d'athlétisme.
+        </qualification>
+    </education>
+    <employment>
+        <experience job_title="Coach principal d'athlétisme" establishment="Fédération Française d'Athlétisme" from="2016" to="2021">
+            <description>
+                Responsable de l'entraînement et de la stratégie pour l'équipe d'athlétisme de la Fédération Française d'Athlétisme.
+            </description>
+            <achievement>Conduite de l'équipe à plusieurs titres de championnat national.</achievement>
+            <achievement>Développement de programmes d'entraînement innovants intégrant les dernières avancées en science du sport.</achievement>
+        </experience>
+        <experience job_title="Adjoint au coach d'athlétisme" establishment="Fédération Française d'Athlétisme" from="2014" to="2016">
+            <description>
+                Adjoint au coach de l'équipe d'athlétisme de la Fédération Française d'Athlétisme, contribuant à la stratégie de match et au développement des athlètes.
+            </description>
+            <achievement>Contribution à la victoire en championnat national en 2016.</achievement>
+            <achievement>Introduction de nouvelles méthodes d'entraînement basées sur la technologie et l'analyse des données.</achievement>
+        </experience>
+    </employment>
+    <hobandint>
+        Je suis passionné par l'athlétisme et le coaching d'athlètes de haut niveau. J'aime analyser les performances pour développer des stratégies gagnantes et organiser des séances d'entraînement pour transmettre mes connaissances et mon expérience.
+    </hobandint>
+    <references>
+        <referee name="Florentino Pérez" address="Real Madrid CF, Avenida de Concha Espina, 1, 28036 Madrid, Espagne" telephone="+34 91 398 43 00" email="florentino.perez@realmadrid.com">
+            <comments>Sacha est un coach d'athlétisme exceptionnel avec une connaissance approfondie du sport et une capacité unique à motiver et développer ses athlètes. Il a montré un grand leadership et une passion pour l'athlétisme tout au long de sa carrière.</comments>
+        </referee>
+        <referee name="Didier Deschamps" address="123 Rue de l'Équipe de France, 75007 Paris, France" telephone="+33 1 23 45 67 91" email="didier.deschamps@fff.fr">
+            <comments>Sacha est un coach dévoué avec une passion pour le développement des athlètes et une expertise en stratégie de compétition. Il a toujours montré un grand professionnalisme et un engagement envers ses équipes.</comments>
+        </referee>
+    </references>
+</cv>
