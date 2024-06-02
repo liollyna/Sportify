@@ -38,6 +38,63 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="tout-parcourir.js" defer></script>
     <style>
+	body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .background-wrapper {
+            flex: 1;
+            background-image: url('AAA.jpg');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(51, 0, 255, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        header nav ul li {
+            display: inline;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        header nav ul li a:hover {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+		color: rgb(255, 255, 255);
+		font-size: 30px;
+		text-align: center;
+		padding: 50px;
+		}
         .coach-container {
             display: flex;
             flex-direction: column;
@@ -124,7 +181,7 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
     <div class="background-wrapper">
     <header>
             
-            <h1 class="texte1">Sportify - Consultation sportive en ligne</h1>
+            <h1>Sportify - Consultation sportive en ligne</h1>
             <nav>
                 <ul>
                     <li><a href="index.html" class="occasion-button">Accueil</a></li>

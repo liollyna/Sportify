@@ -1,18 +1,68 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
+		body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
 
-.background-wrapper {
-    background-image: url('AAA.jpg');
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
-}
+        .background-wrapper {
+            flex: 1;
+            background-image: url('AAA.jpg');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(51, 0, 255, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        header nav ul li {
+            display: inline;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        header nav ul li a:hover {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 30px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
 .texte1 {
     color: rgb(55, 107, 128);
@@ -31,20 +81,7 @@ body, html {
     text-align: center;
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-}
 
-h1 {
-    color: rgba(95, 188, 211, 0.959);
-    font-size: 30px;
-    text-align: center;
-    padding: 50px;
-}
 
 .page-footer {
     background-color: #f8f9fa;
