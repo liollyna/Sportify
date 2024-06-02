@@ -121,7 +121,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="createAccountModalLabel">Créer un Compte</h5>
+                                <h5 class="modal-title" id="createAccountModalLabel">Créer un Compte1</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -140,8 +140,8 @@
                                     <input type="password" id="mot_de_passe" name="mot_de_passe" required class="form-control mb-2">
                                     <label for="type_compte">Type de Compte :</label>
                                     <select id="type_compte" name="type_compte" class="form-control mb-2">
-                                        <option value="client">Client</option>
-                                        <option value="coach">Coach</option>
+                                        <option value="admin"> Admin</option>
+                                        
                                     </select>
                                     <button type="submit" name="createAccount" class="btn btn-primary">Créer un Compte</button>
                                 </form>
