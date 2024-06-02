@@ -1,8 +1,27 @@
 <?php
 session_start(); // Démarrer la session
 // Pour le test, nous allons définir un utilisateur_id de test dans la session
-if (!isset($_SESSION['utilisateur_id'])) {
-    $_SESSION['utilisateur_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = 0; // Remplacez cette valeur par l'ID réel de l'utilisateur connecté
+}
+
+$database = "spotify2";
+$db_handle = mysqli_connect('localhost', 'root', '', $database);
+
+if (!$db_handle) {
+    die("Échec de la connexion : " . mysqli_connect_error());
+}
+
+// Vérifier le type de l'utilisateur
+$user_id = $_SESSION['user_id'];
+$user_type_query = "SELECT type FROM utilisateurs WHERE id = $user_id";
+$user_type_result = mysqli_query($db_handle, $user_type_query);
+
+if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
+    $user_type_row = mysqli_fetch_assoc($user_type_result);
+    $user_type = $user_type_row['type'];
+} else {
+    $user_type = null;
 }
 ?>
 
@@ -20,25 +39,25 @@ if (!isset($_SESSION['utilisateur_id'])) {
     <script src="tout-parcourir.js" defer></script>
     <style>
         .coach-container {
-			display: flex;
-			flex-direction: column;
-		}
+            display: flex;
+            flex-direction: column;
+        }
 
-		.coach-card {
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			padding: 16px;
-			margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
-			background-color: #f9f9f9;
-		}
+        .coach-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
+            background-color: #f9f9f9;
+        }
 
-		.agenda-card {
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			padding: 16px;
-			background-color: #f9f9f9;
-			margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
-		}
+        .agenda-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
+        }
 
         .coach-photo {
             max-width: 100%;
@@ -67,7 +86,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
             background-color: #fff;
             cursor: pointer;
         }
-        .reserve, .conge {
+        .reserve, .conge, .rendezvous {
             background-color: #add8e6;
             background-image: linear-gradient(45deg, #add8e6 25%, #87ceeb 25%, #87ceeb 50%, #add8e6 50%, #add8e6 75%, #87ceeb 75%, #87ceeb 100%);
             background-size: 20px 20px;
@@ -83,6 +102,8 @@ if (!isset($_SESSION['utilisateur_id'])) {
             creneaux.forEach(function(creneau) {
                 if (creneau.dataset.type === 'disponible') {
                     creneau.classList.add('disponible');
+                } else if (creneau.dataset.type === 'rendezvous') {
+                    creneau.classList.add('rendezvous');
                 } else {
                     creneau.classList.add('reserve');
                 }
@@ -90,8 +111,12 @@ if (!isset($_SESSION['utilisateur_id'])) {
         }
 
         function prendreRendezVous(coachId) {
-            var url = 'creneaux.php?coach_id=' + coachId;
-            window.open(url, '_blank');
+            <?php if ($user_type === 'client'): ?>
+                var url = 'creneaux.php?coach_id=' + coachId;
+                window.open(url, '_blank');
+            <?php else: ?>
+                alert('Seuls les utilisateurs de type client peuvent prendre rendez-vous.');
+            <?php endif; ?>
         }
     </script>
 </head>
@@ -147,22 +172,12 @@ if (!isset($_SESSION['utilisateur_id'])) {
             </section>
             <section id="coach-section">
                 <?php
-				if (isset($_SESSION['user_id'])) {
-					// L'ID de l'utilisateur est disponible dans la session
-					$user_id = $_SESSION['user_id'];
-					// Vous pouvez maintenant utiliser $user_id comme bon vous semble, par exemple, pour effectuer des requêtes SQL
-					echo "L'ID de l'utilisateur connecté est : $user_id";
-				} else {
-					// L'ID de l'utilisateur n'est pas présent dans la session, cela signifie probablement que l'utilisateur n'est pas connecté
-					echo "L'utilisateur n'est pas connecté.";
-				}
-                //echo "<p>Utilisateur ID: " . $_SESSION['utilisateur_id'] . "</p>"; // Test pour afficher l'utilisateur ID
-
-                $database = "spotify2";
-                $db_handle = mysqli_connect('localhost', 'root', '', $database);
-
-                if (!$db_handle) {
-                    die("Échec de la connexion : " . mysqli_connect_error());
+                if (isset($_SESSION['user_id'])) {
+                    // L'ID de l'utilisateur est disponible dans la session
+                    $user_id = $_SESSION['user_id'];
+                } else {
+                    // L'ID de l'utilisateur n'est pas présent dans la session, cela signifie probablement que l'utilisateur n'est pas connecté
+                    echo "L'utilisateur n'est pas connecté.";
                 }
 
                 // Initialisez la variable $action
@@ -202,29 +217,29 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                 echo "<p>Bureau : " . htmlspecialchars($coach['bureau']) . "</p>";
                                 echo "<p>Téléphone : " . htmlspecialchars($coach['Telephone']) . "</p>";
                                 echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
-								echo "<a href='mailto:" . htmlspecialchars($coach['Email']) . "'><button>Contacter par mail</button></a>";
+                                echo "<a href='mailto:" . htmlspecialchars($coach['Email']) . "'><button>Contacter par mail</button></a>";
                                 echo "<button type='button' onclick='prendreRendezVous(" . $coach['id'] . ")'>Prendre rendez-vous</button>";
                                 echo "<button onclick='window.location.href=\"chatroom.php?coach_id=" . $coach['id'] . "\"'>Contacter le coach</button>";
                                 echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                                 echo "</div>";
-								echo "</div>";
-                        							
-								
-                                // Récupérer les créneaux du coach
+                                echo "</div>";
+
+                                // Récupérer les créneaux et les rendez-vous du coach
                                 $creneauxQuery = "SELECT * FROM creneaux WHERE coach_id = $coachId ORDER BY date, heure_debut";
+                                $rendezvousQuery = "SELECT * FROM rendez_vous WHERE coach_id = $coachId ORDER BY date, heure";
                                 $creneauxResult = mysqli_query($db_handle, $creneauxQuery);
+                                $rendezvousResult = mysqli_query($db_handle, $rendezvousQuery);
 
                                 echo "<div class='agenda-card'>";
-						
                                 echo "<h3>Agenda de la Semaine :</h3>";
-                                if ($creneauxResult) {
+                                if ($creneauxResult && $rendezvousResult) {
                                     $dates = [
                                         '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', 
                                         '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-08'
                                     ];
                                     $creneauxParDate = [];
 
-                                    // Initialiser les créneaux par date
+                                    // Initialiser les créneaux et rendez-vous par date
                                     foreach ($dates as $date) {
                                         $creneauxParDate[$date] = [
                                             'AM' => [],
@@ -240,6 +255,22 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                         $creneauxParDate[$date][$periode][] = $creneaux;
                                     }
 
+                                    // Remplir les rendez-vous par date
+                                    while ($rendezvous = mysqli_fetch_assoc($rendezvousResult)) {
+                                        $date = $rendezvous['date'];
+                                        $heureDebut = new DateTime($rendezvous['heure']);
+                                        $heureFin = (clone $heureDebut)->modify('+2 hours')->format('H:i:s');
+                                        $periode = $heureDebut->format('H') < 12 ? 'AM' : 'PM';
+                                        $rendezvousArray = [
+                                            'id' => $rendezvous['id'],
+                                            'date' => $rendezvous['date'],
+                                            'heure_debut' => $heureDebut->format('H:i:s'),
+                                            'heure_fin' => $heureFin,
+                                            'type' => 'rendezvous'
+                                        ];
+                                        $creneauxParDate[$date][$periode][] = $rendezvousArray;
+                                    }
+
                                     echo "<table class='table'>";
                                     echo "<thead><tr><th>Spécialité</th><th>Coach</th>";
                                     foreach ($dates as $date) {
@@ -250,7 +281,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                     echo "<tr><td rowspan='2'>" . htmlspecialchars($coach['activite_nom']) . "</td>";
                                     echo "<td rowspan='2'>" . htmlspecialchars($coach['nom']) . "</td>";
 
-                                    // Afficher les créneaux AM
+                                    // Afficher les créneaux et rendez-vous AM
                                     foreach ($dates as $date) {
                                         echo "<td>AM</td>";
                                         echo "<td>";
@@ -258,7 +289,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                             echo "<div class='empty-cell'>&nbsp;</div>";
                                         } else {
                                             foreach ($creneauxParDate[$date]['AM'] as $creneau) {
-                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "' onclick='prendreRendezVous(" . $creneau['id'] . ")'>";
+                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "'>";
                                                 echo htmlspecialchars($creneau['heure_debut'] . ' - ' . $creneau['heure_fin']);
                                                 echo "</div>";
                                             }
@@ -267,7 +298,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                     }
                                     echo "</tr><tr>";
 
-                                    // Afficher les créneaux PM
+                                    // Afficher les créneaux et rendez-vous PM
                                     foreach ($dates as $date) {
                                         echo "<td>PM</td>";
                                         echo "<td>";
@@ -275,7 +306,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                             echo "<div class='empty-cell'>&nbsp;</div>";
                                         } else {
                                             foreach ($creneauxParDate[$date]['PM'] as $creneau) {
-                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "' onclick='prendreRendezVous(" . $creneau['id'] . ")'>";
+                                                echo "<div class='creneau' data-id='" . $creneau['id'] . "' data-type='" . $creneau['type'] . "'>";
                                                 echo htmlspecialchars($creneau['heure_debut'] . ' - ' . $creneau['heure_fin']);
                                                 echo "</div>";
                                             }
@@ -286,7 +317,7 @@ if (!isset($_SESSION['utilisateur_id'])) {
                                     echo "</tr></tbody>";
                                     echo "</table>";
                                 } else {
-                                    echo "Erreur lors de la récupération des créneaux : " . mysqli_error($db_handle);
+                                    echo "Erreur lors de la récupération des créneaux ou des rendez-vous : " . mysqli_error($db_handle);
                                 }
                                 echo "</div>"; // Fin de la agenda-card
 

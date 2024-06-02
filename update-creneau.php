@@ -9,24 +9,24 @@ if (!$db_handle) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $creneauId = $_POST['creneauId'];
-    $utilisateurId = $_SESSION['utilisateur_id']; // ID de l'utilisateur connecté
+    $user_id = $_SESSION['user_id']; // ID de l'utilisateur connecté
 
     // Récupérer les détails du créneau
     $creneauQuery = "SELECT * FROM creneaux WHERE id = $creneauId";
     $creneauResult = mysqli_query($db_handle, $creneauQuery);
 
     if (mysqli_num_rows($creneauResult) > 0) {
+
         $creneau = mysqli_fetch_assoc($creneauResult);
         $date = $creneau['date'];
         $heure = $creneau['heure_debut'];
-        $activiteId = $creneau['coach_id'];
         $coachId = $creneau['coach_id'];
 
         // Supprimer le créneau des creneaux
         $deleteCreneauQuery = "DELETE FROM creneaux WHERE id = $creneauId";
         if (mysqli_query($db_handle, $deleteCreneauQuery)) {
             // Ajouter une nouvelle ligne à la table rendez_vous
-            $insertRendezVousQuery = "INSERT INTO rendez_vous (utilisateur_id, date, heure, activite_id, coach_id) VALUES ($utilisateurId, '$date', '$heure', $activiteId, $coachId)";
+            $insertRendezVousQuery = "INSERT INTO rendez_vous (utilisateur_id, date, heure, activite_id, coach_id) VALUES ($user_id, '$date', '$heure', (SELECT activite_id FROM coachs WHERE id = $coachId), $coachId)";
             if (mysqli_query($db_handle, $insertRendezVousQuery)) {
                 echo "success";
             } else {
