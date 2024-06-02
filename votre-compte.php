@@ -62,8 +62,10 @@
                          echo "<h2>Fonctionnalités administrateur :</h2>
                          <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deleteCoachModal'>Supprimer un coach</button>
                          <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Ajouter un Coach</button>
-                          <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCoachModal'>Modifier le calendrier</button>
-                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#createAccountModal'>Créer un Compte</button>";
+                          <button type='button' class='btn btn-danger' data-toggle='modal' data-target='#addCalender'>Modifier le calendrier</button>
+                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#createAccountModal'>Créer un Compte</button>
+                          <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#addClientModal'name=addClient'>Ajouter un Client</button>
+                          ";
                               }
                           
 
@@ -150,6 +152,49 @@
                     </div>
                 </div>
 
+
+
+                <!-- Formulair pour ajouter un client -->
+<div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClientModalLabel">Ajouter un Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button >
+            </div>
+            <div class="modal-body">
+                <form method="post" action="votre-compte.php">
+                    <div class="form-group">
+                        <label for="clientName">Nom</label>
+                        <input type="text" class="form-control" id="clientName" name="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" name="clientEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientAddress">Adresse</label>
+                        <input type="text" class="form-control" id="clientAddress" name="clientAddress">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhone">Téléphone</label>
+                        <input type="text" class="form-control" id="clientPhone" name="clientPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPassword">Mot de passe</label>
+                        <input type="password" class="form-control" id="clientPassword" name="clientPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="addClient">Ajouter</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+  
+            
 
 
                 <!-- Modale pour ajouter un coach -->
@@ -447,6 +492,7 @@ if (isset($_POST['addCoach'])) {
     $conn->close();
 }
                 ?>
+
                 <?php
                
 if (isset($_POST['deleteCoach'])) {
@@ -471,11 +517,58 @@ if (isset($_POST['deleteCoach'])) {
     $conn->close();
 }
 ?>
+
+
+
+
+<?php
+if (isset($_POST['addClient'])) {
+    $conn = new mysqli("localhost", "root", "", "spotify2");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Récupérer les valeurs du formulaire
+    $nom = $_POST['clientName'];
+    $email = $_POST['clientEmail'];
+    $adresse = isset ($_POST['clientAddress'])? $_POST['clientAddress'] : null;
+    $telephone = isset($_POST['clientPhone'])? $_POST['clientPhone'] : null;
+    $mot_de_passe = $_POST['clientPassword'];
+    
+     // Hacher le mot de passe
+     $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_BCRYPT);
+    
+
+    // Préparer la requête SQL pour insérer les données dans la table clients
+    $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, email, adresse, telephone, mot_de_passe) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $nom, $email, $adresse, $telephone, $mot_de_passe);
+
+    // Exécuter la requête
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Client ajouté avec succès.</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Erreur lors de l'ajout du client : " . $stmt->error . "</div>";
+    }
+
+    // Fermer la déclaration
+    $stmt->close();
+
+    $conn->close();
+}
+?>
+
+                ?>
      </section>
         </main>
         <footer>
             <p>© 2023 Sportify - Tous droits réservés.</p>
         </footer>
     </div>
+  
+
+</body>
+</html>
+
+
 </body>
 </html>
