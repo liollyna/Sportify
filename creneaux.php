@@ -71,7 +71,7 @@ if ($coachId <= 0) {
             background-color: #fff;
             cursor: pointer;
         }
-        .reserve, .conge {
+        .reserve, .conge, .rendezvous {
             background-color: #add8e6;
             background-image: linear-gradient(45deg, #add8e6 25%, #87ceeb 25%, #87ceeb 50%, #add8e6 50%, #add8e6 75%, #87ceeb 75%, #87ceeb 100%);
             background-size: 20px 20px;
@@ -91,6 +91,8 @@ if ($coachId <= 0) {
             creneaux.forEach(function(creneau) {
                 if (creneau.dataset.type === 'disponible') {
                     creneau.classList.add('disponible');
+                } else if (creneau.dataset.type === 'rendezvous') {
+                    creneau.classList.add('rendezvous');
                 } else {
                     creneau.classList.add('reserve');
                 }
@@ -100,7 +102,6 @@ if ($coachId <= 0) {
         function prendreRendezVous(creneauId) {
             if (confirm("Voulez-vous vraiment réserver ce créneau ?")) {
                 // Envoi de la requête AJAX pour mettre à jour le créneau et la table rendez_vous
-                 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'update-creneau.php', true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -167,20 +168,22 @@ if ($coachId <= 0) {
                             echo "</div>";
                             echo "</div>";
 
-                            // Récupérer les créneaux du coach
+                            // Récupérer les créneaux et les rendez-vous du coach
                             $creneauxQuery = "SELECT * FROM creneaux WHERE coach_id = $coachId ORDER BY date, heure_debut";
+                            $rendezvousQuery = "SELECT * FROM rendez_vous WHERE coach_id = $coachId ORDER BY date, heure";
                             $creneauxResult = mysqli_query($db_handle, $creneauxQuery);
+                            $rendezvousResult = mysqli_query($db_handle, $rendezvousQuery);
 
                             echo "<div class='agenda-card'>";
                             echo "<h3>Agenda de la Semaine :</h3>";
-                            if ($creneauxResult) {
+                            if ($creneauxResult && $rendezvousResult) {
                                 $dates = [
                                     '2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', 
                                     '2024-06-05', '2024-06-06', '2024-06-07', '2024-06-08'
                                 ];
                                 $creneauxParDate = [];
 
-                                // Initialiser les créneaux par date
+                                // Initialiser les créneaux et rendez-vous par date
                                 foreach ($dates as $date) {
                                     $creneauxParDate[$date] = [
                                         'AM' => [],
@@ -196,6 +199,22 @@ if ($coachId <= 0) {
                                     $creneauxParDate[$date][$periode][] = $creneaux;
                                 }
 
+                                // Remplir les rendez-vous par date
+                                while ($rendezvous = mysqli_fetch_assoc($rendezvousResult)) {
+                                    $date = $rendezvous['date'];
+                                    $heureDebut = new DateTime($rendezvous['heure']);
+                                    $heureFin = (clone $heureDebut)->modify('+2 hours')->format('H:i:s');
+                                    $periode = $heureDebut->format('H') < 12 ? 'AM' : 'PM';
+                                    $rendezvousArray = [
+                                        'id' => $rendezvous['id'],
+                                        'date' => $rendezvous['date'],
+                                        'heure_debut' => $heureDebut->format('H:i:s'),
+                                        'heure_fin' => $heureFin,
+                                        'type' => 'rendezvous'
+                                    ];
+                                    $creneauxParDate[$date][$periode][] = $rendezvousArray;
+                                }
+
                                 echo "<table class='table'>";
                                 echo "<thead><tr><th>Spécialité</th><th>Coach</th>";
                                 foreach ($dates as $date) {
@@ -206,7 +225,7 @@ if ($coachId <= 0) {
                                 echo "<tr><td rowspan='2'>" . htmlspecialchars($coach['activite_nom']) . "</td>";
                                 echo "<td rowspan='2'>" . htmlspecialchars($coach['nom']) . "</td>";
 
-                                // Afficher les créneaux AM
+                                // Afficher les créneaux et rendez-vous AM
                                 foreach ($dates as $date) {
                                     echo "<td>AM</td>";
                                     echo "<td>";
@@ -223,7 +242,7 @@ if ($coachId <= 0) {
                                 }
                                 echo "</tr><tr>";
 
-                                // Afficher les créneaux PM
+                                // Afficher les créneaux et rendez-vous PM
                                 foreach ($dates as $date) {
                                     echo "<td>PM</td>";
                                     echo "<td>";
@@ -242,7 +261,7 @@ if ($coachId <= 0) {
                                 echo "</tr></tbody>";
                                 echo "</table>";
                             } else {
-                                echo "Erreur lors de la récupération des créneaux : " . mysqli_error($db_handle);
+                                echo "Erreur lors de la récupération des créneaux ou des rendez-vous : " . mysqli_error($db_handle);
                             }
                             echo "</div>"; // Fin de la agenda-card
 
