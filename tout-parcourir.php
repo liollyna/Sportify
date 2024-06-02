@@ -122,19 +122,19 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
 </head>
 <body>
     <div class="background-wrapper">
-        <header>
+    <header>
+            
             <h1 class="texte1">Sportify - Consultation sportive en ligne</h1>
             <nav>
                 <ul>
                     <li><a href="index.html" class="occasion-button">Accueil</a></li>
                     <li><a href="tout-parcourir.php" class="occasion-button">Tout Parcourir</a></li>
                     <li><a href="recherche.php" class="occasion-button">Recherche</a></li>
-                    <li><a href="rendez-vous.html" class="occasion-button">Rendez-vous</a></li>
+                    <li><a href="rendez-vous.php" class="occasion-button">Rendez-vous</a></li>
                     <li><a href="votre-compte.php" class="occasion-button">Votre Compte</a></li>
                     <li><a href="chatroom.php" class="occasion-button">Chatroom</a></li>
                 </ul>
             </nav>
-            <br><br>
         </header>
         <main>
             <section>
@@ -145,7 +145,7 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
                         <li><button class="button" name="sports" value="1">Activités sportives</button></li>
                         <li><button class="button" name="sports" value="2">Les Sports de compétition</button></li>
                         <li>
-                            <form action="SalleDeSport.html" method="GET">
+                            <form action="SalleDeSport.php" method="GET">
                                 <button type="submit" class="button" name="action" value="3">Salle de sport Omnes</button>
                             </form>
                         </li>

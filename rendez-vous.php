@@ -1,5 +1,14 @@
 <?php
-// Informations de connexion à la base de données
+session_start(); // Démarrer la session
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
 $database = "spotify2";
 $db_handle = mysqli_connect('localhost', 'root', '', $database);
 
@@ -7,86 +16,156 @@ if (!$db_handle) {
     die("Échec de la connexion : " . mysqli_connect_error());
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "GET") {
-    $action = $_REQUEST['action'];
+$query = "SELECT rendez_vous.*, coachs.nom as coach_nom, activites.nom as activite_nom 
+          FROM rendez_vous 
+          JOIN coachs ON rendez_vous.coach_id = coachs.id 
+          JOIN activites ON rendez_vous.activite_id = activites.id 
+          WHERE rendez_vous.utilisateur_id = $user_id 
+          ORDER BY date, heure";
+$result = mysqli_query($db_handle, $query);
 
-    switch ($action) {
-        case 'consult':
-            $activite_id = $_GET['activite'];
-
-            // Requête pour obtenir les créneaux disponibles pour une activité donnée
-            $sql_creneaux = "SELECT coachs.nom AS coach, disponibilites.date, disponibilites.heure_debut, disponibilites.heure_fin, activites.nom AS activite, disponibilites.id AS dispo_id
-                             FROM coachs
-                             JOIN disponibilites ON coachs.id = disponibilites.coach_id
-                             JOIN activites ON activites.id = $activite_id
-                             WHERE disponibilites.id NOT IN (SELECT disponibilite_id FROM rendez_vous)
-                             ORDER BY disponibilites.date, disponibilites.heure_debut";
-
-            $result_creneaux = mysqli_query($db_handle, $sql_creneaux);
-
-            if (mysqli_num_rows($result_creneaux) > 0) {
-                echo "<h2>Créneaux Disponibles</h2>";
-                echo "<table>
-                        <tr>
-                            <th>Date</th>
-                            <th>Heure Début</th>
-                            <th>Heure Fin</th>
-                            <th>Activité</th>
-                            <th>Coach</th>
-                            <th>Réserver</th>
-                        </tr>";
-                while ($row = mysqli_fetch_assoc($result_creneaux)) {
-                    echo "<tr class='creneau-disponible' data-id='" . $row['dispo_id'] . "'>
-                            <td>" . $row['date'] . "</td>
-                            <td>" . $row['heure_debut'] . "</td>
-                            <td>" . $row['heure_fin'] . "</td>
-                            <td>" . $row['activite'] . "</td>
-                            <td>" . $row['coach'] . "</td>
-                            <td><a href='rendez-vous.php?action=book&dispo_id=" . $row['dispo_id'] . "' class='reserver-btn'>Réserver</a></td>
-                          </tr>";
-                }
-                echo "</table>";
-            } else {
-                echo "Aucun créneau disponible trouvé.";
-            }
-            break;
-
-        case 'book':
-            $dispo_id = $_GET['dispo_id'];
-            $utilisateur_id = 1; // Supposons que l'utilisateur est connecté et son id est 1
-
-            // Vérifier la disponibilité du créneau
-            $sql_dispo = "SELECT * FROM disponibilites WHERE id = $dispo_id AND id NOT IN (SELECT disponibilite_id FROM rendez_vous)";
-
-            $result_dispo = mysqli_query($db_handle, $sql_dispo);
-
-            if (mysqli_num_rows($result_dispo) > 0) {
-                $row = mysqli_fetch_assoc($result_dispo);
-                $date = $row['date'];
-                $heure_debut = $row['heure_debut'];
-                $heure_fin = $row['heure_fin'];
-                $coach_id = $row['coach_id'];
-
-                // Insérer le rendez-vous
-                $sql_insert = "INSERT INTO rendez_vous (utilisateur_id, date, heure, activite_id, coach_id, disponibilite_id)
-                               VALUES ('$utilisateur_id', '$date', '$heure_debut', (SELECT activite_id FROM disponibilites WHERE id = $dispo_id), '$coach_id', '$dispo_id')";
-
-                if (mysqli_query($db_handle, $sql_insert)) {
-                    echo "Nouveau rendez-vous créé avec succès avec le coach " . $row['coach'] . "<br>";
-
-                    // Envoyer un message de confirmation
-                    $message = "Votre rendez-vous a été réservé avec succès pour le " . $date . " de " . $heure_debut . " à " . $heure_fin . ".";
-                    mail('johndoe@example.com', 'Confirmation de Rendez-vous', $message);
-                } else {
-                    echo "Erreur: " . mysqli_error($db_handle) . "<br>";
-                }
-            } else {
-                echo "Ce créneau n'est plus disponible.";
-            }
-            break;
-    }
-}
-
-// Fermer la connexion
 mysqli_close($db_handle);
 ?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Rendez-vous - Sportify</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        .background-wrapper {
+            background-image: url('AAA.jpg');
+            background-size: cover;
+        }
+        .occasion-button {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s;
+            display: inline-block;
+            border-radius: 10px;
+            width: 100px;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .texte1 {
+            color: rgb(55, 107, 128);
+            text-align: center;
+        }
+        h1 {
+            color: rgb(51, 0, 255);
+            font-size: 30px;
+            text-align: center;
+            padding: 50px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .cancel-button {
+            padding: 5px 10px;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function annulerRendezVous(rendezVousId) {
+            if (confirm("Voulez-vous vraiment annuler ce rendez-vous ?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'annuler-rendez-vous.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        alert('Rendez-vous annulé avec succès.');
+                        location.reload();
+                    } else {
+                        alert('Erreur lors de l\'annulation du rendez-vous.');
+                    }
+                };
+                xhr.send('rendezVousId=' + rendezVousId);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="background-wrapper">
+        <header>
+            <h1 class="texte1">Sportify - Consultation sportive en ligne</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="occasion-button">Accueil</a></li>
+                    <li><a href="tout-parcourir.php" class="occasion-button">Tout Parcourir</a></li>
+                    <li><a href="recherche.php" class="occasion-button">Recherche</a></li>
+                    <li><a href="rendez-vous.php" class="occasion-button">Rendez-vous</a></li>
+                    <li><a href="votre-compte.php" class="occasion-button">Votre Compte</a></li>
+                    <li><a href="chatroom.php" class="occasion-button">Chatroom</a></li>
+                </ul>
+            </nav>
+            <br><br>
+        </header>
+        <main>
+            <section>
+                <h1>Mes Rendez-vous</h1>
+                <?php if ($result && mysqli_num_rows($result) > 0): ?>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Coach</th>
+                                <th>Activité</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['date']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['heure']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['coach_nom']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['activite_nom']); ?></td>
+                                    <td><button class="cancel-button" onclick="annulerRendezVous(<?php echo $row['id']; ?>)">Annuler</button></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p style="text-align: center;">Vous n'avez aucun rendez-vous.</p>
+                <?php endif; ?>
+            </section>
+        </main>
+        <footer>
+            <p style="text-align: center;">Contactez-nous par mail, téléphone ou à notre adresse physique.</p>
+        </footer>
+    </div>
+</body>
+</html>

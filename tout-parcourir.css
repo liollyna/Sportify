@@ -22,12 +22,19 @@ body, html {
     text-align: center;
 }
 
-
-
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
 
 
 .texte1 {
     color: rgb(55, 107, 128);
+    text-align: center;
+
 }
 
 h1 {
