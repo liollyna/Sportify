@@ -264,7 +264,7 @@
                                 die("Connection failed: " . $conn->connect_error);
                             }
 
-                            $result = $conn->query("SELECT * FROM utilisateurs WHERE type='coach'");
+                            $result = $conn->query("SELECT * FROM coachs ");
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
@@ -293,7 +293,7 @@ if (isset($_POST['deleteCoach'])) {
     $coachToDelete = $_POST['coachToDelete'];
     
     // Supprimer le coach de la base de données
-    $stmt = $conn->prepare("DELETE FROM utilisateurs WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM coachs WHERE id = ?");
     $stmt->bind_param("i", $coachToDelete);
     
     if ($stmt->execute()) {
