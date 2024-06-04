@@ -95,7 +95,6 @@
                                 </select>
                                 <button type="submit" class="btn btn-primary">Créer un Compte</button>
                             </form>
-                            <p>Catégories des services disponibles chez Sportify :</p>
                             <p>Gérez votre compte Sportify et accédez à vos informations personnelles.</p>
                         </div>';
                 }

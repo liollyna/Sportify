@@ -47,7 +47,9 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
             display: flex;
             flex-direction: column;
         }
-
+		.improved-text{
+		color: white
+		}
         .background-wrapper {
             flex: 1;
             background-image: url('AAA.jpg');
@@ -186,7 +188,7 @@ if ($user_type_result && mysqli_num_rows($user_type_result) > 0) {
 </head>
 <body>
     <div class="background-wrapper">
-    <header>
+		<header>
             
             <h1>Sportify - Consultation sportive en ligne</h1>
             <nav>
