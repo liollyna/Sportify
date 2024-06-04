@@ -71,7 +71,36 @@ mysqli_close($db_handle);
             padding: 10px 0;
             text-align: center;
         }
-
+		.coach-result {
+			display: flex;
+			align-items: center;
+			background-color:white;
+            border: 1px solid #ddd;
+			padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+		.coach-photo {
+            max-width: 150px;
+            margin-right: 20px;
+        }
+        .coach-info {
+            flex-grow: 1;
+        }
+        .coach-info h3 {
+            margin-top: 0;
+        }
+        .coach-info p {
+            margin: 5px 0;
+        }
+        .coach-cv {
+            margin-top: 10px;
+        }
+        .contact-button {
+            margin-left: 10px;
+        }
+		
         header nav ul {
             list-style-type: none;
             padding: 0;

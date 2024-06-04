@@ -77,7 +77,157 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="chatroom.css" rel="stylesheet" type="text/css">
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <title>Chatroom</title>
+	<style>
+	body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.background-wrapper {
+    flex: 1;
+    background-image: url('AAA.jpg');
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: rgba(51, 0, 255, 0.8);
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+header nav ul li {
+    display: inline;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.3s;
+    border-radius: 10px;
+    text-align: center;
+}
+
+header nav ul li a:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+}
+
+h1 {
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+    padding: 20px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.texte1 {
+    color: rgb(55, 107, 128);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: rgba(51, 0, 255, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto;
+}
+
+.chat-section {
+    width: 80%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.messages {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.message {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message span {
+    display: block;
+    font-size: 0.8em;
+    color: #999;
+}
+
+.message-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-form label, .message-form select, .message-form textarea, .message-form button {
+    margin-bottom: 10px;
+}
+
+.message-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.message-form button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.message-form button:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
 </head>
 <body>
     <div class="background-wrapper">
