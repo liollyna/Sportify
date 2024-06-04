@@ -229,7 +229,7 @@ if ($coachId <= 0) {
                             echo "<p>Bureau : " . htmlspecialchars($coach['bureau']) . "</p>";
                             echo "<p>Téléphone : " . htmlspecialchars($coach['Telephone']) . "</p>";
                             echo "<p>Email : " . htmlspecialchars($coach['Email']) . "</p>";
-                            echo "<button onclick='contacterCoach(" . $coach['id'] . ")'>Contacter le coach</button>";
+                            echo "<button onclick='window.location.href=\"chatroom.php?coach_id=" . $coach['id'] . "\"'>Contacter le coach</button>";
                             echo "<button onclick='voirCV(\"" . htmlspecialchars($coach['CV']) . "\")'>Voir CV</button>";
                             echo "</div>";
                             echo "</div>";

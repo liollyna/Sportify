@@ -487,7 +487,7 @@
                     $coachRoom = $_POST['coachRoom'];
 
                     // Upload files
-                    $target_dir = __DIR__ . "/uploads/";
+                    $target_dir = __DIR__ . "\Upload/";
                     $coachPhoto = $_FILES['coachPhoto']['name'];
                     $coachCV = $_FILES['coachCV']['name'];
                     $target_file_photo = $target_dir . basename($_FILES["coachPhoto"]["name"]);
