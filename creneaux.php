@@ -34,15 +34,16 @@ if ($coachId <= 0) {
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 16px;
-            margin-right: 20px;
+            margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
             background-color: #f9f9f9;
         }
+
         .agenda-card {
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 16px;
             background-color: #f9f9f9;
-            flex: 1;
+            margin-bottom: 20px; /* Ajout de marge en bas pour séparer les cartes */
         }
         .coach-photo {
             max-width: 100%;

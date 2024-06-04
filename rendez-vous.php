@@ -71,6 +71,45 @@ mysqli_close($db_handle);
             height: 100%;
             width: 100%;
         }
+		        header {
+            background-color: rgba(51, 0, 255, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        header nav ul li {
+            display: inline;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        header nav ul li a:hover {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+		color: rgb(255, 255, 255);
+		font-size: 30px;
+		text-align: center;
+		padding: 50px;
+		}
         .background-wrapper {
             background-image: url('AAA.jpg');
             background-size: cover;
@@ -86,23 +125,11 @@ mysqli_close($db_handle);
             width: 100px;
             text-align: center;
         }
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-        }
         .texte1 {
             color: rgb(55, 107, 128);
             text-align: center;
         }
-        h1 {
-            color: rgb(51, 0, 255);
-            font-size: 30px;
-            text-align: center;
-            padding: 50px;
-        }
+
         table {
             width: 80%;
             margin: auto;
@@ -168,6 +195,13 @@ mysqli_close($db_handle);
             border-radius: 5px;
             cursor: pointer;
         }
+		footer {
+		background-color: rgba(51, 0, 255, 0.8);
+		color: #fff;
+		text-align: center;
+		padding: 10px 0;
+		margin-top: auto;
+		}
     </style>
     <script>
         function annulerRendezVous(rendezVousId) {
@@ -191,7 +225,7 @@ mysqli_close($db_handle);
 <body>
     <div class="background-wrapper">
         <header>
-            <h1 class="texte1">Sportify - Consultation sportive en ligne</h1>
+            <h1 >Sportify - Consultation sportive en ligne</h1>
             <nav>
                 <ul>
                     <li><a href="index.html" class="occasion-button">Accueil</a></li>
@@ -305,8 +339,61 @@ mysqli_close($db_handle);
                 <?php endif; ?>
             </section>
         </main>
-        <footer>
-            <p style="text-align: center;">Contactez-nous par mail, téléphone ou à notre adresse physique.</p>
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row custom-row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="infos text-left">
+                            <h4 class="A" style="margin-left: 100px;">
+                                Besoin d'aide ?
+                            </h4>
+                            <p style="margin-left: 70px;">Questions fréquentes ?</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="infos text-left">
+                            <h4 class="A" style="margin-left: 150px;">
+                                Contact
+                            </h4>
+                            <p style="margin-left: 50px;">
+                                30, Avenue de Breteuil, 75012 Paris, France <br>
+                                info@Sporfity.fr <br>
+                                numéro de téléphone : +33 01 02 03 04 05 <br>
+                                +33 01 03 02 05 04
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="infos text-left">
+                            <h4 class="A" style="margin-left: 150px;">
+                                Rejoignez-nous !
+                            </h4>
+                            <div>
+                                <a target="_blank" href="https://twitter.com/">
+                                    <img src="image/twitter.png" alt="Logo Twitter" style="margin-left: 150px; margin-right: 20px;">
+                                </a>
+                                <a target="_blank" href="https://www.instagram.com/">
+                                    <img src="image/instagram.png" alt="Logo Instagram" style="margin-right: 50px;">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="infos text-left">
+                            <h3>
+                                Achats 100% sécurisés
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <div class="footer-copyright">
+                            &copy; Site préféré de coaching français en 2022
+                        </div>
+                    </div>
+                </div>
+            </div>
         </footer>
     </div>
 </body>
